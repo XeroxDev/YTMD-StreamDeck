@@ -10,13 +10,9 @@ class DefaultAction {
     onKeypressUp(event) {
     }
 
-    onKeypressDown(event) {
-    }
-
     async sendAction(command, value) {
-        return value ? return Main.sendRequest('POST', {command, value}) : Main.sendRequest('POST', {command});
+        return value !== undefined ? Main.sendRequest('POST', {command, value}) : Main.sendRequest('POST', {command});
     }
-
 
     get context() {
         return this._context;

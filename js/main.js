@@ -88,11 +88,7 @@ class Main {
     }
 
     static async sendRequest(method, body) {
-        const {hostData, portData, passwordData} = /*await Main.CONTEXT.getSettings();*/ {
-            hostData: '192.168.178.42',
-            portData: 9863,
-            passwordData: ''
-        }
+        // const {hostData, portData, passwordData} = await Main.CONTEXT.getSettings();
         return fetch(`http://localhost:9863/query`, {
             method,
             body: JSON.stringify(body),

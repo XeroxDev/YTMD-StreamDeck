@@ -23,6 +23,6 @@ class MuteAction extends DefaultAction {
         this.lastVolume = this.currentVolume === 0 ? this.lastVolume : this.currentVolume;
         const value = this.currentVolume === 0 ? this.lastVolume : 0;
         console.log(value)
-        this.sendAction('player-set-volume').then(console.log);
+        this.sendAction('player-set-volume', value+1);
     }
 }
