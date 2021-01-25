@@ -1,0 +1,155 @@
+{
+  "Name": "YouTube Music Desktop Connector",
+  "Author": "XeroxDev",
+  "Description": "Connector to the YouTube Music Desktop App",
+  "URL": "https://xeroxdev.de",
+  "Icon": "./icons/pluginIcon",
+  "Version": "1.0.0",
+  "Category": "YouTube Music Desktop Connector",
+  "CategoryIcon": "./icons/music",
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "10.11"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Actions": [
+    {
+      "Icon": "./icons/music-play",
+      "Name": "Play-Pause",
+      "States": [
+        {
+          "Image": "./icons/music-pause",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        },
+        {
+          "Image": "./icons/music-play",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Plays or Pauses the current song",
+      "UUID": "fun.shiro.ytmdc.play-pause"
+    },
+    {
+      "Icon": "./icons/music-next",
+      "Name": "Next",
+      "States": [
+        {
+          "Image": "./icons/music-next",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Go to next song",
+      "UUID": "fun.shiro.ytmdc.next"
+    },
+    {
+      "Icon": "./icons/music-prev",
+      "Name": "Prev",
+      "States": [
+        {
+          "Image": "./icons/music-prev",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Go to prev song",
+      "UUID": "fun.shiro.ytmdc.prev"
+    },
+    {
+      "Icon": "./icons/like-on",
+      "Name": "Like",
+      "States": [
+        {
+          "Image": "./icons/like-on",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        },
+        {
+          "Image": "./icons/like-off",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Likes current song",
+      "UUID": "fun.shiro.ytmdc.like"
+    },
+    {
+      "Icon": "./icons/dislike-on",
+      "Name": "Dislike",
+      "States": [
+        {
+          "Image": "./icons/dislike-on",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        },
+        {
+          "Image": "./icons/dislike-off",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Dislikes current song",
+      "UUID": "fun.shiro.ytmdc.dislike"
+    },
+    {
+      "Icon": "./icons/volume-on",
+      "Name": "Mute",
+      "States": [
+        {
+          "Image": "./icons/volume-on",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        },
+        {
+          "Image": "./icons/volume-mute",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Mutes / unmutes volume",
+      "UUID": "fun.shiro.ytmdc.mute"
+    },
+    {
+      "Icon": "./icons/volume-down",
+      "Name": "Volume Down",
+      "States": [
+        {
+          "Image": "./icons/volume-down",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Volume Down",
+      "UUID": "fun.shiro.ytmdc.volume-down"
+    },
+    {
+      "Icon": "./icons/volume-up",
+      "Name": "Volume Up",
+      "States": [
+        {
+          "Image": "./icons/volume-up",
+          "TitleAlignment": "middle",
+          "FontSize": "16"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Volume Up",
+      "UUID": "fun.shiro.ytmdc.volume-up"
+    }
+  ],
+  "CodePath": "./background.html"
+}
