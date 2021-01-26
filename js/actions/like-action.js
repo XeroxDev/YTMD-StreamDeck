@@ -4,7 +4,7 @@ class LikeAction extends DefaultAction {
 
     onContextAppear(event) {
         Main.MUSICDATA.pipe(takeUntil(this.destroy$)).subscribe(data => {
-            if (!data) {
+            if (!data || data === true) {
                 return;
             }
             const _liked = data.player.likeStatus === 'LIKE';

@@ -151,5 +151,6 @@
       "UUID": "fun.shiro.ytmdc.volume-up"
     }
   ],
-  "CodePath": "./background.html"
+  "CodePath": "./background.html",
+  "PropertyInspectorPath": "./action.html"
 }

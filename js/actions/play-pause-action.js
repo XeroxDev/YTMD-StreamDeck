@@ -4,7 +4,9 @@ class PlayPauseAction extends DefaultAction {
 
     onContextAppear(event) {
         Main.MUSICDATA.pipe(takeUntil(this.destroy$)).subscribe(data => {
-            if (!data) {
+            Main.PLAY_SETTINGS = this.context.settings;
+            if (!data || data === true) {
+                this.context.showAlert();
                 return;
             }
             this.context.setTitle(data ? data.player.seekbarCurrentPositionHuman : '0:00');

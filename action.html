@@ -4,16 +4,17 @@
 	<title>YouTube Music Desktop Connector</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="sdpi.css">
+	<script src="js/libs/easy-streamdeck-v2.0.1.js"></script>
 </head>
 <body>
-<div class="sdpi-wrapper">
+<div class="sdpi-wrapper" id="mainSettings">
 	<div class="sdpi-item">
 		<div class="sdpi-item-label">Host</div>
-		<input class="sdpi-item-value" type="text" id="host" value="localhost">
+		<input class="sdpi-item-value" type="text" id="host">
 	</div>
 	<div class="sdpi-item">
 		<div class="sdpi-item-label">Port</div>
-		<input class="sdpi-item-value" type="number" id="port" value="9863">
+		<input class="sdpi-item-value" type="number" id="port">
 	</div>
 	<div class="sdpi-item">
 		<div class="sdpi-item-label">Password</div>
@@ -27,17 +28,13 @@
 <script>
 
     streamdeck.on('ready', function () {
-        function updateValue(newSettings) {
-            streamdeck.getSettings().then(settings => {
-                settings = newSettings
+        if (this.actionId !== 'fun.shiro.ytmdc.play-pause') {
+            document.getElementById('mainSettings').remove();
+            return;
+        }
 
-                return streamdeck.setSettings(settings).then(settings => {
-                    console.log(JSON.stringify(settings))
-                    return streamdeck.setTitle(settings.hostData, 0);
-                });
-            }).catch(err => {
-                console.error(err)
-            });
+        function updateValue(newSettings) {
+            streamdeck.setSettings(newSettings);
         }
 
         const host = document.getElementById('host'),
@@ -46,7 +43,6 @@
             save = document.getElementById('save');
 
         streamdeck.getSettings().then(res => {
-            console.log(JSON.stringify(res))
             const {hostData, portData, passwordData} = res;
             host.value = hostData || 'localhost';
             port.value = portData || 9863;

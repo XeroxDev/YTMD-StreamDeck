@@ -142,7 +142,7 @@
                 }
 
                 showOk() {
-                    streamdeck.sendJSON({event: "showAlert", context: this.id})
+                    streamdeck.send({event: "showAlert", context: this.id})
                 }
             }
 
@@ -225,7 +225,7 @@
             });
             irn.register("$setSettings", function (settings) {
                 this.setSettings(settings);
-                console.log(this, settings);
+                this.settings = settings;
                 return settings
             });
             irn.register(`$showAlert`, function () {
@@ -347,6 +347,9 @@
                     context.state = msg.payload.state
                 }
                 switch (msg.event) {
+                    case 'didReceiveSettings':
+                        console.log(this);
+                        return;
                     case"keyUp":
                     case"keyDown":
                         eventName = msg.event === "keyUp" ? "up" : "down";

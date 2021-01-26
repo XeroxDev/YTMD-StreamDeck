@@ -5,7 +5,7 @@ class MuteAction extends DefaultAction {
 
     onContextAppear(event) {
         Main.MUSICDATA.pipe(takeUntil(this.destroy$)).subscribe(data => {
-            if (!data) {
+            if (!data || data === true) {
                 return;
             }
             const vol = data.player.volumePercent;
@@ -22,7 +22,6 @@ class MuteAction extends DefaultAction {
     onKeypressUp(event) {
         this.lastVolume = this.currentVolume === 0 ? this.lastVolume : this.currentVolume;
         const value = this.currentVolume === 0 ? this.lastVolume : 0;
-        console.log(value)
         this.sendAction('player-set-volume', value+1);
     }
 }

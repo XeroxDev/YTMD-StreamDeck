@@ -1,10 +1,9 @@
 class Main {
     buttons;
-    static CONTEXT;
     static MUSICDATA = new rxjs.BehaviorSubject();
+    static PLAY_SETTINGS;
 
-    constructor(context) {
-        Main.CONTEXT = context;
+    constructor() {
         const playPause = new PlayPauseAction();
         const next = new NextAction();
         const prev = new PrevAction();
@@ -88,31 +87,20 @@ class Main {
     }
 
     static async sendRequest(method, body) {
-        // const {hostData, portData, passwordData} = await Main.CONTEXT.getSettings();
-        return fetch(`http://localhost:9863/query`, {
+        const {hostData, portData, passwordData} = Main.PLAY_SETTINGS;
+        return fetch(`http://${hostData}:${portData}/query`, {
             method,
             body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
                 'pragma': 'no-cache',
-                'cache-control': 'no-cache'
+                'cache-control': 'no-cache',
+                'Authorization': `Bearer ${passwordData}`
             }
-        }).then(response => response.json());
+        }).then(response => response.json()).catch(reason => true);
     }
-
-    /*    static async checkConnection(hostData, portData, passwordData) {
-            const response = await fetch(`http://${hostData}:${portData}/query`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            console.table(response);
-            return !!response;
-        }*/
 }
 
 streamdeck.on('ready', function () {
-    new Main(this);
+    new Main();
 });
