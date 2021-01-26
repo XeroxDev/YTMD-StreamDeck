@@ -8,6 +8,10 @@
   "Category": "YouTube Music Desktop Connector",
   "CategoryIcon": "./icons/music",
   "SDKVersion": 2,
+  "Software":  
+  {
+    "MinimumVersion" : "4.9" 
+  },
   "OS": [
     {
       "Platform": "mac",
