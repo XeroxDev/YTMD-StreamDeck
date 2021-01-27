@@ -104,3 +104,7 @@ class Main {
 streamdeck.on('ready', function () {
     new Main();
 });
+
+function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
+    streamdeck.start(inPort, inPluginUUID, inRegisterEvent, inInfo);
+}

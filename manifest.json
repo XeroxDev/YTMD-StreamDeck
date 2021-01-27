@@ -4,11 +4,11 @@
   "Description": "Connector to the YouTube Music Desktop App",
   "URL": "https://github.com/XeroxDev/YTMD-StreamDeck",
   "Icon": "./icons/music",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Category": "YouTube Music Desktop Connector",
   "CategoryIcon": "./icons/music",
   "SDKVersion": 2,
-  "Software":  
+  "Software":
   {
     "MinimumVersion" : "4.9" 
   },
