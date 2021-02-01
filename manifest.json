@@ -1,11 +1,11 @@
 {
-  "Name": "YouTube Music Desktop Connector",
+  "Name": "YTMD Connector",
   "Author": "XeroxDev",
-  "Description": "Connector to the YouTube Music Desktop App",
+  "Description": "With this plugin you can control the YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop)",
   "URL": "https://github.com/XeroxDev/YTMD-StreamDeck",
   "Icon": "icons/music",
   "Version": "1.0.2",
-  "Category": "YouTube Music Desktop Connector",
+  "Category": "YTMD Connector",
   "CategoryIcon": "icons/music",
   "SDKVersion": 2,
   "Software":
