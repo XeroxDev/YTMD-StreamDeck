@@ -13,7 +13,7 @@ This Stream Deck Plugin allowes you to controle the [YouTube Music Desktop App](
 
 ## How to use it?
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
-2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases).
+2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream Deck Store.
 3. Add Actions to Stream Deck.
 4. Activate the Companion Server from YTMD (Settings, Integration, Enable Companion Server)
 5. Click on the open Icon or go to http://localhost:9863/ (Default)
