@@ -1,17 +1,18 @@
 class Main {
     buttons;
-    static MUSICDATA = new rxjs.BehaviorSubject();
+    static MUSICDATA = new rxjs.BehaviorSubject(undefined);
     static PLAY_SETTINGS;
 
     constructor() {
         const playPause = new PlayPauseAction();
         const next = new NextAction();
         const prev = new PrevAction();
-        const volumeDown = new VolDownAction();
-        const volumeUp = new VolUpAction();
+        const volumeDown = new VolChangeAction('DOWN', 10);
+        const volumeUp = new VolChangeAction('UP', 10);
         const mute = new MuteAction();
         const like = new LikeAction();
         const dislike = new DislikeAction();
+
         this.buttons = [
             {
                 name: 'play-pause',
@@ -87,7 +88,9 @@ class Main {
     }
 
     static async sendRequest(method, body) {
-        const {hostData, portData, passwordData} = Main.PLAY_SETTINGS;
+        if (!Main.PLAY_SETTINGS)
+            return;
+        const {hostData = 'localhost', portData = 9863, passwordData} = Main.PLAY_SETTINGS;
         return fetch(`http://${hostData}:${portData}/query`, {
             method,
             body: JSON.stringify(body),

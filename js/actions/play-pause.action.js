@@ -13,7 +13,7 @@ class PlayPauseAction extends DefaultAction {
 
             if (this.playing !== data.player.isPaused) {
                 this.playing = data.player.isPaused;
-                this.context.setState(this.playing ? 0 : 1);
+                this.context.setState(this.playing ? Enums.STATE.ON : Enums.STATE.OFF);
             }
         });
     }

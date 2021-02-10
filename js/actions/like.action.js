@@ -1,17 +1,16 @@
-class DislikeAction extends DefaultAction {
+class LikeAction extends DefaultAction {
     destroy$ = new rxjs.Subject();
-    disliked = false;
+    liked = false;
 
     onContextAppear(event) {
         Main.MUSICDATA.pipe(takeUntil(this.destroy$)).subscribe(data => {
             if (!data || data === true) {
                 return;
             }
-            const _disliked = data.player.likeStatus === 'DISLIKE';
-
-            if (this.disliked !== _disliked) {
-                this.disliked = _disliked;
-                this.context.setState(this.disliked ? 0 : 1);
+            const _liked = data.player.likeStatus === 'LIKE';
+            if (this.liked !== _liked) {
+                this.liked = _liked;
+                this.context.setState(this.liked ? Enums.STATE.ON : Enums.STATE.OFF);
             }
         });
     }
@@ -21,6 +20,6 @@ class DislikeAction extends DefaultAction {
     }
 
     onKeypressUp(event) {
-        this.sendAction('track-thumbs-down')
+        this.sendAction('track-thumbs-up')
     }
 }
