@@ -28,6 +28,7 @@ If applicable, add screenshots to help explain your problem.
  - OS Version [e.g. 10]
  - Plugin Version [e.g. v1.0.3]
  - YTMD Version [e.g. v1.13.0]
+ - Stream Deck Version [e.g. 4.9.2.13193]
 
 **Type of plugin installation**
 - [ ] Elgato Plugin Store
