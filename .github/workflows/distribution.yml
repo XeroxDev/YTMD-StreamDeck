@@ -25,12 +25,16 @@ jobs:
           file-name: distribution-tool.zip
 
       - name: Unzip Stream Deck Distribution Tool
-        uses: TonyBogdanov/zip@1.0
-        with:
-          args: unzip -qqj ./distribution-tool.zip -d .
+        run: tar -xf .\distribution-tool.zip
       
       - name: Validate plugin and build .streamDeckPlugin file
-        run: DistributionTool.exe -b -i fun.shiro.ytmd.sdPlugin -o ./
+        run: ./DistributionTool.exe -b -i fun.shiro.ytmd.sdPlugin -o ./
+      
+      - name: "Build Changelog"
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Create release
         id: create_release
@@ -40,11 +44,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: true
+          body: ${{steps.build_changelog.outputs.changelog}}
           
       - name: Upload .streamDeckPlugin
         id: upload_release_asset
@@ -55,3 +55,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./fun.shiro.ytmd.streamDeckPlugin
           asset_name: fun.shiro.ytmd.streamDeckPlugin
+          asset_content_type: application/zip
