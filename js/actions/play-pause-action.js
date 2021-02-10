@@ -23,6 +23,6 @@ class PlayPauseAction extends DefaultAction {
     }
 
     onKeypressUp(event) {
-        this.sendAction('track-play');
+        this.sendAction(`track-${this.playing ? 'play' : 'pause'}`);
     }
 }
