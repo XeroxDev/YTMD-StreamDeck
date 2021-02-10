@@ -1,0 +1,53 @@
+name: Stream Deck Distribution
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+        with:
+          path: './fun.shiro.ytmd.sdPlugin'
+        
+      - name: Download Stream Deck Distribution Tool
+        uses: carlosperate/download-file-action@v1.0.3
+        with:
+          file-url: https://developer.elgato.com/documentation/stream-deck/distributiontool/DistributionToolWindows.zip
+          file-name: distribution-tool.zip
+
+      - name: Unzip Stream Deck Distribution Tool
+        uses: TonyBogdanov/zip@1.0
+        with:
+          args: unzip -qqj ./distribution-tool.zip -d .
+      
+      - name: Validate plugin and build .streamDeckPlugin file
+        run: DistributionTool.exe -b -i com.elgato.counter.sdPlugin -o ./
+      
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          
+      - name: Upload .streamDeckPlugin
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./fun.shiro.ytmd.streamDeckPlugin
+          asset_name: fun.shiro.ytmd.streamDeckPlugin
