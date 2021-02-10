@@ -26,7 +26,7 @@ jobs:
           args: unzip -qqj ./distribution-tool.zip -d .
       
       - name: Validate plugin and build .streamDeckPlugin file
-        run: DistributionTool.exe -b -i com.elgato.counter.sdPlugin -o ./
+        run: DistributionTool.exe -b -i fun.shiro.ytmd.sdPlugin -o ./
       
       - name: Create release
         id: create_release
