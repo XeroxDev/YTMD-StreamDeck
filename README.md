@@ -15,12 +15,13 @@
 [![Tags](https://img.shields.io/github/tag/XeroxDev/YTMD-StreamDeck?color=black&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/tags)
 
 [![Downloads](https://img.shields.io/github/downloads/XeroxDev/YTMD-StreamDeck/total.svg?color=cyan&style=for-the-badge&logo=github)]()
-[![Downloads Elgato](https://img.shields.io/badge/Elgato%20Downloads-600%2B-cyan?style=for-the-badge)]()
+[![Downloads Elgato](https://img.shields.io/badge/dynamic/json?color=cyan&label=Elgato%20Downloads&query=ytmd&style=for-the-badge&url=https%3A%2F%2Fapi.xeroxdev.de%2Fpublic%2Felgato-downloads.json)]()
 
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
 # YTMD-StreamDeck
-This Stream Deck Plugin allowes you to controle the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
+This Stream Deck Plugin allows you to control the YouTube Music Desktop App [YouTube Music Desktop App]
+(https://github.com/ytmdesktop/ytmdesktop)
 
 ## Actions
 - Play / Pause Track
