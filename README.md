@@ -20,8 +20,7 @@
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
 # YTMD-StreamDeck
-This Stream Deck Plugin allows you to control the YouTube Music Desktop App [YouTube Music Desktop App]
-(https://github.com/ytmdesktop/ytmdesktop)
+This Stream Deck Plugin allows you to control the YouTube Music Desktop App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
 ## Actions
 - Play / Pause Track
