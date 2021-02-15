@@ -12,7 +12,6 @@
 
 [![Build](https://img.shields.io/github/workflow/status/XeroxDev/YTMD-StreamDeck/Stream%20Deck%20Distribution?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/actions?query=workflow%3A%22Stream+Deck+Distribution%22)
 [![Release](https://img.shields.io/github/release/XeroxDev/YTMD-StreamDeck?color=black&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/releases)
-[![Tags](https://img.shields.io/github/tag/XeroxDev/YTMD-StreamDeck?color=black&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/tags)
 
 [![Downloads](https://img.shields.io/github/downloads/XeroxDev/YTMD-StreamDeck/total.svg?color=cyan&style=for-the-badge&logo=github)]()
 [![Downloads Elgato](https://img.shields.io/badge/dynamic/json?color=cyan&label=Elgato%20Downloads&query=ytmd&style=for-the-badge&url=https%3A%2F%2Fapi.xeroxdev.de%2Fpublic%2Felgato-downloads.json)]()
@@ -20,9 +19,12 @@
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
 # YTMD-StreamDeck
-This Stream Deck Plugin allows you to control the YouTube Music Desktop App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
+
+This Stream Deck Plugin allows you to control the YouTube Music Desktop
+App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
 ## Actions
+
 - Play / Pause Track
 - Next Track
 - Previous Track
@@ -33,8 +35,10 @@ This Stream Deck Plugin allows you to control the YouTube Music Desktop App [You
 - Volume Up
 
 ## How to use it?
+
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
-2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream Deck Store.
+2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream
+   Deck Store.
 3. Add Actions to Stream Deck.
 4. Activate the Companion Server from YTMD (Settings, Integration, Enable Companion Server)
 5. Click on the open Icon or go to http://localhost:9863/ (Default)
