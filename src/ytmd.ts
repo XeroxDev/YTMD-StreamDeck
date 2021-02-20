@@ -2,7 +2,7 @@ import {
 	DidReceiveGlobalSettingsEvent, KeyUpEvent, SDDebug,
 	SDInit,
 	SDOnEvent,
-	SDPlugin,
+	SDPlugin, SDReady,
 	StreamDeckPlugin,
 	WillAppearEvent, WillDisappearEvent
 } from "streamdeck-typescript";
@@ -87,9 +87,14 @@ export class YTMD {
 		}, 500);
 	}
 
+	@SDReady()
+	private ready() {
+		this.plugin.requestGlobalSettings();
+	}
+
 	@SDOnEvent('didReceiveGlobalSettings')
 	private onGlobalSettings(ev: DidReceiveGlobalSettingsEvent): void {
-		if (ev.payload.settings)
+		if (ev.payload.settings && Object.keys(ev.payload.settings).length >= 1)
 			this.settings = ev.payload.settings;
 	}
 

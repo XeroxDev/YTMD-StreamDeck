@@ -6,6 +6,7 @@ import {StateType} from "streamdeck-typescript/dist/src/interfaces/enums";
 export class PlayPauseAction extends DefaultAction {
 	playing = false;
 	private currentTitle: string;
+	private firstTimes = 10;
 
 	onContextAppear(event: WillAppearEvent) {
 		this.ytmd.musicData.pipe(takeUntil(this.destroy$)).subscribe(data => {
@@ -16,7 +17,8 @@ export class PlayPauseAction extends DefaultAction {
 
 			this.setContext(event.context);
 			const title = data ? data.player.seekbarCurrentPositionHuman : '0:00';
-			if (this.currentTitle !== title) {
+			if (this.currentTitle !== title || this.firstTimes >= 1) {
+				this.firstTimes--;
 				this.currentTitle = title;
 				this.plugin.setTitle(this.currentTitle);
 			}
