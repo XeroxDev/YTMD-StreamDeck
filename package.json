@@ -3,10 +3,11 @@
   "version": "1.1.0",
   "description": "",
   "scripts": {
+    "build": "tsc",
     "watch": "tsc-watch --onSuccess \"npm run browserify\"",
-    "browserify": "browserify dist/ytmd.js > dist/bundle.js && browserify dist/ytmd-pi.js > dist/bundle-pi.js",
+    "browserify": "browserify dist/ytmd.js > bundle.js && browserify dist/ytmd-pi.js > bundle-pi.js",
     "test": "mocha -r esm -r ts-node/register \"tests/**/*\"",
-    "coverage": "nyc -r text -e .ts -x \"tests/**/*\" npm run test"
+    "coverage": "nyc --clean -r json -e .ts -x \"tests/**/*\" npm run test"
   },
   "repository": {
     "type": "git",
