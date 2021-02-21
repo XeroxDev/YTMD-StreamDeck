@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 jobs:
-  default:
+  TestAndDeploy:
     runs-on: windows-latest
     steps:
       - name: Setup Node.js environment
@@ -25,6 +25,9 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Run build
+        run: npm run build
 
       - name: browserify
         run: npm run browserify
