@@ -36,7 +36,12 @@ jobs:
         run: |
           mkdir fun.shiro.ytmd.sdPlugin
           mkdir fun.shiro.ytmd.sdPlugin\icons
-          for %I in (sdpi.css manifest.json property-inspector.html action.html bundle.js bundle-pi.js) do copy %I fun.shiro.ytmd.sdPlugin\
+          copy sdpi.css fun.shiro.ytmd.sdPlugin\
+          copy manifest.json fun.shiro.ytmd.sdPlugin\
+          copy property-inspector.html fun.shiro.ytmd.sdPlugin\
+          copy action.html fun.shiro.ytmd.sdPlugin\
+          copy bundle.js fun.shiro.ytmd.sdPlugin\
+          copy bundle-pi.js fun.shiro.ytmd.sdPlugin\
           copy icons fun.shiro.ytmd.sdPlugin\icons
 
       - name: Download Stream Deck Distribution Tool
