@@ -1,12 +1,12 @@
 import {
-	DidReceiveGlobalSettingsEvent, KeyUpEvent, SDDebug,
+	DidReceiveGlobalSettingsEvent, KeyUpEvent,
 	SDInit,
 	SDOnEvent,
 	SDPlugin, SDReady,
 	StreamDeckPlugin,
 	WillAppearEvent, WillDisappearEvent
 } from "streamdeck-typescript";
-import {Settings} from "./interfaces/settings";
+import {SettingsInterface} from "./interfaces/settings.interface";
 import {PlayPauseAction} from "./actions/play-pause.action";
 import {NextAction} from "./actions/next.action";
 import {PrevAction} from "./actions/prev.action";
@@ -14,7 +14,9 @@ import {VolChangeAction} from "./actions/vol-change.action";
 import {MuteAction} from "./actions/mute.action";
 import {LikeAction} from "./actions/like.action";
 import {DislikeAction} from "./actions/dislike.action";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
+import {YtmdSocketHelper} from "./helper/ytmd-socket-helper";
+import {takeUntil} from "rxjs/operators";
 
 @SDPlugin
 export class YTMD {
@@ -27,23 +29,21 @@ export class YTMD {
 	}
 
 	private plugin: StreamDeckPlugin;
-	private settings: Settings;
+	private settings: SettingsInterface;
 	private actions: { name: string, clazz: any }[]
-	public musicData: BehaviorSubject<any>;
 
 	@SDInit()
 	private init(plugin: StreamDeckPlugin): void {
 		this.plugin = plugin;
-		this.musicData = new BehaviorSubject<any>(undefined);
 		this.settings = {host: 'localhost', port: '9863', password: ''}
-		const playPause = new PlayPauseAction(plugin, this);
-		const next = new NextAction(plugin, this);
-		const prev = new PrevAction(plugin, this);
-		const volumeDown = new VolChangeAction(plugin, this, 'DOWN', 10);
-		const volumeUp = new VolChangeAction(plugin, this, 'UP', 10);
-		const mute = new MuteAction(plugin, this);
-		const like = new LikeAction(plugin, this);
-		const dislike = new DislikeAction(plugin, this);
+		const playPause = new PlayPauseAction(plugin);
+		const next = new NextAction(plugin);
+		const prev = new PrevAction(plugin);
+		const volumeDown = new VolChangeAction(plugin, 'DOWN', 10);
+		const volumeUp = new VolChangeAction(plugin, 'UP', 10);
+		const mute = new MuteAction(plugin);
+		const like = new LikeAction(plugin);
+		const dislike = new DislikeAction(plugin);
 
 		this.actions = [
 			{
@@ -79,12 +79,6 @@ export class YTMD {
 				clazz: dislike
 			}
 		];
-
-		setInterval(() => {
-			this.sendRequest('GET').then(value => {
-				this.musicData.next(value);
-			});
-		}, 500);
 	}
 
 	@SDReady()
@@ -94,8 +88,12 @@ export class YTMD {
 
 	@SDOnEvent('didReceiveGlobalSettings')
 	private onGlobalSettings(ev: DidReceiveGlobalSettingsEvent): void {
-		if (ev.payload.settings && Object.keys(ev.payload.settings).length >= 1)
+		if (ev.payload.settings && Object.keys(ev.payload.settings).length >= 1) {
 			this.settings = ev.payload.settings;
+			YtmdSocketHelper.getInstance().setConnection(this.settings);
+		} else {
+			YtmdSocketHelper.getInstance().setConnection();
+		}
 	}
 
 	@SDOnEvent('willAppear')
@@ -129,29 +127,6 @@ export class YTMD {
 				break;
 			}
 		}
-	}
-
-
-	public async sendRequest(method: string, body: any = ''): Promise<void> {
-		if (!this.settings)
-			return;
-		const {host, port, password} = this.settings;
-
-		let data: any = {
-			method,
-			headers: {
-				'Content-Type': 'application/json',
-				'pragma': 'no-cache',
-				'cache-control': 'no-cache',
-				'Authorization': `Bearer ${password}`
-			}
-		}
-
-		if (body)
-			data.body = JSON.stringify(body);
-
-		return fetch(`http://${host}:${port}/query`, data)
-			.then(response => response.json()).catch((err) => console.log(err));
 	}
 }
 

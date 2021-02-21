@@ -1,15 +1,15 @@
 import {DislikeAction} from "../src/actions/dislike.action";
 import {KeyUpEvent, StreamDeckPlugin, WillAppearEvent} from "streamdeck-typescript";
-import {YTMD} from "../src/ytmd";
 import {expect} from "chai";
 import {StateType} from "streamdeck-typescript/dist/src/interfaces/enums";
 import {LikeAction} from "../src/actions/like.action";
-import {BehaviorSubject} from "rxjs";
 import {MuteAction} from "../src/actions/mute.action";
 import {NextAction} from "../src/actions/next.action";
 import {PrevAction} from "../src/actions/prev.action";
 import {VolChangeAction} from "../src/actions/vol-change.action";
 import {PlayPauseAction} from "../src/actions/play-pause.action";
+import {TrackAndPlayerInterface} from "../src/interfaces/information.interface";
+import {YtmdSocketHelper} from "../src/helper/ytmd-socket-helper";
 
 describe('Testing all actions', () => {
 	function createFakeApi(): any {
@@ -18,6 +18,7 @@ describe('Testing all actions', () => {
 			state: StateType;
 			title: string;
 			alert = 0;
+			okay = 0;
 
 			setState(state: StateType) {
 				this.state = state;
@@ -27,23 +28,12 @@ describe('Testing all actions', () => {
 				this.alert++;
 			}
 
+			showOk() {
+				this.okay++;
+			}
+
 			setTitle(title: string) {
 				this.title = title;
-			}
-		}
-	}
-
-	function createFakePlugin(): any {
-		return new class {
-			musicData: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
-			keyPressed: { method: string, body: any };
-			needToError = false;
-
-			async sendRequest(method: string, body: any = '') {
-				if (this.needToError)
-					throw new Error();
-
-				this.keyPressed = {method, body};
 			}
 		}
 	}
@@ -68,82 +58,71 @@ describe('Testing all actions', () => {
 		payload: {settings: '', coordinates: {row: 1, column: 1}, isInMultiAction: false, state: StateType.OFF},
 		event: "willAppear"
 	}
+	const socket = YtmdSocketHelper.getInstance();
 
 	describe('Test dislike action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const dislike = new DislikeAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const dislike = new DislikeAction(fakeApi as StreamDeckPlugin);
 		describe('Test onKeypressUp()', () => {
 			it('should set keyPressed to corresponding request data', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-thumbs-down'}};
-				dislike.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(dislike.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		});
 		describe('Test handleDislike()', () => {
 			it('should set pluginContext to "context"', () => {
-				dislike.handleDislike(fakeWillAppearEvent, {player: {likeStatus: 'DISLIKE'}});
+				dislike.handleDislike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'DISLIKE'}});
 				expect(fakeApi.pluginContext).to.be.equals('context', 'Context is not "context"');
 			});
 			it('should set state to ON', () => {
-				dislike.handleDislike(fakeWillAppearEvent, {player: {likeStatus: 'DISLIKE'}});
+				dislike.handleDislike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'DISLIKE'}});
 				expect(fakeApi.state).to.be.equals(StateType.ON, 'State is not ON');
 			});
 			it('should set state to OFF', () => {
-				dislike.handleDislike(fakeWillAppearEvent, {player: {likeStatus: 'LIKE'}});
+				dislike.handleDislike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'LIKE'}});
 				expect(fakeApi.state).to.be.equals(StateType.OFF, 'State is not OFF');
 			});
 		});
 	});
 	describe('Test like action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const like = new LikeAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const like = new LikeAction(fakeApi as StreamDeckPlugin);
 		describe('Test onKeypressUp()', () => {
 			it('should set keyPressed to corresponding request data', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-thumbs-up'}};
-				like.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(like.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		});
 		describe('Test handleDislike()', () => {
 			it('should set pluginContext to "context"', () => {
-				like.handleLike(fakeWillAppearEvent, {player: {likeStatus: 'LIKE'}});
+				like.handleLike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'LIKE'}});
 				expect(fakeApi.pluginContext).to.be.equals('context');
 			});
 			it('should set state to ON', () => {
-				like.handleLike(fakeWillAppearEvent, {player: {likeStatus: 'LIKE'}});
+				like.handleLike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'LIKE'}});
 				expect(fakeApi.state).to.be.equals(StateType.ON);
 			});
 			it('should set state to OFF', () => {
-				like.handleLike(fakeWillAppearEvent, {player: {likeStatus: 'DISLIKE'}});
+				like.handleLike(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {likeStatus: 'DISLIKE'}});
 				expect(fakeApi.state).to.be.equals(StateType.OFF);
 			});
 		});
 	});
 	describe('Test mute action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const mute = new MuteAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const mute = new MuteAction(fakeApi as StreamDeckPlugin);
 		mute.onContextAppear(fakeWillAppearEvent)
 		describe('Test onKeypressUp()', () => {
 			it('should mute', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'player-set-volume', value: -1}};
-				mute.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(mute.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 			it('unmute', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'player-set-volume', value: 50}};
-				mute.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(mute.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		})
 	});
 	describe('Test volume change action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const volChangeUp = new VolChangeAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD, 'UP', 10);
-		const volChangeDown = new VolChangeAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD, 'DOWN', 10);
+		const volChangeUp = new VolChangeAction(fakeApi as StreamDeckPlugin, 'UP', 10);
+		const volChangeDown = new VolChangeAction(fakeApi as StreamDeckPlugin,'DOWN', 10);
 
 		describe('Volume up', () => {
 			it('should set volume +10', () => {
@@ -162,57 +141,64 @@ describe('Testing all actions', () => {
 	});
 	describe('Test next action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const next = new NextAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const next = new NextAction(fakeApi as StreamDeckPlugin);
 		describe('Test onKeypressUp()', () => {
 			it('should set keyPressed to corresponding request data', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-next'}};
-				next.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(next.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		});
 	});
 	describe('Test prev action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const prev = new PrevAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const prev = new PrevAction(fakeApi as StreamDeckPlugin);
 		describe('Test onKeypressUp()', () => {
 			it('should set keyPressed to corresponding request data', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-previous'}};
-				prev.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(prev.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		});
 	});
 	describe('Test play-pause action', () => {
 		const fakeApi = createFakeApi();
-		const fakePlugin = createFakePlugin();
-		const playPause = new PlayPauseAction(fakeApi as StreamDeckPlugin, fakePlugin as YTMD);
+		const playPause = new PlayPauseAction(fakeApi as StreamDeckPlugin);
 		describe('Test onKeypressUp()', () => {
 			it('stop playing', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-pause'}};
-				playPause.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(playPause.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 			it('start playing', () => {
-				const shouldBeObj = {method: 'POST', body: {command: 'track-play'}};
-				playPause.onKeypressUp(fakeKeyUpEvent);
-				expect(fakePlugin.keyPressed).to.deep.equal(shouldBeObj);
+				expect(playPause.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
 			});
 		});
 		describe('Test handlePlayerData()', () => {
-			it('Change title', () => {
-				playPause.handlePlayerData(fakeWillAppearEvent, {player: {seekbarCurrentPositionHuman: '01:23'}});
+			it('should change title', () => {
+				playPause.handlePlayerData(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {seekbarCurrentPositionHuman: '01:23'}});
 				expect(fakeApi.title).to.be.equals('01:23');
 			});
-			it('Change state to OFF', () => {
-				playPause.handlePlayerData(fakeWillAppearEvent, {player: {seekbarCurrentPositionHuman: '01:23', isPaused: false}});
+			it('should change state to OFF', () => {
+				playPause.handlePlayerData(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {seekbarCurrentPositionHuman: '01:23', isPaused: false}});
 				expect(fakeApi.state).to.be.equals(StateType.OFF);
 			});
-			it('Change state to ON', () => {
-				playPause.handlePlayerData(fakeWillAppearEvent, {player: {seekbarCurrentPositionHuman: '01:23', isPaused: true}});
+			it('should change state to ON', () => {
+				playPause.handlePlayerData(fakeWillAppearEvent, <TrackAndPlayerInterface>{player: {seekbarCurrentPositionHuman: '01:23', isPaused: true}});
+				expect(fakeApi.state).to.be.equals(StateType.ON);
+			});
+			it('should set alert to 1', () => {
+				playPause.handlePlayerData(fakeWillAppearEvent, <TrackAndPlayerInterface>{});
 				expect(fakeApi.state).to.be.equals(StateType.ON);
 			});
 		});
+		describe('Test onContextAppear()', () => {
+			playPause.onContextAppear(fakeWillAppearEvent);
+			it('should set alert to 2', () => {
+				socket.onError$.next();
+				expect(fakeApi.alert).to.be.equals(2);
+			});
+			it('should set okay to 1', () => {
+				socket.onConnect$.next();
+				expect(fakeApi.okay).to.be.equals(1);
+			});
+		});
+	});
+	describe('Disconnecting', () => {
+		socket.disconnect();
 	});
 });

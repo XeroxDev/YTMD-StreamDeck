@@ -2,6 +2,8 @@ import {DefaultAction} from "./default.action";
 import {takeUntil} from "rxjs/operators";
 import {KeyUpEvent, WillAppearEvent} from "streamdeck-typescript";
 import {StateType} from "streamdeck-typescript/dist/src/interfaces/enums";
+import {TrackAndPlayerInterface} from "../interfaces/information.interface";
+import {YtmdSocketHelper} from "../helper/ytmd-socket-helper";
 
 export class PlayPauseAction extends DefaultAction {
 	private playing = false;
@@ -9,11 +11,21 @@ export class PlayPauseAction extends DefaultAction {
 	private firstTimes = 10;
 
 	onContextAppear(event: WillAppearEvent) {
-		this.ytmd.musicData.pipe(takeUntil(this.destroy$)).subscribe(data => this.handlePlayerData(event, data));
+		this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => this.handlePlayerData(event, data));
+		this.socket.onError$.pipe(takeUntil(this.destroy$))
+			.subscribe(() => {
+				this.plugin.pluginContext = event.context;
+				this.plugin.showAlert()
+			});
+		this.socket.onConnect$.pipe(takeUntil(this.destroy$))
+			.subscribe(() => {
+				this.plugin.pluginContext = event.context;
+				this.plugin.showOk()
+			});
 	}
 
-	handlePlayerData(event: WillAppearEvent, data: any) {
-		if (!data || data === true) {
+	handlePlayerData(event: WillAppearEvent, data: TrackAndPlayerInterface) {
+		if (Object.keys(data).length === 0) {
 			this.plugin.showAlert();
 			return;
 		}
@@ -33,8 +45,6 @@ export class PlayPauseAction extends DefaultAction {
 	}
 
 	onKeypressUp(event: KeyUpEvent) {
-		this.sendAction(`track-${this.playing ? 'play' : 'pause'}`)
-			.catch(() => this.plugin.showAlert());
-		this.playing = !this.playing;
+		this.socket.trackPlayPause();
 	}
 }
