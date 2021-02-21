@@ -1,11 +1,14 @@
 import {KeyUpEvent, StreamDeckPlugin, WillAppearEvent, WillDisappearEvent} from "streamdeck-typescript";
 import {YTMD} from "../ytmd";
 import {Subject} from "rxjs";
+import {YtmdSocketHelper} from "../helper/ytmd-socket-helper";
 
 export class DefaultAction {
 	destroy$: Subject<any> = new Subject<any>();
+	socket: YtmdSocketHelper;
 
-	constructor(public plugin: StreamDeckPlugin, public ytmd: YTMD) {
+	constructor(public plugin: StreamDeckPlugin) {
+		this.socket = YtmdSocketHelper.getInstance();
 	}
 
 	onContextAppear(event: WillAppearEvent): void {
@@ -20,11 +23,5 @@ export class DefaultAction {
 
 	setContext(context: string) {
 		this.plugin.pluginContext = context;
-	}
-
-	async sendAction(command: any, value?: any): Promise<void> {
-		return value !== undefined
-			? this.ytmd.sendRequest('POST', {command, value})
-			: this.ytmd.sendRequest('POST', {command});
 	}
 }

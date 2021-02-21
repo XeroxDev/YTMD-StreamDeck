@@ -1,12 +1,11 @@
 import {DefaultAction} from "./default.action";
 import {MuteAction} from "./mute.action";
 import {KeyUpEvent, StreamDeckPlugin} from "streamdeck-typescript";
-import {YTMD} from "../ytmd";
 
 export class VolChangeAction extends DefaultAction {
 
-	constructor(plugin: StreamDeckPlugin, ytmd: YTMD, private readonly type: string, private readonly amount: number = 10) {
-		super(plugin, ytmd);
+	constructor(plugin: StreamDeckPlugin, private readonly type: string, private readonly amount: number = 10) {
+		super(plugin);
 	}
 
 
@@ -19,9 +18,6 @@ export class VolChangeAction extends DefaultAction {
 
 		MuteAction.lastVolume = newVolume
 		MuteAction.currentVolume$.next(newVolume);
-		this.sendAction(
-			'player-set-volume',
-			newVolume <= 0 ? -1 : newVolume >= 100 ? 100 : newVolume)
-			.catch(() => this.plugin.showAlert());
+		this.socket.playerSetVolume(newVolume <= 0 ? -1 : newVolume >= 100 ? 100 : newVolume);
 	}
 }
