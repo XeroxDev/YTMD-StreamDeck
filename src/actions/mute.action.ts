@@ -8,7 +8,6 @@ export class MuteAction extends DefaultAction {
 	static lastVolume = 50;
 
 	onContextAppear(event: WillAppearEvent) {
-		super.onContextAppear(event);
 		this.ytmd.musicData.pipe(takeUntil(this.destroy$)).subscribe(data => {
 			if (!data || data === true) {
 				return;
@@ -26,9 +25,10 @@ export class MuteAction extends DefaultAction {
 	}
 
 	onKeypressUp(event: KeyUpEvent) {
-		super.onKeypressUp(event);
-		MuteAction.lastVolume = MuteAction.currentVolume$.getValue() === 0 ? MuteAction.lastVolume : MuteAction.currentVolume$.getValue();
-		const value = MuteAction.currentVolume$.getValue() === 0 ? MuteAction.lastVolume : -1;
+		const current = MuteAction.currentVolume$.getValue();
+		const last = MuteAction.lastVolume;
+		const value = current > 0 ? -1 : last;
+		MuteAction.currentVolume$.next(value);
 		this.sendAction('player-set-volume', value)
 			.catch(() => this.plugin.showAlert());
 	}
