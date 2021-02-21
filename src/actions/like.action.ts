@@ -4,24 +4,26 @@ import {takeUntil} from "rxjs/operators";
 import {StateType} from "streamdeck-typescript/dist/src/interfaces/enums";
 
 export class LikeAction extends DefaultAction {
-    liked = false;
+	private liked = false;
 
-    onContextAppear(event: WillAppearEvent) {
-        this.ytmd.musicData.pipe(takeUntil(this.destroy$)).subscribe(data => {
-            if (!data || data === true) {
-                return;
-            }
-            const _liked = data.player.likeStatus === 'LIKE';
-            if (this.liked !== _liked) {
-                this.liked = _liked;
-	            this.setContext(event.context);
-                this.plugin.setState(this.liked ? StateType.ON : StateType.OFF);
-            }
-        });
-    }
+	onContextAppear(event: WillAppearEvent) {
+		this.ytmd.musicData.pipe(takeUntil(this.destroy$)).subscribe(data => this.handleLike(event, data));
+	}
 
-    onKeypressUp(event: KeyUpEvent) {
-        this.sendAction('track-thumbs-up')
-	        .catch(() => this.plugin.showAlert());
-    }
+	onKeypressUp(event: KeyUpEvent) {
+		this.sendAction('track-thumbs-up')
+			.catch(() => this.plugin.showAlert());
+	}
+
+	handleLike(event: WillAppearEvent, data: any) {
+		if (!data || data === true) {
+			return;
+		}
+		const _liked = data.player.likeStatus === 'LIKE';
+		if (this.liked !== _liked) {
+			this.liked = _liked;
+			this.setContext(event.context);
+			this.plugin.setState(this.liked ? StateType.ON : StateType.OFF);
+		}
+	}
 }

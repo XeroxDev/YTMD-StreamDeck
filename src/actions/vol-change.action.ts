@@ -4,22 +4,18 @@ import {KeyUpEvent, StreamDeckPlugin} from "streamdeck-typescript";
 import {YTMD} from "../ytmd";
 
 export class VolChangeAction extends DefaultAction {
-	_type;
-	_amount = 10;
 
-	constructor(plugin: StreamDeckPlugin, ytmd: YTMD, type: string, amount: number) {
+	constructor(plugin: StreamDeckPlugin, ytmd: YTMD, private readonly type: string, private readonly amount: number = 10) {
 		super(plugin, ytmd);
-		this._type = type;
-		this._amount = amount;
 	}
 
 
 	onKeypressUp(event: KeyUpEvent) {
 		let newVolume = MuteAction.currentVolume$.getValue();
-		if (this._type === 'UP')
-			newVolume += this._amount;
+		if (this.type === 'UP')
+			newVolume += this.amount;
 		else
-			newVolume -= this._amount;
+			newVolume -= this.amount;
 
 		MuteAction.lastVolume = newVolume
 		MuteAction.currentVolume$.next(newVolume);

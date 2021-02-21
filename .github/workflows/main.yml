@@ -1,23 +1,48 @@
-name: Stream Deck Distribution
+name: CI/CD
 
 on:
+  pull_request:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [windows-latest]
+  TestAndDeploy:
+    runs-on: windows-latest
     steps:
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+
       - name: Check out Git repository
         uses: actions/checkout@v2
         with:
-          path: './fun.shiro.ytmd.sdPlugin'
-        
+          path: './'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Run build
+        run: npm run build
+
+      - name: browserify
+        run: npm run browserify
+
+      - name: Create distribution folder
+        run: |
+          mkdir fun.shiro.ytmd.sdPlugin
+          copy sdpi.css fun.shiro.ytmd.sdPlugin\
+          copy manifest.json fun.shiro.ytmd.sdPlugin\
+          copy property-inspector.html fun.shiro.ytmd.sdPlugin\
+          copy action.html fun.shiro.ytmd.sdPlugin\
+          copy bundle.js fun.shiro.ytmd.sdPlugin\
+          copy bundle-pi.js fun.shiro.ytmd.sdPlugin\
+          copy icons fun.shiro.ytmd.sdPlugin -Recurse
+
       - name: Download Stream Deck Distribution Tool
         uses: carlosperate/download-file-action@v1.0.3
         with:
@@ -26,17 +51,28 @@ jobs:
 
       - name: Unzip Stream Deck Distribution Tool
         run: tar -xf .\distribution-tool.zip
-      
+
       - name: Validate plugin and build .streamDeckPlugin file
         run: ./DistributionTool.exe -b -i fun.shiro.ytmd.sdPlugin -o ./
-      
-      - name: "Build Changelog"
-        uses: scottbrenner/generate-changelog-action@master
-        id: Changelog
+
+      - name: Generate coverage files
+        run: npm run coverage
+
+      - name: Upload codecov
+        uses: codecov/codecov-action@v1
         with:
-          package-dir: './fun.shiro.ytmd.sdPlugin'
-      
+          file: ./coverage/coverage-final.json
+          fail_ci_if_error: true
+
+      - name: "Build changelog"
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: scottbrenner/generate-changelog-action@master
+        id: changelog
+        with:
+          package-dir: './'
+
       - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v')
         id: create_release
         uses: actions/create-release@latest
         env:
@@ -45,9 +81,10 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            ${{ steps.Changelog.outputs.changelog }}
-          
+            ${{ steps.changelog.outputs.changelog }}
+
       - name: Upload .streamDeckPlugin
+        if: startsWith(github.ref, 'refs/tags/v')
         id: upload_release_asset
         uses: actions/upload-release-asset@latest
         env:
