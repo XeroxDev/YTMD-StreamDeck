@@ -34,15 +34,19 @@ jobs:
 
       - name: Create distribution folder
         run: |
+          echo Creating plugin structure
           mkdir fun.shiro.ytmd.sdPlugin
           mkdir fun.shiro.ytmd.sdPlugin\icons
+          echo Copying files...
           copy sdpi.css fun.shiro.ytmd.sdPlugin\
           copy manifest.json fun.shiro.ytmd.sdPlugin\
           copy property-inspector.html fun.shiro.ytmd.sdPlugin\
           copy action.html fun.shiro.ytmd.sdPlugin\
           copy bundle.js fun.shiro.ytmd.sdPlugin\
           copy bundle-pi.js fun.shiro.ytmd.sdPlugin\
+          echo Copying icons...
           copy icons fun.shiro.ytmd.sdPlugin\icons
+          echo Done!
 
       - name: Download Stream Deck Distribution Tool
         uses: carlosperate/download-file-action@v1.0.3
