@@ -45,7 +45,7 @@ jobs:
           copy bundle.js fun.shiro.ytmd.sdPlugin\
           copy bundle-pi.js fun.shiro.ytmd.sdPlugin\
           echo Copying icons...
-          copy icons fun.shiro.ytmd.sdPlugin\icons
+          copy icons\ fun.shiro.ytmd.sdPlugin\icons
           echo Done!
           dir fun.shiro.ytmd.sdPlugin
           dir fun.shiro.ytmd.sdPlugin\icons
