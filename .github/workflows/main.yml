@@ -64,13 +64,6 @@ jobs:
           file: ./coverage/coverage-final.json
           fail_ci_if_error: true
 
-      - name: "Build changelog"
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: scottbrenner/generate-changelog-action@master
-        id: changelog
-        with:
-          package-dir: './'
-
       - name: Create release
         if: startsWith(github.ref, 'refs/tags/v')
         id: create_release
@@ -80,8 +73,6 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.changelog.outputs.changelog }}
 
       - name: Upload .streamDeckPlugin
         if: startsWith(github.ref, 'refs/tags/v')
