@@ -47,6 +47,8 @@ jobs:
           echo Copying icons...
           copy icons fun.shiro.ytmd.sdPlugin\icons
           echo Done!
+          dir fun.shiro.ytmd.sdPlugin
+          dir fun.shiro.ytmd.sdPlugin\icons
 
       - name: Download Stream Deck Distribution Tool
         uses: carlosperate/download-file-action@v1.0.3
