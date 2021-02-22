@@ -20,7 +20,6 @@ export class YtmdSocketHelper {
 
 	private socket: SocketIOClient.Socket;
 	private _onTick$: Subject<TrackAndPlayerInterface> = new Subject<TrackAndPlayerInterface>();
-	private _onInfo$: Subject<AppInfoInterface> = new Subject<AppInfoInterface>();
 	private _onPlayer$: Subject<PlayerInfoInterface> = new Subject<PlayerInfoInterface>();
 	private _onTrack$: Subject<TrackInfoInterface> = new Subject<TrackInfoInterface>();
 	private _onQueue$: Subject<QueueInfoInterface> = new Subject<QueueInfoInterface>();
@@ -34,7 +33,7 @@ export class YtmdSocketHelper {
 		this.setConnection();
 	}
 
-	public setConnection({host, port, password}: SettingsInterface = {host: 'localhost', port: '9863', password: ''}) {
+	public setConnection({host, port, password}: SettingsInterface = {host: 'localhost', port: '9863', password: ''}): YtmdSocketHelper {
 		if (this.socket)
 			this.socket.disconnect();
 
@@ -56,9 +55,6 @@ export class YtmdSocketHelper {
 			this.socket.on('tick', (data: any) => {
 				this._onTick$.next(data);
 			});
-			this.socket.on('info', (data: any) => {
-				this._onInfo$.next(data);
-			});
 			this.socket.on('player', (data: any) => {
 				this._onPlayer$.next(data);
 			});
@@ -75,6 +71,8 @@ export class YtmdSocketHelper {
 				this._onLyrics$.next(data);
 			});
 		});
+
+		return this;
 	}
 
 	public trackPlayPause() {
@@ -153,16 +151,32 @@ export class YtmdSocketHelper {
 		this.emit({cmd: 'show-lyrics-hidden'});
 	}
 
+	public requestPlayer() {
+		this.emit(<AvailableCommandsInterface>{event: "query-player"});
+	}
+
+	public requestTrack() {
+		this.emit(<AvailableCommandsInterface>{event: "query-track"});
+	}
+
+	public requestQueue() {
+		this.emit(<AvailableCommandsInterface>{event: "query-queue"});
+	}
+
+	public requestPlaylist() {
+		this.emit(<AvailableCommandsInterface>{event: "query-playlist"});
+	}
+
+	public requestLyrics() {
+		this.emit(<AvailableCommandsInterface>{event: "query-lyrics"});
+	}
+
 	public disconnect() {
 		this.socket.disconnect();
 	}
 
 	get onTick$(): Observable<TrackAndPlayerInterface> {
 		return this._onTick$;
-	}
-
-	get onInfo$(): Observable<AppInfoInterface> {
-		return this._onInfo$;
 	}
 
 	get onPlayer$(): Observable<PlayerInfoInterface> {
@@ -193,7 +207,7 @@ export class YtmdSocketHelper {
 		return this._onConnect$;
 	}
 
-	private emit({event = 'media-commands', cmd, value = true}: AvailableCommandsInterface) {
+	private emit({event = 'media-commands', cmd = 'player-rewind', value = true}: AvailableCommandsInterface) {
 		this.socket.emit(event, cmd, value);
 	}
 }
