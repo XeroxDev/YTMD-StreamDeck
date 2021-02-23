@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {YtmdSocketHelper} from "../src/helper/ytmd-socket-helper";
+import {YtmdSocketHelper} from "../src/helper/ytmd-socket.helper";
 import io, {Server} from 'socket.io';
 
 describe('YTMD-Socket-Helper Socket', () => {

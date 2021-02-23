@@ -1,11 +1,12 @@
 import {DefaultAction} from "./default.action";
 import {MuteAction} from "./mute.action";
-import {KeyUpEvent, StreamDeckPlugin} from "streamdeck-typescript";
+import {YTMD} from "../ytmd";
+import {KeyUpEvent} from "streamdeck-typescript";
 
-export class VolChangeAction extends DefaultAction {
+export class VolChangeAction extends DefaultAction<VolChangeAction> {
 
-	constructor(plugin: StreamDeckPlugin, private readonly type: string, private readonly amount: number = 10) {
-		super(plugin);
+	constructor(plugin: YTMD, action: string, private readonly type: string, private readonly amount: number = 10) {
+		super(plugin, action);
 	}
 
 

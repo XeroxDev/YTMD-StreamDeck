@@ -2,12 +2,17 @@ import {DefaultAction} from "./default.action";
 import {BehaviorSubject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {KeyUpEvent, WillAppearEvent} from "streamdeck-typescript";
+import {YTMD} from "../ytmd";
 
-export class MuteAction extends DefaultAction {
+export class MuteAction extends DefaultAction<MuteAction> {
 	static currentVolume$: BehaviorSubject<number> = new BehaviorSubject(50);
 	static lastVolume = 50;
 
-	onContextAppear(event: WillAppearEvent) {
+	constructor(private plugin: YTMD, actionName: string) {
+		super(plugin, actionName);
+	}
+
+	onContextAppear({context}: WillAppearEvent) {
 		this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => {
 			if (Object.keys(data).length === 0) {
 				return;
@@ -18,8 +23,7 @@ export class MuteAction extends DefaultAction {
 
 		MuteAction.currentVolume$.pipe().subscribe(
 			vol => {
-				this.setContext(event.context);
-				this.plugin.setTitle(`${Math.round(!vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol)}%`);
+				this.plugin.setTitle(`${Math.round(!vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol)}%`, context);
 			}
 		)
 	}
