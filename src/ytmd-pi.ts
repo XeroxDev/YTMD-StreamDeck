@@ -1,55 +1,41 @@
-import {
-	DidReceiveGlobalSettingsEvent,
-	SDInit,
-	SDOnEvent,
-	SDPropertyInspector,
-	SDReady,
-	StreamDeckPlugin
-} from "streamdeck-typescript";
+import {DidReceiveGlobalSettingsEvent, SDOnPiEvent, StreamDeckPropertyInspectorHandler} from "streamdeck-typescript";
+import {ActionTypes} from "./interfaces/enums";
 
-@SDPropertyInspector
-class YTMDPi {
-	private plugin: StreamDeckPlugin;
-	private host: HTMLInputElement;
-	private port: HTMLInputElement;
-	private password: HTMLInputElement;
-	private save: HTMLButtonElement;
+class YTMDPi extends StreamDeckPropertyInspectorHandler {
+	private hostElement: HTMLInputElement;
+	private portElement: HTMLInputElement;
+	private passwordElement: HTMLInputElement;
+	private saveElement: HTMLButtonElement;
 
-	@SDInit()
-	private init(plugin: StreamDeckPlugin) {
-		this.plugin = plugin;
-	}
-
-	@SDReady()
-	private ready() {
-		if (this.plugin.initEventData?.actionInfo?.action !== 'fun.shiro.ytmdc.play-pause') {
+	protected onReady() {
+		if (this.actionInfo.action !== ActionTypes.PLAY_PAUSE) {
 			document.getElementById('mainSettings')?.remove();
 			return;
 		}
 
-		this.host = document.getElementById('host') as HTMLInputElement;
-		this.port = document.getElementById('port') as HTMLInputElement;
-		this.password = document.getElementById('password') as HTMLInputElement;
-		this.save = document.getElementById('save') as HTMLButtonElement;
+		this.hostElement = document.getElementById('host') as HTMLInputElement;
+		this.portElement = document.getElementById('port') as HTMLInputElement;
+		this.passwordElement = document.getElementById('password') as HTMLInputElement;
+		this.saveElement = document.getElementById('save') as HTMLButtonElement;
 
-		this.save.onclick = () => this.saveSettings();
-		this.plugin.requestGlobalSettings();
+		this.saveElement.onclick = () => this.saveSettings();
+		this.requestGlobalSettings();
 	}
 
-	@SDOnEvent('didReceiveGlobalSettings')
-	private settingsReceived(settings: DidReceiveGlobalSettingsEvent) {
-		const {host = 'localhost', port = '9863', password = ''} = settings.payload.settings;
+	@SDOnPiEvent('didReceiveGlobalSettings')
+	private receivedGlobalSettings({payload: {settings}}: DidReceiveGlobalSettingsEvent) {
+		const {host = 'localhost', port = '9863', password = ''} = settings;
 
-		this.host.value = host;
-		this.port.value = port;
-		this.password.value = password;
+		this.hostElement.value = host;
+		this.portElement.value = port;
+		this.passwordElement.value = password;
 	}
 
 	private saveSettings() {
-		const host = this.host.value,
-			port = this.port.value,
-			password = this.password.value;
-		this.plugin.setGlobalSettings({host, port, password});
+		const host = this.hostElement.value,
+			port = this.portElement.value,
+			password = this.passwordElement.value;
+		this.setGlobalSettings({host, port, password});
 	}
 }
 

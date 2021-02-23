@@ -6,7 +6,7 @@
     "build": "tsc",
     "watch": "tsc-watch --onSuccess \"npm run browserify\"",
     "browserify": "browserify dist/ytmd.js > bundle.js && browserify dist/ytmd-pi.js > bundle-pi.js",
-    "test": "mocha -r esm -r ts-node/register \"tests/**/*\"",
+    "test": "mocha -r esm -r ts-node/register -r jsdom-global/register \"tests/**/*\"",
     "coverage": "nyc --clean -r json -e .ts -x \"tests/**/*\" npm run test"
   },
   "repository": {
@@ -23,7 +23,7 @@
     "browserify": "^17.0.0",
     "rxjs": "^6.6.3",
     "socket.io-client": "^2.3.0",
-    "streamdeck-typescript": "^1.0.3",
+    "streamdeck-typescript": "^2.0",
     "typescript": "^4.1.5"
   },
   "devDependencies": {
@@ -35,6 +35,8 @@
     "@types/socket.io-client": "^1.4.35",
     "chai": "^4.3.0",
     "esm": "^3.2.25",
+    "jsdom": "16.4.0",
+    "jsdom-global": "3.0.2",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
     "socket.io": "^2.3.0",
