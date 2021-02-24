@@ -11,8 +11,9 @@ export class NextPrevAction extends DefaultAction<NextPrevAction> {
 	onContextAppear(event: WillAppearEvent): void {
 	}
 
-	@SDOnActionEvent('willDisappear')
+	@SDOnActionEvent('keyUp')
 	onKeypressUp(event: KeyUpEvent) {
+		console.log(event)
 		if (this.nextOrPrev === 'NEXT')
 			this.socket.trackNext();
 		else
