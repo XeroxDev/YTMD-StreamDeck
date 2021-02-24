@@ -1,7 +1,7 @@
 import {DefaultAction} from "./default.action";
 import {BehaviorSubject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {KeyUpEvent, WillAppearEvent} from "streamdeck-typescript";
+import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from "streamdeck-typescript";
 import {YTMD} from "../ytmd";
 
 export class MuteAction extends DefaultAction<MuteAction> {
@@ -12,6 +12,7 @@ export class MuteAction extends DefaultAction<MuteAction> {
 		super(plugin, actionName);
 	}
 
+	@SDOnActionEvent('willAppear')
 	onContextAppear({context}: WillAppearEvent) {
 		this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => {
 			if (Object.keys(data).length === 0) {
@@ -28,6 +29,12 @@ export class MuteAction extends DefaultAction<MuteAction> {
 		)
 	}
 
+	@SDOnActionEvent('willDisappear')
+	onContextDisappear(event: WillDisappearEvent): void {
+		this.destroy$.next();
+	}
+
+	@SDOnActionEvent('keyUp')
 	onKeypressUp(event: KeyUpEvent) {
 		const current = MuteAction.currentVolume$.getValue();
 		const last = MuteAction.lastVolume;

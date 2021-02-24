@@ -1,7 +1,7 @@
 import {DefaultAction} from "./default.action";
 import {takeUntil} from "rxjs/operators";
 import {TrackAndPlayerInterface} from "../interfaces/information.interface";
-import {KeyUpEvent, WillAppearEvent} from "streamdeck-typescript";
+import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from "streamdeck-typescript";
 import {StateType} from "streamdeck-typescript/dist/src/interfaces/enums";
 import {YTMD} from "../ytmd";
 
@@ -15,6 +15,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 		super(plugin, actionName);
 	}
 
+	@SDOnActionEvent('willAppear')
 	onContextAppear(event: WillAppearEvent) {
 		this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => this.handlePlayerData(event, data));
 		this.socket.onError$.pipe(takeUntil(this.destroy$))
@@ -25,6 +26,11 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 			.subscribe(() => {
 				this.plugin.showOk(event.context)
 			});
+	}
+
+	@SDOnActionEvent('willDisappear')
+	onContextDisappear(event: WillDisappearEvent): void {
+		this.destroy$.next();
 	}
 
 	handlePlayerData({context}: WillAppearEvent, data: TrackAndPlayerInterface) {
@@ -46,6 +52,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 		}
 	}
 
+	@SDOnActionEvent('keyUp')
 	onKeypressUp(event: KeyUpEvent) {
 		this.socket.trackPlayPause();
 	}
