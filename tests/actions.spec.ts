@@ -23,7 +23,11 @@ class FakeApi extends StreamDeckPluginHandler {
 	alert = 0;
 	okay = 0;
 
-	setState(state: StateType) {
+    constructor() {
+        super();
+    }
+
+    setState(state: StateType) {
 		this.state = state;
 	}
 
@@ -167,8 +171,8 @@ describe('Testing all actions', () => {
 	});
 	describe('Test volume change action', () => {
 		const fakeApi = new FakeApi();
-		const volChangeUp = new VolChangeAction(<unknown>fakeApi as YTMD, ActionTypes.VOLUME_UP, 'UP', 10);
-		const volChangeDown = new VolChangeAction(<unknown>fakeApi as YTMD, ActionTypes.VOLUME_DOWN, 'DOWN', 10);
+		const volChangeUp = new VolChangeAction(<unknown>fakeApi as YTMD, ActionTypes.VOLUME_UP, 'UP');
+		const volChangeDown = new VolChangeAction(<unknown>fakeApi as YTMD, ActionTypes.VOLUME_DOWN, 'DOWN');
 
 		describe('Volume up', () => {
 			it('should set volume +10', () => {
