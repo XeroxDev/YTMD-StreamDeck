@@ -29,9 +29,6 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: browserify
-        run: npm run browserify
-
       - name: Create distribution folder
         run: |
           mkdir fun.shiro.ytmd.sdPlugin
