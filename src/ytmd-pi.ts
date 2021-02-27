@@ -1,42 +1,41 @@
-import {DidReceiveGlobalSettingsEvent, SDOnPiEvent, StreamDeckPropertyInspectorHandler} from "streamdeck-typescript";
-import {ActionTypes} from "./interfaces/enums";
+import {SDOnPiEvent, StreamDeckPropertyInspectorHandler} from 'streamdeck-typescript';
+import {ActionTypes}                                     from './interfaces/enums';
+import {PisAbstract}                                     from './pis/pis.abstract';
+import {PlayPausePi}                                     from './pis/play-pause.pi';
+import {VolumeChangePi}                                  from './pis/volume-change.pi';
 
-class YTMDPi extends StreamDeckPropertyInspectorHandler {
-	private hostElement: HTMLInputElement;
-	private portElement: HTMLInputElement;
-	private passwordElement: HTMLInputElement;
-	private saveElement: HTMLButtonElement;
+export class YTMDPi extends StreamDeckPropertyInspectorHandler {
+    private action: PisAbstract = new PisAbstract(this, '');
 
-	protected onReady() {
-		if (this.actionInfo.action !== ActionTypes.PLAY_PAUSE) {
-			document.getElementById('mainSettings')?.remove();
-			return;
-		}
+    constructor() {
+        super();
+    }
 
-		this.hostElement = document.getElementById('host') as HTMLInputElement;
-		this.portElement = document.getElementById('port') as HTMLInputElement;
-		this.passwordElement = document.getElementById('password') as HTMLInputElement;
-		this.saveElement = document.getElementById('save') as HTMLButtonElement;
+    @SDOnPiEvent('setupReady')
+    private documentLoaded() {
+        const _action: ActionTypes = this.actionInfo.action as ActionTypes;
+        switch (_action) {
+            case ActionTypes.PLAY_PAUSE:
+                this.action = new PlayPausePi(this, this.actionInfo.context);
+                break;
+            case ActionTypes.VOLUME_UP:
+                this.action = new VolumeChangePi(this, this.actionInfo.context, 'UP');
+                break;
+            case ActionTypes.VOLUME_DOWN:
+                this.action = new VolumeChangePi(this, this.actionInfo.context, 'DOWN');
+                break;
+        }
+    }
 
-		this.saveElement.onclick = () => this.saveSettings();
-		this.requestGlobalSettings();
-	}
+    @SDOnPiEvent('didReceiveGlobalSettings')
+    private receivedGlobalSettings() {
+        this.action.newGlobalSettingsReceived();
+    }
 
-	@SDOnPiEvent('didReceiveGlobalSettings')
-	private receivedGlobalSettings({payload: {settings}}: DidReceiveGlobalSettingsEvent) {
-		const {host = 'localhost', port = '9863', password = ''} = settings;
-
-		this.hostElement.value = host;
-		this.portElement.value = port;
-		this.passwordElement.value = password;
-	}
-
-	private saveSettings() {
-		const host = this.hostElement.value,
-			port = this.portElement.value,
-			password = this.passwordElement.value;
-		this.setGlobalSettings({host, port, password});
-	}
+    @SDOnPiEvent('didReceiveSettings')
+    private receivedSettings() {
+        this.action.newSettingsReceived();
+    }
 }
 
 new YTMDPi();

@@ -7,7 +7,7 @@
 	<script src="bundle-pi.js"></script>
 </head>
 <body>
-<div class="sdpi-wrapper" id="mainSettings">
+<div class="sdpi-wrapper" id="mainSettings" style="display: none">
 	<div class="sdpi-item">
 		<div class="sdpi-item-label">Host</div>
 		<input class="sdpi-item-value" type="text" id="host">
@@ -22,6 +22,17 @@
 	</div>
 	<div class="sdpi-item">
 		<button class="sdpi-item-value" id="save">Save</button>
+	</div>
+</div>
+<div class="sdpi-wrapper" id="volumeSettings" style="display: none">
+	<div class="sdpi-item">
+		<div class="sdpi-item-label">Volume steps</div>
+		<input class="sdpi-item-value" type="number" id="volumeInput">
+	</div>
+	<div class="sdpi-item">
+		<details class="message question">
+			<summary>This saves automatically</summary>
+		</details>
 	</div>
 </div>
 </body>

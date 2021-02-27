@@ -1,213 +1,217 @@
-import {SettingsInterface} from "../interfaces/settings.interface";
-import {AvailableCommandsInterface} from "../interfaces/available-commands.interface";
-import {Observable, Subject} from "rxjs";
-import {
-	TrackAndPlayerInterface,
-	PlayerInfoInterface,
-	AppInfoInterface,
-	TrackInfoInterface, QueueInfoInterface, PlaylistInfoInterface, LyricsInfoInterface
-} from "../interfaces/information.interface";
+import {Observable, Subject} from 'rxjs';
 import io from 'socket.io-client';
+import {AvailableCommandsInterface} from '../interfaces/available-commands.interface';
+import {GlobalSettingsInterface} from '../interfaces/global-settings.interface';
+import {
+    LyricsInfoInterface,
+    PlayerInfoInterface,
+    PlaylistInfoInterface,
+    QueueInfoInterface,
+    TrackAndPlayerInterface,
+    TrackInfoInterface
+} from '../interfaces/information.interface';
 
 export class YtmdSocketHelper {
-	private static _instance: YtmdSocketHelper;
+    private static _instance: YtmdSocketHelper;
+    private socket: SocketIOClient.Socket;
+    private _onTick$: Subject<TrackAndPlayerInterface> = new Subject<TrackAndPlayerInterface>();
+    private _onPlayer$: Subject<PlayerInfoInterface> = new Subject<PlayerInfoInterface>();
+    private _onTrack$: Subject<TrackInfoInterface> = new Subject<TrackInfoInterface>();
+    private _onQueue$: Subject<QueueInfoInterface> = new Subject<QueueInfoInterface>();
+    private _onPlaylist$: Subject<PlaylistInfoInterface> = new Subject<PlaylistInfoInterface>();
+    private _onLyrics$: Subject<LyricsInfoInterface> = new Subject<LyricsInfoInterface>();
+    private _onError$: Subject<void> = new Subject<void>();
+    private _onConnect$: Subject<void> = new Subject<void>();
 
-	public static getInstance(): YtmdSocketHelper {
-		if (!this._instance)
-			this._instance = new YtmdSocketHelper();
-		return this._instance;
-	}
+    private constructor() {
+        this.setConnection();
+    }
 
-	private socket: SocketIOClient.Socket;
-	private _onTick$: Subject<TrackAndPlayerInterface> = new Subject<TrackAndPlayerInterface>();
-	private _onPlayer$: Subject<PlayerInfoInterface> = new Subject<PlayerInfoInterface>();
-	private _onTrack$: Subject<TrackInfoInterface> = new Subject<TrackInfoInterface>();
-	private _onQueue$: Subject<QueueInfoInterface> = new Subject<QueueInfoInterface>();
-	private _onPlaylist$: Subject<PlaylistInfoInterface> = new Subject<PlaylistInfoInterface>();
-	private _onLyrics$: Subject<LyricsInfoInterface> = new Subject<LyricsInfoInterface>();
-	private _onError$: Subject<void> = new Subject<void>();
-	private _onConnect$: Subject<void> = new Subject<void>();
+    get onTick$(): Observable<TrackAndPlayerInterface> {
+        return this._onTick$;
+    }
 
+    get onPlayer$(): Observable<PlayerInfoInterface> {
+        return this._onPlayer$;
+    }
 
-	private constructor() {
-		this.setConnection();
-	}
+    get onTrack$(): Observable<TrackInfoInterface> {
+        return this._onTrack$;
+    }
 
-	public setConnection({host, port, password}: SettingsInterface = {host: 'localhost', port: '9863', password: ''}): YtmdSocketHelper {
-		if (this.socket)
-			this.socket.disconnect();
+    get onQueue$(): Observable<QueueInfoInterface> {
+        return this._onQueue$;
+    }
 
-		this.socket = password ? io(`http://${host}:${port}`, {
-			transportOptions: {
-				polling: {
-					extraHeaders: {
-						password
-					}
-				}
-			}
-		}) : io(`http://${host}:${port}`);
+    get onPlaylist$(): Observable<PlaylistInfoInterface> {
+        return this._onPlaylist$;
+    }
 
-		this.socket.on('error', () => this._onError$.next());
-		this.socket.on('connect_error', () => this._onError$.next());
+    get onLyrics$(): Observable<LyricsInfoInterface> {
+        return this._onLyrics$;
+    }
 
-		this.socket.on("connect", () => {
-			this._onConnect$.next();
-			this.socket.on('tick', (data: any) => {
-				this._onTick$.next(data);
-			});
-			this.socket.on('player', (data: any) => {
-				this._onPlayer$.next(data);
-			});
-			this.socket.on('track', (data: any) => {
-				this._onTrack$.next(data);
-			});
-			this.socket.on('queue', (data: any) => {
-				this._onQueue$.next(data);
-			});
-			this.socket.on('playlist', (data: any) => {
-				this._onPlaylist$.next(data);
-			});
-			this.socket.on('lyrics', (data: any) => {
-				this._onLyrics$.next(data);
-			});
-		});
+    get onError$(): Subject<void> {
+        return this._onError$;
+    }
 
-		return this;
-	}
+    get onConnect$(): Subject<void> {
+        return this._onConnect$;
+    }
 
-	public trackPlayPause() {
-		this.emit({cmd: 'track-play-pause'});
-	}
+    public static getInstance(): YtmdSocketHelper {
+        if (!this._instance)
+            this._instance = new YtmdSocketHelper();
+        return this._instance;
+    }
 
-	public trackPlay() {
-		this.emit({cmd: 'track-play'});
-	}
+    public setConnection({host, port, password}: GlobalSettingsInterface = {
+        host: 'localhost',
+        port: '9863',
+        password: ''
+    }): YtmdSocketHelper {
+        if (this.socket)
+            this.socket.disconnect();
 
-	public trackPause() {
-		this.emit({cmd: 'track-pause'});
-	}
+        this.socket = password ? io(`http://${host}:${port}`, {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        password
+                    }
+                }
+            }
+        }) : io(`http://${host}:${port}`);
 
-	public trackNext() {
-		this.emit({cmd: 'track-next'});
-	}
+        this.socket.on('error', () => this._onError$.next());
+        this.socket.on('connect_error', () => this._onError$.next());
 
-	public trackPrevious() {
-		this.emit({cmd: 'track-previous'});
-	}
+        this.socket.on('connect', () => {
+            this._onConnect$.next();
+            this.socket.on('tick', (data: any) => {
+                this._onTick$.next(data);
+            });
+            this.socket.on('player', (data: any) => {
+                this._onPlayer$.next(data);
+            });
+            this.socket.on('track', (data: any) => {
+                this._onTrack$.next(data);
+            });
+            this.socket.on('queue', (data: any) => {
+                this._onQueue$.next(data);
+            });
+            this.socket.on('playlist', (data: any) => {
+                this._onPlaylist$.next(data);
+            });
+            this.socket.on('lyrics', (data: any) => {
+                this._onLyrics$.next(data);
+            });
+        });
 
-	public trackThumbsUp() {
-		this.emit({cmd: 'track-thumbs-up'});
-	}
+        return this;
+    }
 
-	public trackThumbsDown() {
-		this.emit({cmd: 'track-thumbs-down'});
-	}
+    public trackPlayPause() {
+        this.emit({cmd: 'track-play-pause'});
+    }
 
-	public playerVolumeUp() {
-		this.emit({cmd: 'player-volume-up'});
-	}
+    public trackPlay() {
+        this.emit({cmd: 'track-play'});
+    }
 
-	public playerVolumeDown() {
-		this.emit({cmd: 'player-volume-down'});
-	}
+    public trackPause() {
+        this.emit({cmd: 'track-pause'});
+    }
 
-	public playerForward() {
-		this.emit({cmd: 'player-forward'});
-	}
+    public trackNext() {
+        this.emit({cmd: 'track-next'});
+    }
 
-	public playerRewind() {
-		this.emit({cmd: 'player-rewind'});
-	}
+    public trackPrevious() {
+        this.emit({cmd: 'track-previous'});
+    }
 
-	public playerSetSeekbar(seconds: PlayerInfoInterface['seekbarCurrentPosition']) {
-		this.emit({cmd: 'player-set-seekbar', value: seconds});
-	}
+    public trackThumbsUp() {
+        this.emit({cmd: 'track-thumbs-up'});
+    }
 
-	public playerSetVolume(percentage: PlayerInfoInterface['volumePercent']) {
-		this.emit({cmd: 'player-set-volume', value: percentage});
-	}
+    public trackThumbsDown() {
+        this.emit({cmd: 'track-thumbs-down'});
+    }
 
-	public playerSetQueue(index: number) {
-		this.emit({cmd: 'player-set-queue', value: index});
-	}
+    public playerVolumeUp() {
+        this.emit({cmd: 'player-volume-up'});
+    }
 
-	public playerRepeat() {
-		this.emit({cmd: 'player-repeat'});
-	}
+    public playerVolumeDown() {
+        this.emit({cmd: 'player-volume-down'});
+    }
 
-	public playerShuffle() {
-		this.emit({cmd: 'player-shuffle'});
-	}
+    public playerForward() {
+        this.emit({cmd: 'player-forward'});
+    }
 
-	public playerAddLibrary() {
-		this.emit({cmd: 'player-add-library'});
-	}
+    public playerRewind() {
+        this.emit({cmd: 'player-rewind'});
+    }
 
-	public playerAddPlaylist(index: number) {
-		this.emit({cmd: 'player-add-playlist', value: index});
-	}
+    public playerSetSeekbar(seconds: PlayerInfoInterface['seekbarCurrentPosition']) {
+        this.emit({cmd: 'player-set-seekbar', value: seconds});
+    }
 
-	public showLyricsHidden() {
-		this.emit({cmd: 'show-lyrics-hidden'});
-	}
+    public playerSetVolume(percentage: PlayerInfoInterface['volumePercent']) {
+        this.emit({cmd: 'player-set-volume', value: percentage});
+    }
 
-	public requestPlayer() {
-		this.emit(<AvailableCommandsInterface>{event: "query-player"});
-	}
+    public playerSetQueue(index: number) {
+        this.emit({cmd: 'player-set-queue', value: index});
+    }
 
-	public requestTrack() {
-		this.emit(<AvailableCommandsInterface>{event: "query-track"});
-	}
+    public playerRepeat() {
+        this.emit({cmd: 'player-repeat'});
+    }
 
-	public requestQueue() {
-		this.emit(<AvailableCommandsInterface>{event: "query-queue"});
-	}
+    public playerShuffle() {
+        this.emit({cmd: 'player-shuffle'});
+    }
 
-	public requestPlaylist() {
-		this.emit(<AvailableCommandsInterface>{event: "query-playlist"});
-	}
+    public playerAddLibrary() {
+        this.emit({cmd: 'player-add-library'});
+    }
 
-	public requestLyrics() {
-		this.emit(<AvailableCommandsInterface>{event: "query-lyrics"});
-	}
+    public playerAddPlaylist(index: number) {
+        this.emit({cmd: 'player-add-playlist', value: index});
+    }
 
-	public disconnect() {
-		this.socket.disconnect();
-	}
+    public showLyricsHidden() {
+        this.emit({cmd: 'show-lyrics-hidden'});
+    }
 
-	get onTick$(): Observable<TrackAndPlayerInterface> {
-		return this._onTick$;
-	}
+    public requestPlayer() {
+        this.emit(<AvailableCommandsInterface>{event: 'query-player'});
+    }
 
-	get onPlayer$(): Observable<PlayerInfoInterface> {
-		return this._onPlayer$;
-	}
+    public requestTrack() {
+        this.emit(<AvailableCommandsInterface>{event: 'query-track'});
+    }
 
-	get onTrack$(): Observable<TrackInfoInterface> {
-		return this._onTrack$;
-	}
+    public requestQueue() {
+        this.emit(<AvailableCommandsInterface>{event: 'query-queue'});
+    }
 
-	get onQueue$(): Observable<QueueInfoInterface> {
-		return this._onQueue$;
-	}
+    public requestPlaylist() {
+        this.emit(<AvailableCommandsInterface>{event: 'query-playlist'});
+    }
 
-	get onPlaylist$(): Observable<PlaylistInfoInterface> {
-		return this._onPlaylist$;
-	}
+    public requestLyrics() {
+        this.emit(<AvailableCommandsInterface>{event: 'query-lyrics'});
+    }
 
-	get onLyrics$(): Observable<LyricsInfoInterface> {
-		return this._onLyrics$;
-	}
+    public disconnect() {
+        this.socket.disconnect();
+    }
 
-	get onError$(): Subject<void> {
-		return this._onError$;
-	}
-
-	get onConnect$(): Subject<void> {
-		return this._onConnect$;
-	}
-
-	private emit({event = 'media-commands', cmd = 'player-rewind', value = true}: AvailableCommandsInterface) {
-		this.socket.emit(event, cmd, value);
-	}
+    private emit({event = 'media-commands', cmd = 'player-rewind', value = true}: AvailableCommandsInterface) {
+        this.socket.emit(event, cmd, value);
+    }
 }
