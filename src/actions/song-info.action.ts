@@ -80,7 +80,6 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
 
                 this.plugin.setTitle(`${displayTitle}\n${displayAlbum}\n${displayAuthor}`, event.context);
             });
-        this.plugin.requestSettings(event.context);
     }
 
     @SDOnActionEvent('willDisappear')
