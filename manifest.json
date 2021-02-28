@@ -4,7 +4,7 @@
   "Description": "This Stream Deck Plugin allows you to control the YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop)",
   "URL": "https://github.com/XeroxDev/YTMD-StreamDeck",
   "Icon": "icons/action-image",
-  "Version": "1.2.1",
+  "Version": "1.3.0",
   "Category": "YTMD Connector",
   "CategoryIcon": "icons/category-icon",
   "SDKVersion": 2,
@@ -154,6 +154,20 @@
       "SupportedInMultiActions": true,
       "Tooltip": "Volume Up",
       "UUID": "fun.shiro.ytmdc.volume-up"
+    },
+    {
+      "Icon": "icons/action-image",
+      "Name": "Track Info",
+      "States": [
+        {
+          "Image": "icons/action-image",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Track Title and Thumbnail",
+      "UUID": "fun.shiro.ytmdc.song-info"
     }
   ],
   "CodePath": "action.html",

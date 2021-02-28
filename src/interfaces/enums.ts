@@ -6,5 +6,6 @@ export enum ActionTypes {
     VOLUME_UP = 'fun.shiro.ytmdc.volume-up',
     VOLUME_MUTE = 'fun.shiro.ytmdc.mute',
     LIKE_TRACK = 'fun.shiro.ytmdc.like',
-    DISLIKE_TRACK = 'fun.shiro.ytmdc.dislike'
+    DISLIKE_TRACK = 'fun.shiro.ytmdc.dislike',
+    SONG_INFO = 'fun.shiro.ytmdc.song-info'
 }
