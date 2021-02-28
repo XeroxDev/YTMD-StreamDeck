@@ -34,6 +34,8 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 - Volume Mute
 - Volume Down
 - Volume Up
+- Track Info
+  - Shows a scrolling text for album, title and author
 
 ## How to use it?
 
