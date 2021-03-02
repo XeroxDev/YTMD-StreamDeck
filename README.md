@@ -36,6 +36,7 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 - Volume Up
 - Track Info
   - Shows a scrolling text for album, title and author
+  - Shows the thumbnail of the track
 
 ## How to use it?
 
