@@ -6,7 +6,8 @@
     "watch": "start watchify --debug -p tsify src/ytmd-pi.ts -o bundle-pi.js && start watchify --debug -p tsify src/ytmd.ts -o bundle.js",
     "build": "browserify -p tsify src/ytmd-pi.ts | terser -cm --comments false -o bundle-pi.js && browserify -p tsify src/ytmd.ts | terser -cm --comments false -o bundle.js",
     "test": "mocha -r esm -r ts-node/register -r jsdom-global/register \"tests/**/*\"",
-    "coverage": "nyc --clean -r json -e .ts -x \"tests/**/*\" npm run test"
+    "coverage": "nyc --clean -r json -e .ts -x \"tests/**/*\" npm run test",
+    "release": "standard-version --sign"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,28 @@
     "socket.io-client": "^2.3.0",
     "streamdeck-typescript": "^2.1.7"
   },
+  "keywords": [
+    "music",
+    "plugin",
+    "app",
+    "deck",
+    "youtube",
+    "stream",
+    "addon",
+    "desktop",
+    "volume",
+    "streamdeck",
+    "stream-deck",
+    "ytmd",
+    "ytmd-app",
+    "youtube-music-desktop-app",
+    "youtube-music-desktop",
+    "companion-server",
+    "ytmd-streamdeck"
+  ],
   "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "@tsconfig/recommended": "^1.0.1",
     "@types/chai": "^4.2.15",
     "@types/mocha": "^8.2.1",
@@ -33,15 +55,27 @@
     "browserify": "^17.0.0",
     "chai": "^4.3.0",
     "esm": "^3.2.25",
+    "husky": "^3.1.0",
     "jsdom": "16.4.0",
     "jsdom-global": "3.0.2",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
     "socket.io": "^2.3.0",
+    "standard-version": "^9.1.1",
     "terser": "^5.6.0",
     "ts-node": "^9.1.1",
     "tsify": "^5.0.2",
     "typescript": "^4.2.2",
     "watchify": "^4.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "standard-version": {
+    "scripts": {
+      "prebump": "npm run test"
+    }
   }
 }
