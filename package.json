@@ -14,7 +14,7 @@
     "url": "git+https://XeroxDev@github.com/XeroxDev/YTMD-StreamDeck.git"
   },
   "author": "XeroxDev",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/XeroxDev/YTMD-StreamDeck/issues"
   },
