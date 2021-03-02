@@ -35,8 +35,8 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 - Volume Down
 - Volume Up
 - Track Info
-  - Shows a scrolling text for album, title and author
-  - Shows the thumbnail of the track
+    - Shows a scrolling text for album, title and author
+    - Shows the thumbnail of the track
 
 ## How to use it?
 
@@ -50,3 +50,12 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 7. Click on Play/Pause button.
 8. Add all settings. (Host, Port, Password)
 9. Click save
+
+## How to contribute?
+
+Just fork the repository and create PR's, but we use
+[standard-version](https://github.com/conventional-changelog/standard-version) to optimal release the plugin.
+
+standard-version is following the [conventionalcommits](https://www.conventionalcommits.org) specification which follows
+the
+[angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines) 
