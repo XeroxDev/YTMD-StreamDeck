@@ -71,6 +71,9 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
+          body: |
+          For a detailed changelog,
+          view the [CHANGELOG.md](https://github.com/XeroxDev/YTMD-StreamDeck/blob/master/CHANGELOG.md) file
 
       - name: Upload .streamDeckPlugin
         if: startsWith(github.ref, 'refs/tags/v')
