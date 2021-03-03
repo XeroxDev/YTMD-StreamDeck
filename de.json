@@ -1,0 +1,42 @@
+{
+  "Name": "YTMD Connector",
+  "Description": "Dieses Stream Deck Plugin erlaubt die Steuerung der YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop)",
+  "Actions": [
+    {
+      "Name": "Play-Pause",
+      "Tooltip": "Startet oder stoppt den aktuellen Song"
+    },
+    {
+      "Name": "Nächster Song",
+      "Tooltip": "Gehe zum nächsten Song"
+    },
+    {
+      "Name": "Vorheriger Song",
+      "Tooltip": "Gehe zum vorherigen Song"
+    },
+    {
+      "Name": "Liken",
+      "Tooltip": "Liked den aktuellen Song"
+    },
+    {
+      "Name": "Disliken",
+      "Tooltip": "Disliked den aktuellen Song"
+    },
+    {
+      "Name": "Stummschalten",
+      "Tooltip": "Schaltet die Stummschaltung ein/aus"
+    },
+    {
+      "Name": "Leiser",
+      "Tooltip": "Verringert die Lautstärke"
+    },
+    {
+      "Name": "Lauter",
+      "Tooltip": "Erhöht die Lautstärke"
+    },
+    {
+      "Name": "Song Info",
+      "Tooltip": "Zeigt den Songtitel und das Albumcover an"
+    }
+  ]
+}
