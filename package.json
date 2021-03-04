@@ -7,7 +7,7 @@
     "build": "browserify -p tsify src/ytmd-pi.ts | terser -cm --comments false -o bundle-pi.js && browserify -p tsify src/ytmd.ts | terser -cm --comments false -o bundle.js",
     "test": "mocha -r esm -r ts-node/register -r jsdom-global/register \"tests/**/*\"",
     "coverage": "nyc --clean -r json -e .ts -x \"tests/**/*\" npm run test",
-    "release": "standard-version --sign --commit-all"
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",

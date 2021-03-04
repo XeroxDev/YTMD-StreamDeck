@@ -1,8 +1,0 @@
-{
-  "bumpFiles": [
-    {
-      "filename": "manifest.json",
-      "updater": "standard-version-updater/elgato-manifest.js"
-    }
-  ]
-}
