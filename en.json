@@ -37,5 +37,15 @@
   "fun.shiro.ytmdc.song-info": {
     "Name": "Track info",
     "Tooltip": "Shows track title and thumbnail"
+  },
+  "Localization": {
+    "PI": {
+      "HOST": "Host",
+      "PORT": "Port",
+      "PASSWORD": "Password",
+      "VOLUME_STEPS": "Volume steps",
+      "SAVE": "Save",
+      "AUTOMATIC_SAVE": "This setting will save automatically"
+    }
   }
 }

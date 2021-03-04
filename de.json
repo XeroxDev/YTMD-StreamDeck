@@ -37,5 +37,15 @@
   "fun.shiro.ytmdc.song-info": {
     "Name": "Song Info",
     "Tooltip": "Zeigt den Songtitel und das Albumcover an"
+  },
+  "Localization": {
+    "PI": {
+      "HOST": "Host",
+      "PORT": "Port",
+      "PASSWORD": "Passwort",
+      "VOLUME_STEPS": "Schritte der Lautstärke",
+      "SAVE": "Speichern",
+      "AUTOMATIC_SAVE": "Dieser Änderung wird automatisch gespeichert"
+    }
   }
 }
