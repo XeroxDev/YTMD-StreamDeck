@@ -1,8 +1,8 @@
 .*/
-!.github
-node_modules
-dist
-coverage
+!.github/
+node_modules/
+dist/
+coverage/
 bundle.js
 bundle-pi.js
-fun.shiro.ytmd.sdPlugin
+fun.shiro.ytmd.sdPlugin/
