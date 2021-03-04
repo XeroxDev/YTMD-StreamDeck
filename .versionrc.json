@@ -1,0 +1,14 @@
+{
+  "sign": true,
+  "commit-all": true,
+  "packageFiles": [
+    {
+      "filename": "./manifest.json",
+      "updater": "standard-version-updater/elgato-manifest.js"
+    },
+    {
+      "filename": "./package.json",
+      "type": "json"
+    }
+  ]
+}
