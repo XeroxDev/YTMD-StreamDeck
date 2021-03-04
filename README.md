@@ -24,6 +24,9 @@
 This Stream Deck Plugin allows you to control the YouTube Music Desktop
 App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
+## Update policy
+Updates come once a week. Either Saturday or Sunday. There are no fixed times when these will be published.
+
 ## Actions
 
 - Play / Pause Track
