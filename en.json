@@ -1,0 +1,41 @@
+{
+  "Name": "YTMD Connector",
+  "Category": "YTMD Connector",
+  "Description": "This Stream Deck Plugin allows you to control the YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop)",
+  "fun.shiro.ytmdc.play-pause": {
+    "Name": "Play-Pause",
+    "Tooltip": "Plays or pauses the current track"
+  },
+  "fun.shiro.ytmdc.next": {
+    "Name": "Next track",
+    "Tooltip": "Go to the next track"
+  },
+  "fun.shiro.ytmdc.prev": {
+    "Name": "previous track",
+    "Tooltip": "Go to the previous track"
+  },
+  "fun.shiro.ytmdc.like": {
+    "Name": "Like track",
+    "Tooltip": "Likes the current track"
+  },
+  "fun.shiro.ytmdc.dislike": {
+    "Name": "Dislike track",
+    "Tooltip": "Dislikes the current track"
+  },
+  "fun.shiro.ytmdc.mute": {
+    "Name": "Mute",
+    "Tooltip": "Toggles mute state on / off"
+  },
+  "fun.shiro.ytmdc.volume-down": {
+    "Name": "Volume down",
+    "Tooltip": "Volume down"
+  },
+  "fun.shiro.ytmdc.volume-up": {
+    "Name": "Volume up",
+    "Tooltip": "Volume up"
+  },
+  "fun.shiro.ytmdc.song-info": {
+    "Name": "Track info",
+    "Tooltip": "Shows track title and thumbnail"
+  }
+}
