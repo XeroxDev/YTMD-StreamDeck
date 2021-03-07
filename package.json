@@ -22,7 +22,7 @@
   "dependencies": {
     "rxjs": "^6.6.3",
     "socket.io-client": "^2.3.0",
-    "streamdeck-typescript": "^3.0.0"
+    "streamdeck-typescript": "^3.1.0"
   },
   "keywords": [
     "music",
@@ -62,6 +62,7 @@
     "jsdom-global": "3.0.2",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
+    "pnpm": "^5.18.3",
     "socket.io": "^2.3.0",
     "standard-version": "^9.1.1",
     "stringify-package": "^1.0.1",
