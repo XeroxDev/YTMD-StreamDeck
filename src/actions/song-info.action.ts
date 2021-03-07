@@ -24,7 +24,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     @SDOnActionEvent('willAppear')
     public onContextAppear(event: WillAppearEvent): void {
         this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(
-            (
+            async (
                 {
                     track: {
                         title,
@@ -42,7 +42,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                 if (this.currentAuthor !== author)
                     this.authorIndex = 0;
                 if (this.currentThumbnail !== cover)
-                    this.imageToDataUrl(cover).then(value => this.plugin.setImage(value, event.context));
+                    await this.plugin.setImageFromUrl(cover, event.context)
 
                 this.currentTitle = title;
                 this.currentAuthor = author;
@@ -91,39 +91,4 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     public onKeypressUp(event: KeyUpEvent): void {
         this.plugin.openUrl(this.currentUrl);
     }
-
-    private imageToDataUrl(url: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            let image = new Image();
-
-            image.onload = () => {
-                let canvas = document.createElement('canvas');
-                canvas.width = image.naturalWidth;
-                canvas.height = image.naturalHeight;
-
-                let ctx = canvas.getContext('2d');
-                if (!ctx) {
-                    reject(new Error('image failed to load'));
-                    return;
-                }
-
-                ctx.drawImage(image, 0, 0);
-
-                image.onload = null;
-                image.onerror = null;
-                (image as any) = null;
-
-                resolve(canvas.toDataURL('image/png'));
-            };
-            image.onerror = () => {
-
-                image.onload = null;
-                image.onerror = null;
-                (image as any) = null;
-
-                reject(new Error('image failed to load'));
-            };
-            image.src = url;
-        });
-    };
 }
