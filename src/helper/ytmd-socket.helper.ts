@@ -1,14 +1,14 @@
-import {Observable, Subject} from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import io from 'socket.io-client';
-import {AvailableCommandsInterface} from '../interfaces/available-commands.interface';
-import {GlobalSettingsInterface} from '../interfaces/global-settings.interface';
+import { AvailableCommandsInterface } from '../interfaces/available-commands.interface';
+import { GlobalSettingsInterface } from '../interfaces/global-settings.interface';
 import {
     LyricsInfoInterface,
     PlayerInfoInterface,
     PlaylistInfoInterface,
     QueueInfoInterface,
     TrackAndPlayerInterface,
-    TrackInfoInterface
+    TrackInfoInterface,
 } from '../interfaces/information.interface';
 
 export class YtmdSocketHelper {
@@ -60,28 +60,30 @@ export class YtmdSocketHelper {
     }
 
     public static getInstance(): YtmdSocketHelper {
-        if (!this._instance)
-            this._instance = new YtmdSocketHelper();
+        if (!this._instance) this._instance = new YtmdSocketHelper();
         return this._instance;
     }
 
-    public setConnection({host, port, password}: GlobalSettingsInterface = {
-        host: 'localhost',
-        port: '9863',
-        password: ''
-    }): YtmdSocketHelper {
-        if (this.socket)
-            this.socket.disconnect();
+    public setConnection(
+        { host, port, password }: GlobalSettingsInterface = {
+            host: 'localhost',
+            port: '9863',
+            password: '',
+        }
+    ): YtmdSocketHelper {
+        if (this.socket) this.socket.disconnect();
 
-        this.socket = password ? io(`http://${host}:${port}`, {
-            transportOptions: {
-                polling: {
-                    extraHeaders: {
-                        password
-                    }
-                }
-            }
-        }) : io(`http://${host}:${port}`);
+        this.socket = password
+            ? io(`http://${host}:${port}`, {
+                  transportOptions: {
+                      polling: {
+                          extraHeaders: {
+                              password,
+                          },
+                      },
+                  },
+              })
+            : io(`http://${host}:${port}`);
 
         this.socket.on('error', () => this._onError$.next());
         this.socket.on('connect_error', () => this._onError$.next());
@@ -112,106 +114,112 @@ export class YtmdSocketHelper {
     }
 
     public trackPlayPause() {
-        this.emit({cmd: 'track-play-pause'});
+        this.emit({ cmd: 'track-play-pause' });
     }
 
     public trackPlay() {
-        this.emit({cmd: 'track-play'});
+        this.emit({ cmd: 'track-play' });
     }
 
     public trackPause() {
-        this.emit({cmd: 'track-pause'});
+        this.emit({ cmd: 'track-pause' });
     }
 
     public trackNext() {
-        this.emit({cmd: 'track-next'});
+        this.emit({ cmd: 'track-next' });
     }
 
     public trackPrevious() {
-        this.emit({cmd: 'track-previous'});
+        this.emit({ cmd: 'track-previous' });
     }
 
     public trackThumbsUp() {
-        this.emit({cmd: 'track-thumbs-up'});
+        this.emit({ cmd: 'track-thumbs-up' });
     }
 
     public trackThumbsDown() {
-        this.emit({cmd: 'track-thumbs-down'});
+        this.emit({ cmd: 'track-thumbs-down' });
     }
 
     public playerVolumeUp() {
-        this.emit({cmd: 'player-volume-up'});
+        this.emit({ cmd: 'player-volume-up' });
     }
 
     public playerVolumeDown() {
-        this.emit({cmd: 'player-volume-down'});
+        this.emit({ cmd: 'player-volume-down' });
     }
 
     public playerForward() {
-        this.emit({cmd: 'player-forward'});
+        this.emit({ cmd: 'player-forward' });
     }
 
     public playerRewind() {
-        this.emit({cmd: 'player-rewind'});
+        this.emit({ cmd: 'player-rewind' });
     }
 
-    public playerSetSeekbar(seconds: PlayerInfoInterface['seekbarCurrentPosition']) {
-        this.emit({cmd: 'player-set-seekbar', value: seconds});
+    public playerSetSeekbar(
+        seconds: PlayerInfoInterface['seekbarCurrentPosition']
+    ) {
+        this.emit({ cmd: 'player-set-seekbar', value: seconds });
     }
 
     public playerSetVolume(percentage: PlayerInfoInterface['volumePercent']) {
-        this.emit({cmd: 'player-set-volume', value: percentage});
+        this.emit({ cmd: 'player-set-volume', value: percentage });
     }
 
     public playerSetQueue(index: number) {
-        this.emit({cmd: 'player-set-queue', value: index});
+        this.emit({ cmd: 'player-set-queue', value: index });
     }
 
     public playerRepeat() {
-        this.emit({cmd: 'player-repeat'});
+        this.emit({ cmd: 'player-repeat' });
     }
 
     public playerShuffle() {
-        this.emit({cmd: 'player-shuffle'});
+        this.emit({ cmd: 'player-shuffle' });
     }
 
     public playerAddLibrary() {
-        this.emit({cmd: 'player-add-library'});
+        this.emit({ cmd: 'player-add-library' });
     }
 
     public playerAddPlaylist(index: number) {
-        this.emit({cmd: 'player-add-playlist', value: index});
+        this.emit({ cmd: 'player-add-playlist', value: index });
     }
 
     public showLyricsHidden() {
-        this.emit({cmd: 'show-lyrics-hidden'});
+        this.emit({ cmd: 'show-lyrics-hidden' });
     }
 
     public requestPlayer() {
-        this.emit(<AvailableCommandsInterface>{event: 'query-player'});
+        this.emit(<AvailableCommandsInterface>{ event: 'query-player' });
     }
 
     public requestTrack() {
-        this.emit(<AvailableCommandsInterface>{event: 'query-track'});
+        this.emit(<AvailableCommandsInterface>{ event: 'query-track' });
     }
 
     public requestQueue() {
-        this.emit(<AvailableCommandsInterface>{event: 'query-queue'});
+        this.emit(<AvailableCommandsInterface>{ event: 'query-queue' });
     }
 
     public requestPlaylist() {
-        this.emit(<AvailableCommandsInterface>{event: 'query-playlist'});
+        this.emit(<AvailableCommandsInterface>{ event: 'query-playlist' });
     }
 
     public requestLyrics() {
-        this.emit(<AvailableCommandsInterface>{event: 'query-lyrics'});
+        this.emit(<AvailableCommandsInterface>{ event: 'query-lyrics' });
     }
 
     public disconnect() {
         this.socket.disconnect();
     }
 
-    private emit({event = 'media-commands', cmd = 'player-rewind', value = true}: AvailableCommandsInterface) {
+    private emit({
+        event = 'media-commands',
+        cmd = 'player-rewind',
+        value = true,
+    }: AvailableCommandsInterface) {
         this.socket.emit(event, cmd, value);
     }
 }

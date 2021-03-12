@@ -1,5 +1,5 @@
-import {SettingsManager} from 'streamdeck-typescript';
-import {YTMDPi}          from '../ytmd-pi';
+import { SettingsManager } from 'streamdeck-typescript';
+import { YTMDPi } from '../ytmd-pi';
 
 export class PisAbstract {
     protected pi: YTMDPi;

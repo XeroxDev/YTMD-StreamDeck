@@ -1,8 +1,13 @@
-import {BehaviorSubject}                                                  from 'rxjs';
-import {takeUntil}                                                        from 'rxjs/operators';
-import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from 'streamdeck-typescript';
-import {YTMD}                                                             from '../ytmd';
-import {DefaultAction}                                                    from './default.action';
+import { BehaviorSubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {
+    KeyUpEvent,
+    SDOnActionEvent,
+    WillAppearEvent,
+    WillDisappearEvent,
+} from 'streamdeck-typescript';
+import { YTMD } from '../ytmd';
+import { DefaultAction } from './default.action';
 
 export class MuteAction extends DefaultAction<MuteAction> {
     static currentVolume$: BehaviorSubject<number> = new BehaviorSubject(50);
@@ -13,8 +18,8 @@ export class MuteAction extends DefaultAction<MuteAction> {
     }
 
     @SDOnActionEvent('willAppear')
-    onContextAppear({context}: WillAppearEvent) {
-        this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+    onContextAppear({ context }: WillAppearEvent) {
+        this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
             if (Object.keys(data).length === 0) {
                 return;
             }
@@ -22,11 +27,13 @@ export class MuteAction extends DefaultAction<MuteAction> {
             MuteAction.currentVolume$.next(vol);
         });
 
-        MuteAction.currentVolume$.pipe().subscribe(
-            vol => {
-                this.plugin.setTitle(`${Math.round(!vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol)}%`, context);
-            }
-        );
+        MuteAction.currentVolume$.pipe().subscribe((vol) => {
+            console.log(vol);
+            this.plugin.setTitle(
+                `${Math.round(!vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol)}%`,
+                context
+            );
+        });
     }
 
     @SDOnActionEvent('willDisappear')

@@ -1,9 +1,14 @@
-import {takeUntil}                                                        from 'rxjs/operators';
-import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from 'streamdeck-typescript';
-import {StateType}                                                        from 'streamdeck-typescript/dist/src/interfaces/enums';
-import {TrackAndPlayerInterface}                                          from '../interfaces/information.interface';
-import {YTMD}                                                             from '../ytmd';
-import {DefaultAction}                                                    from './default.action';
+import { takeUntil } from 'rxjs/operators';
+import {
+    KeyUpEvent,
+    SDOnActionEvent,
+    WillAppearEvent,
+    WillDisappearEvent,
+} from 'streamdeck-typescript';
+import { StateType } from 'streamdeck-typescript/dist/src/interfaces/enums';
+import { TrackAndPlayerInterface } from '../interfaces/information.interface';
+import { YTMD } from '../ytmd';
+import { DefaultAction } from './default.action';
 
 export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private playing = false;
@@ -16,15 +21,15 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
     @SDOnActionEvent('willAppear')
     onContextAppear(event: WillAppearEvent) {
-        this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(data => this.handlePlayerData(event, data));
-        this.socket.onError$.pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.plugin.showAlert(event.context);
-            });
-        this.socket.onConnect$.pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.plugin.showOk(event.context);
-            });
+        this.socket.onTick$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data) => this.handlePlayerData(event, data));
+        this.socket.onError$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.plugin.showAlert(event.context);
+        });
+        this.socket.onConnect$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+            this.plugin.showOk(event.context);
+        });
     }
 
     @SDOnActionEvent('willDisappear')
@@ -37,7 +42,10 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         this.socket.trackPlayPause();
     }
 
-    handlePlayerData({context}: WillAppearEvent, data: TrackAndPlayerInterface) {
+    handlePlayerData(
+        { context }: WillAppearEvent,
+        data: TrackAndPlayerInterface
+    ) {
         if (Object.keys(data).length === 0) {
             this.plugin.showAlert(context);
             return;
@@ -52,7 +60,10 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
         if (this.playing !== data.player.isPaused) {
             this.playing = data.player.isPaused;
-            this.plugin.setState(this.playing ? StateType.ON : StateType.OFF, context);
+            this.plugin.setState(
+                this.playing ? StateType.ON : StateType.OFF,
+                context
+            );
         }
     }
 }
