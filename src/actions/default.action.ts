@@ -1,9 +1,17 @@
-import {Subject}                                                           from 'rxjs';
-import {KeyUpEvent, StreamDeckAction, WillAppearEvent, WillDisappearEvent} from 'streamdeck-typescript';
-import {YtmdSocketHelper}                                                  from '../helper/ytmd-socket.helper';
-import {YTMD}                                                              from '../ytmd';
+import { Subject } from 'rxjs';
+import {
+    KeyUpEvent,
+    StreamDeckAction,
+    WillAppearEvent,
+    WillDisappearEvent,
+} from 'streamdeck-typescript';
+import { YtmdSocketHelper } from '../helper/ytmd-socket.helper';
+import { YTMD } from '../ytmd';
 
-export abstract class DefaultAction<Instance> extends StreamDeckAction<YTMD, Instance> {
+export abstract class DefaultAction<Instance> extends StreamDeckAction<
+    YTMD,
+    Instance
+> {
     destroy$: Subject<any> = new Subject<any>();
     socket: YtmdSocketHelper;
 

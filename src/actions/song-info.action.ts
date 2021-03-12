@@ -1,8 +1,13 @@
-import {takeUntil}                                                        from 'rxjs/operators';
-import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from 'streamdeck-typescript';
-import {TrackAndPlayerInterface}                                          from '../interfaces/information.interface';
-import {YTMD}                                                             from '../ytmd';
-import {DefaultAction}                                                    from './default.action';
+import { takeUntil } from 'rxjs/operators';
+import {
+    KeyUpEvent,
+    SDOnActionEvent,
+    WillAppearEvent,
+    WillDisappearEvent,
+} from 'streamdeck-typescript';
+import { TrackAndPlayerInterface } from '../interfaces/information.interface';
+import { YTMD } from '../ytmd';
+import { DefaultAction } from './default.action';
 
 export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private titleIndex = 0;
@@ -25,24 +30,16 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
 
     @SDOnActionEvent('willAppear')
     public onContextAppear(event: WillAppearEvent): void {
-        this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe(
-            async (data) => {
+        this.socket.onTick$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(async (data) => {
                 const {
-                    track: {
-                        title,
-                        album,
-                        author,
-                        cover,
-                        url
-                    }
+                    track: { title, album, author, cover, url },
                 } = this.getSongData(data);
 
-                if (this.currentTitle !== title)
-                    this.titleIndex = 0;
-                if (this.currentAlbum !== album)
-                    this.albumIndex = 0;
-                if (this.currentAuthor !== author)
-                    this.authorIndex = 0;
+                if (this.currentTitle !== title) this.titleIndex = 0;
+                if (this.currentAlbum !== album) this.albumIndex = 0;
+                if (this.currentAuthor !== author) this.authorIndex = 0;
                 if (this.currentThumbnail !== cover)
                     await this.plugin.setImageFromUrl(cover, event.context);
 
@@ -53,34 +50,52 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                 this.currentUrl = url;
 
                 let displayTitle = this.currentTitle;
-                let displayAlbum = this.currentAlbum === displayTitle ? '' : this.currentAlbum;
-                let displayAuthor = this.currentAuthor === this.currentTitle ? '' : this.currentAuthor;
+                let displayAlbum =
+                    this.currentAlbum === displayTitle ? '' : this.currentAlbum;
+                let displayAuthor =
+                    this.currentAuthor === this.currentTitle
+                        ? ''
+                        : this.currentAuthor;
                 const plus = 6;
-                if (!displayTitle && !displayAlbum && !displayAuthor)
-                    return;
+                if (!displayTitle && !displayAlbum && !displayAuthor) return;
 
                 if (this.currentTitle.length > plus) {
-                    displayTitle = SongInfoAction.getScrollingText(''.padStart(plus, ' ') + displayTitle, this.titleIndex, plus);
+                    displayTitle = SongInfoAction.getScrollingText(
+                        ''.padStart(plus, ' ') + displayTitle,
+                        this.titleIndex,
+                        plus
+                    );
                     this.titleIndex++;
                     if (this.titleIndex >= this.currentTitle.length + plus)
                         this.titleIndex = 0;
                 }
 
                 if (this.currentAuthor.length > plus) {
-                    displayAuthor = SongInfoAction.getScrollingText(''.padStart(plus, ' ') + displayAuthor, this.authorIndex, plus);
+                    displayAuthor = SongInfoAction.getScrollingText(
+                        ''.padStart(plus, ' ') + displayAuthor,
+                        this.authorIndex,
+                        plus
+                    );
                     this.authorIndex++;
                     if (this.authorIndex >= this.currentAuthor.length + plus)
                         this.authorIndex = 0;
                 }
 
                 if (this.currentAlbum.length > plus) {
-                    displayAlbum = SongInfoAction.getScrollingText(''.padStart(plus, ' ') + displayAlbum, this.albumIndex, plus);
+                    displayAlbum = SongInfoAction.getScrollingText(
+                        ''.padStart(plus, ' ') + displayAlbum,
+                        this.albumIndex,
+                        plus
+                    );
                     this.albumIndex++;
                     if (this.albumIndex >= this.currentAlbum.length + plus)
                         this.albumIndex = 0;
                 }
 
-                this.plugin.setTitle(`${displayTitle}\n${displayAlbum}\n${displayAuthor}`, event.context);
+                this.plugin.setTitle(
+                    `${displayTitle}\n${displayAlbum}\n${displayAuthor}`,
+                    event.context
+                );
             });
     }
 
@@ -91,16 +106,14 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
 
     @SDOnActionEvent('keyUp')
     public onKeypressUp(event: KeyUpEvent): void {
-        if (this.currentUrl)
-            this.plugin.openUrl(this.currentUrl);
+        if (this.currentUrl) this.plugin.openUrl(this.currentUrl);
     }
 
-    private getSongData(data: TrackAndPlayerInterface): TrackAndPlayerInterface {
+    private getSongData(
+        data: TrackAndPlayerInterface
+    ): TrackAndPlayerInterface {
         const {
-            player: {
-                hasSong,
-                isPaused
-            }
+            player: { hasSong, isPaused },
         } = data;
         if (isPaused) {
             data.track.cover = this.placeholderCover + 'Paused';
