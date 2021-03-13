@@ -1,4 +1,5 @@
 import {
+    KeyDownEvent,
     KeyUpEvent,
     SDOnActionEvent,
     WillAppearEvent,
@@ -9,6 +10,8 @@ import { DefaultAction } from './default.action';
 import { MuteAction } from './mute.action';
 
 export class VolChangeAction extends DefaultAction<VolChangeAction> {
+    private keyDown: boolean = false;
+
     constructor(
         private plugin: YTMD,
         action: string,
@@ -27,14 +30,28 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp({ context, payload: { settings } }: KeyUpEvent) {
-        let newVolume = MuteAction.currentVolume$.getValue();
-        if (this.type === 'UP') newVolume += settings?.steps ?? 10;
-        else newVolume -= settings?.steps ?? 10;
+        this.keyDown = false;
+    }
 
-        MuteAction.lastVolume = newVolume;
-        MuteAction.currentVolume$.next(newVolume);
-        this.socket.playerSetVolume(
-            newVolume <= 0 ? -1 : newVolume >= 100 ? 100 : newVolume
-        );
+    @SDOnActionEvent('keyDown')
+    async onKeypressDown({ context, payload: { settings } }: KeyDownEvent) {
+        this.keyDown = true;
+
+        while (this.keyDown) {
+            let newVolume = MuteAction.currentVolume$.getValue();
+            if (this.type === 'UP') newVolume += settings?.steps ?? 10;
+            else newVolume -= settings?.steps ?? 10;
+
+            MuteAction.lastVolume = newVolume;
+            MuteAction.currentVolume$.next(newVolume);
+            this.socket.playerSetVolume(
+                newVolume <= 0 ? -1 : newVolume >= 100 ? 100 : newVolume
+            );
+            await this.wait(500);
+        }
+    }
+
+    private wait(ms: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(() => resolve(), ms));
     }
 }

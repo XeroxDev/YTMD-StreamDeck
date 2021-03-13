@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs';
 import {
+    KeyDownEvent,
     KeyUpEvent,
     StreamDeckAction,
     WillAppearEvent,
@@ -25,4 +26,6 @@ export abstract class DefaultAction<Instance> extends StreamDeckAction<
     abstract onKeypressUp(event: KeyUpEvent): void;
 
     abstract onContextDisappear(event: WillDisappearEvent): void;
+
+    onKeypressDown(event: KeyDownEvent): void {}
 }
