@@ -1,4 +1,4 @@
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
     KeyUpEvent,
     SDOnActionEvent,
@@ -25,13 +25,13 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     }
 
     private static getScrollingText(text: string, index: number, plus: number) {
-        return text.substring(index, index + plus);
+        return (text + ''.padEnd(plus)).substring(index, index + plus);
     }
 
     @SDOnActionEvent('willAppear')
     public onContextAppear(event: WillAppearEvent): void {
         this.socket.onTick$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(async (data) => {
                 const {
                     track: { title, album, author, cover, url },
@@ -56,6 +56,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                     this.currentAuthor === this.currentTitle
                         ? ''
                         : this.currentAuthor;
+
                 const plus = 6;
                 if (!displayTitle && !displayAlbum && !displayAuthor) return;
 

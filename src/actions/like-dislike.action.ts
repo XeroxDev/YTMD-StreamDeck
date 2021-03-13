@@ -1,4 +1,4 @@
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
     KeyUpEvent,
     SDOnActionEvent,
@@ -25,7 +25,7 @@ export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
     @SDOnActionEvent('willAppear')
     onContextAppear(event: WillAppearEvent): void {
         this.socket.onTick$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((data) => this.handleLikeDislike(event, data));
     }
 

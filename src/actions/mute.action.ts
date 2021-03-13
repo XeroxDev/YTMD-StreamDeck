@@ -1,5 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
     KeyUpEvent,
     SDOnActionEvent,
@@ -19,21 +19,27 @@ export class MuteAction extends DefaultAction<MuteAction> {
 
     @SDOnActionEvent('willAppear')
     onContextAppear({ context }: WillAppearEvent) {
-        this.socket.onTick$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
-            if (Object.keys(data).length === 0) {
-                return;
-            }
-            const vol = data.player.volumePercent;
-            MuteAction.currentVolume$.next(vol);
-        });
+        this.socket.onTick$
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((data) => {
+                if (Object.keys(data).length === 0) {
+                    return;
+                }
+                const vol = data.player.volumePercent;
+                MuteAction.currentVolume$.next(vol);
+            });
 
-        MuteAction.currentVolume$.pipe().subscribe((vol) => {
-            console.log(vol);
-            this.plugin.setTitle(
-                `${Math.round(!vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol)}%`,
-                context
-            );
-        });
+        MuteAction.currentVolume$
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((vol) => {
+                MuteAction.lastVolume = vol <= 0 ? MuteAction.lastVolume : vol;
+                this.plugin.setTitle(
+                    `${Math.round(
+                        !vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol
+                    )}%`,
+                    context
+                );
+            });
     }
 
     @SDOnActionEvent('willDisappear')
