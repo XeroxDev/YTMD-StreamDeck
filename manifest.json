@@ -161,7 +161,9 @@
         {
           "Image": "icons/action-image",
           "TitleAlignment": "middle",
-          "FontSize": "12"
+          "FontSize": "12",
+          "FontFamily": "Courier New",
+          "FontStyle": "Bold"
         }
       ],
       "SupportedInMultiActions": true,
