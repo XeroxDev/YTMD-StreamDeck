@@ -1,3 +1,13 @@
+# 1. Table of content
+- [1. Table of content](#1-table-of-content)
+- [2. Badges](#2-badges)
+- [3. What is this Plugin?](#3-what-is-this-plugin)
+- [4. Update policy](#4-update-policy)
+- [5. Actions](#5-actions)
+- [6. How to use it?](#6-how-to-use-it)
+- [7. How to contribute?](#7-how-to-contribute)
+
+# 2. Badges
 [![Forks](https://img.shields.io/github/forks/XeroxDev/YTMD-StreamDeck?color=blue&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/network/members)
 [![Stars](https://img.shields.io/github/stars/XeroxDev/YTMD-StreamDeck?color=yellow&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/stargazers)
 [![Watchers](https://img.shields.io/github/watchers/XeroxDev/YTMD-StreamDeck?color=lightgray&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/watchers)
@@ -19,15 +29,14 @@
 
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
-# YTMD-StreamDeck
-
+# 3. What is this Plugin?
 This Stream Deck Plugin allows you to control the YouTube Music Desktop
 App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
-## Update policy
+# 4. Update policy
 Updates come once a week. Either Saturday or Sunday. There are no fixed times when these will be published.
 
-## Actions
+# 5. Actions
 
 - Play / Pause Track
 - Next Track
@@ -41,7 +50,7 @@ Updates come once a week. Either Saturday or Sunday. There are no fixed times wh
     - Shows a scrolling text for album, title and author
     - Shows the thumbnail of the track
 
-## How to use it?
+# 6. How to use it?
 
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
 2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream
@@ -55,11 +64,13 @@ Updates come once a week. Either Saturday or Sunday. There are no fixed times wh
 9. Add all settings. (Host, Port, Password)
 10. Click save
 
-## How to contribute?
+# 7. How to contribute?
 
 Just fork the repository and create PR's, but we use
 [standard-version](https://github.com/conventional-changelog/standard-version) to optimal release the plugin.
 
 standard-version is following the [conventionalcommits](https://www.conventionalcommits.org) specification which follows
 the
-[angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines) 
+[angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
+
+[Here](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index) is a neat little cheatsheet for Conventional Commits
