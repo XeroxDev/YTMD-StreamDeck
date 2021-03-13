@@ -1,4 +1,4 @@
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
     KeyUpEvent,
     SDOnActionEvent,
@@ -22,14 +22,18 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     @SDOnActionEvent('willAppear')
     onContextAppear(event: WillAppearEvent) {
         this.socket.onTick$
-            .pipe(takeUntil(this.destroy$))
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((data) => this.handlePlayerData(event, data));
-        this.socket.onError$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.plugin.showAlert(event.context);
-        });
-        this.socket.onConnect$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.plugin.showOk(event.context);
-        });
+        this.socket.onError$
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.plugin.showAlert(event.context);
+            });
+        this.socket.onConnect$
+            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.plugin.showOk(event.context);
+            });
     }
 
     @SDOnActionEvent('willDisappear')
