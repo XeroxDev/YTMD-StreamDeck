@@ -22,7 +22,8 @@ export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp(event: KeyUpEvent): void {
-        this.socket.trackThumbsDown();
+        if (this.likeStatus === 'LIKE') this.socket.trackThumbsUp();
+        else if (this.likeStatus === 'DISLIKE') this.socket.trackThumbsDown();
     }
 
     handleLikeDislike({context}: WillAppearEvent, data: TrackAndPlayerInterface) {
