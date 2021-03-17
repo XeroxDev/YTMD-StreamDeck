@@ -21,7 +21,7 @@ import { ActionTypes } from '../src/interfaces/enums';
 import { NextPrevAction } from '../src/actions/next-prev-action';
 
 class FakeApi extends StreamDeckPluginHandler {
-    state: StateType;
+    state: StateType = StateType.OFF;
     title: string;
     alert = 0;
     okay = 0;
@@ -305,7 +305,7 @@ describe('Testing all actions', () => {
                     fakeWillAppearEvent,
                     <TrackAndPlayerInterface>{}
                 );
-                expect(fakeApi.state).to.be.equals(StateType.ON);
+                expect(fakeApi.alert).to.be.equals(1);
             });
         });
         describe('Test onContextAppear()', () => {
