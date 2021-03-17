@@ -1,0 +1,33 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha All",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": [
+                "run-script",
+                "test",
+                "--",
+                "--timeout",
+                "999999",
+                "--colors"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "protocol": "inspector"
+        },        
+        {
+            "name": "Attach to Chrome",
+            "port": 23654,
+            "request": "attach",
+            "type": "pwa-chrome",
+            "webRoot": "${workspaceFolder}",
+            "urlFilter": "*fun.shiro.ytmd.*"
+        }
+    ]
+}
