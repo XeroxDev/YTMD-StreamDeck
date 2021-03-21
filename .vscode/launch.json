@@ -26,7 +26,7 @@
             "port": 23654,
             "request": "attach",
             "type": "pwa-chrome",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/src",
             "urlFilter": "*fun.shiro.ytmd.*"
         }
     ]

@@ -13,7 +13,7 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
     private keyDown: boolean = false;
 
     constructor(
-        private plugin: YTMD,
+        plugin: YTMD,
         action: string,
         private readonly type: string
     ) {

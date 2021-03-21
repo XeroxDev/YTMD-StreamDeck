@@ -15,7 +15,7 @@ import { DefaultAction } from './default.action';
 
 export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
     constructor(
-        private plugin: YTMD,
+        plugin: YTMD,
         actionName: string,
         private likeStatus: PlayerInfoInterface['likeStatus']
     ) {

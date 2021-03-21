@@ -15,10 +15,14 @@ export abstract class DefaultAction<Instance> extends StreamDeckAction<
 > {
     destroy$: Subject<any> = new Subject<any>();
     socket: YtmdSocketHelper;
+    plugin: YTMD;
+    actionName: string;
 
     protected constructor(plugin: YTMD, actionName: string) {
         super(plugin, actionName);
         this.socket = YtmdSocketHelper.getInstance();
+        this.plugin = plugin;
+        this.actionName = actionName;
     }
 
     abstract onContextAppear(event: WillAppearEvent): void;

@@ -13,7 +13,7 @@ export class MuteAction extends DefaultAction<MuteAction> {
     static currentVolume$: BehaviorSubject<number> = new BehaviorSubject(50);
     static lastVolume = 50;
 
-    constructor(private plugin: YTMD, actionName: string) {
+    constructor(plugin: YTMD, actionName: string) {
         super(plugin, actionName);
     }
 

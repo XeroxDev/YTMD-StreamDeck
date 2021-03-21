@@ -15,7 +15,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private currentTitle: string;
     private firstTimes = 10;
 
-    constructor(private plugin: YTMD, actionName: string) {
+    constructor(plugin: YTMD, actionName: string) {
         super(plugin, actionName);
     }
 

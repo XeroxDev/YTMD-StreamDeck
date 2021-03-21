@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
     KeyUpEvent,
@@ -5,23 +6,20 @@ import {
     WillAppearEvent,
     WillDisappearEvent,
 } from 'streamdeck-typescript';
+import { ThumbnailHelper } from '../helper/thumbnail.helper';
 import { TrackAndPlayerInterface } from '../interfaces/information.interface';
 import { YTMD } from '../ytmd';
 import { DefaultAction } from './default.action';
 
 export class SongInfoAction extends DefaultAction<SongInfoAction> {
-    private titleIndex = 0;
-    private currentTitle: string;
-    private authorIndex = 0;
-    private currentAuthor: string;
-    private albumIndex = 0;
-    private currentAlbum: string;
-    private currentThumbnail: string;
+    private thumbnailHelper: ThumbnailHelper;
     private currentUrl: string;
     private placeholderCover: string = 'https://via.placeholder.com/128?text=';
+    private subscriptions: { [index: string]: { subject: Subject<any> } } = {};
 
-    constructor(private plugin: YTMD, actionName: string) {
+    constructor(plugin: YTMD, actionName: string) {
         super(plugin, actionName);
+        this.thumbnailHelper = ThumbnailHelper.INSTANCE;
     }
 
     private static getScrollingText(text: string, index: number, plus: number) {
@@ -29,84 +27,105 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     }
 
     @SDOnActionEvent('willAppear')
-    public onContextAppear(event: WillAppearEvent): void {
+    public onContextAppear({payload: {coordinates, }, context}: WillAppearEvent): void {
+        this.subscriptions[context] = {subject: new Subject<any>()};
+        let titleIndex = 0;
+        let currentTitle: string;
+        let authorIndex = 0;
+        let currentAuthor: string;
+        let albumIndex = 0;
+        let currentAlbum: string;
+        let currentThumbnail: string;
+        this.thumbnailHelper.addAction({
+            action: this,
+            pos: coordinates,
+            context: context,
+        });
+
         this.socket.onTick$
-            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .pipe(
+                distinctUntilChanged(),
+                takeUntil(this.subscriptions[context].subject)
+            )
             .subscribe(async (data) => {
                 const {
                     track: { title, album, author, cover, url },
                 } = this.getSongData(data);
 
-                if (this.currentTitle !== title) this.titleIndex = 0;
-                if (this.currentAlbum !== album) this.albumIndex = 0;
-                if (this.currentAuthor !== author) this.authorIndex = 0;
-                if (this.currentThumbnail !== cover)
-                    await this.plugin.setImageFromUrl(cover, event.context);
+                if (currentTitle !== title) titleIndex = 0;
+                if (currentAlbum !== album) albumIndex = 0;
+                if (currentAuthor !== author) authorIndex = 0;
+                if (currentThumbnail !== cover)
+                    await this.thumbnailHelper.setImage(cover);
 
-                this.currentTitle = title;
-                this.currentAuthor = author;
-                this.currentAlbum = album;
-                this.currentThumbnail = cover;
+                currentTitle = title;
+                currentAuthor = author;
+                currentAlbum = album;
+                currentThumbnail = cover;
                 this.currentUrl = url;
 
-                let displayTitle = this.currentTitle;
+                let displayTitle = currentTitle;
                 let displayAlbum =
-                    this.currentAlbum === displayTitle ? '' : this.currentAlbum;
+                    currentAlbum === displayTitle ? '' : currentAlbum;
                 let displayAuthor =
-                    this.currentAuthor === this.currentTitle
-                        ? ''
-                        : this.currentAuthor;
+                    currentAuthor === currentTitle ? '' : currentAuthor;
 
                 const plus = 6;
                 if (!displayTitle && !displayAlbum && !displayAuthor) return;
 
-                if (this.currentTitle.length > plus) {
+                if (currentTitle.length > plus) {
                     displayTitle = SongInfoAction.getScrollingText(
                         ''.padStart(plus, ' ') + displayTitle,
-                        this.titleIndex,
+                        titleIndex,
                         plus
                     );
-                    this.titleIndex++;
-                    if (this.titleIndex >= this.currentTitle.length + plus)
-                        this.titleIndex = 0;
+                    titleIndex++;
+                    if (titleIndex >= currentTitle.length + plus)
+                        titleIndex = 0;
                 }
 
-                if (this.currentAuthor.length > plus) {
+                if (currentAuthor.length > plus) {
                     displayAuthor = SongInfoAction.getScrollingText(
                         ''.padStart(plus, ' ') + displayAuthor,
-                        this.authorIndex,
+                        authorIndex,
                         plus
                     );
-                    this.authorIndex++;
-                    if (this.authorIndex >= this.currentAuthor.length + plus)
-                        this.authorIndex = 0;
+                    authorIndex++;
+                    if (authorIndex >= currentAuthor.length + plus)
+                        authorIndex = 0;
                 }
 
-                if (this.currentAlbum.length > plus) {
+                if (currentAlbum.length > plus) {
                     displayAlbum = SongInfoAction.getScrollingText(
                         ''.padStart(plus, ' ') + displayAlbum,
-                        this.albumIndex,
+                        albumIndex,
                         plus
                     );
-                    this.albumIndex++;
-                    if (this.albumIndex >= this.currentAlbum.length + plus)
-                        this.albumIndex = 0;
+                    albumIndex++;
+                    if (albumIndex >= currentAlbum.length + plus)
+                        albumIndex = 0;
                 }
 
                 this.plugin.setTitle(
                     `${displayTitle}\n${displayAlbum}\n${displayAuthor}`,
-                    event.context
+                    context
                 );
             });
     }
 
     @SDOnActionEvent('willDisappear')
-    public onContextDisappear(event: WillDisappearEvent): void {
-        this.destroy$.next();
+    public onContextDisappear({payload: {coordinates}, context}: WillDisappearEvent): void {
+        this.thumbnailHelper.removeAction({
+            action: this,
+            pos: coordinates,
+            context: context,
+        });
+        if (this.subscriptions[context])
+            this.subscriptions[context].subject.next();
     }
 
     @SDOnActionEvent('keyUp')
-    public onKeypressUp(event: KeyUpEvent): void {
+    public onKeypressUp(): void {
         if (this.currentUrl) this.plugin.openUrl(this.currentUrl);
     }
 
