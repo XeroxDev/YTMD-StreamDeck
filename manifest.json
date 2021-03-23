@@ -181,6 +181,18 @@
       "SupportedInMultiActions": true,
       "Tooltip": "Shuffle",
       "UUID": "fun.shiro.ytmdc.shuffle"
+    },
+    {
+      "Icon": "icons/repeat",
+      "Name": "Repeat",
+      "States": [
+        {
+          "Image": "icons/repeat"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Repeat",
+      "UUID": "fun.shiro.ytmdc.repeat"
     }
   ],
   "CodePath": "action.html",
