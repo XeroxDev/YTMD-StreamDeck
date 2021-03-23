@@ -9,4 +9,5 @@ export enum ActionTypes {
     DISLIKE_TRACK = 'fun.shiro.ytmdc.dislike',
     SONG_INFO = 'fun.shiro.ytmdc.song-info',
     SHUFFLE = 'fun.shiro.ytmdc.shuffle',
+    REPEAT = 'fun.shiro.ytmdc.repeat'
 }
