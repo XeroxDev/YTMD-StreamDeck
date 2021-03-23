@@ -7,6 +7,7 @@ import { LikeDislikeAction } from './actions/like-dislike.action';
 import { MuteAction } from './actions/mute.action';
 import { NextPrevAction } from './actions/next-prev-action';
 import { PlayPauseAction } from './actions/play-pause.action';
+import { ShuffleAction } from './actions/shuffle.action';
 import { SongInfoAction } from './actions/song-info.action';
 import { VolChangeAction } from './actions/vol-change.action';
 import { YtmdSocketHelper } from './helper/ytmd-socket.helper';
@@ -25,6 +26,7 @@ export class YTMD extends StreamDeckPluginHandler {
         new LikeDislikeAction(this, ActionTypes.LIKE_TRACK, 'LIKE');
         new LikeDislikeAction(this, ActionTypes.DISLIKE_TRACK, 'DISLIKE');
         new SongInfoAction(this, ActionTypes.SONG_INFO);
+        new ShuffleAction(this, ActionTypes.SHUFFLE);
     }
 
     @SDOnActionEvent('didReceiveGlobalSettings')
