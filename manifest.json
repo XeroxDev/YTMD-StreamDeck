@@ -169,6 +169,18 @@
       "SupportedInMultiActions": true,
       "Tooltip": "Track Title and Thumbnail",
       "UUID": "fun.shiro.ytmdc.song-info"
+    },
+    {
+      "Icon": "icons/shuffle",
+      "Name": "Shuffle",
+      "States": [
+        {
+          "Image": "icons/shuffle"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Shuffle",
+      "UUID": "fun.shiro.ytmdc.shuffle"
     }
   ],
   "CodePath": "action.html",
