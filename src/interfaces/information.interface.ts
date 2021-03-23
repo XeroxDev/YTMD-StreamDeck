@@ -11,7 +11,7 @@ export interface PlayerInfoInterface {
     seekbarCurrentPositionHuman: string;
     statePercent: number;
     likeStatus: 'INDIFFERENT' | 'LIKE' | 'DISLIKE';
-    repeatType: string;
+    repeatType: 'NONE' | 'ONE' | 'ALL';
 }
 
 export interface TrackInfoInterface {
