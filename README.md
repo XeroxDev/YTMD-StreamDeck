@@ -47,8 +47,13 @@ Updates come once a week. Either Saturday or Sunday. There are no fixed times wh
 - Volume Down
 - Volume Up
 - Track Info
-    - Shows a scrolling text for album, title and author
-    - Shows the thumbnail of the track
+  - Shows a scrolling text for album, title and author
+  - Shows the thumbnail of the track
+- Shuffle
+- Repeat
+  - NONE
+  - ALL
+  - ONE
 
 # 6. How to use it?
 
