@@ -38,6 +38,10 @@
     "Name": "Track info",
     "Tooltip": "Shows track title and thumbnail"
   },
+  "fun.shiro.ytmdc.shuffle": {
+    "Name": "Shuffle",
+    "Tooltip": "Shuffle"
+  },
   "Localization": {
     "PI": {
       "HOST": "Host",

@@ -38,6 +38,10 @@
     "Name": "Song Info",
     "Tooltip": "Zeigt den Songtitel und das Albumcover an"
   },
+  "fun.shiro.ytmdc.shuffle": {
+    "Name": "Shuffle",
+    "Tooltip": "Shuffle"
+  },
   "Localization": {
     "PI": {
       "HOST": "Host",
