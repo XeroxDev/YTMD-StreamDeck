@@ -2,10 +2,9 @@
 - [1. Table of content](#1-table-of-content)
 - [2. Badges](#2-badges)
 - [3. What is this Plugin?](#3-what-is-this-plugin)
-- [4. Update policy](#4-update-policy)
-- [5. Actions](#5-actions)
-- [6. How to use it?](#6-how-to-use-it)
-- [7. How to contribute?](#7-how-to-contribute)
+- [4. Actions](#4-actions)
+- [5. How to use it?](#5-how-to-use-it)
+- [6. How to contribute?](#6-how-to-contribute)
 
 # 2. Badges
 [![Forks](https://img.shields.io/github/forks/XeroxDev/YTMD-StreamDeck?color=blue&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/network/members)
@@ -33,10 +32,7 @@
 This Stream Deck Plugin allows you to control the YouTube Music Desktop
 App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
-# 4. Update policy
-Updates come once a week. Either Saturday or Sunday. There are no fixed times when these will be published.
-
-# 5. Actions
+# 4. Actions
 
 - Play / Pause Track
 - Next Track
@@ -50,7 +46,7 @@ Updates come once a week. Either Saturday or Sunday. There are no fixed times wh
     - Shows a scrolling text for album, title and author
     - Shows the thumbnail of the track
 
-# 6. How to use it?
+# 5. How to use it?
 
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
 2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream
@@ -64,7 +60,7 @@ Updates come once a week. Either Saturday or Sunday. There are no fixed times wh
 9. Add all settings. (Host, Port, Password)
 10. Click save
 
-# 7. How to contribute?
+# 6. How to contribute?
 
 Just fork the repository and create PR's, but we use
 [standard-version](https://github.com/conventional-changelog/standard-version) to optimal release the plugin.
