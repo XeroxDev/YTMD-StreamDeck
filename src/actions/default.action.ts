@@ -23,6 +23,7 @@ export abstract class DefaultAction<Instance> extends StreamDeckAction<
         this.socket = YtmdSocketHelper.getInstance();
         this.plugin = plugin;
         this.actionName = actionName;
+        console.log(`Initialized ${actionName}`);
     }
 
     abstract onContextAppear(event: WillAppearEvent): void;

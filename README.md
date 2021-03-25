@@ -43,8 +43,13 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 - Volume Down
 - Volume Up
 - Track Info
-    - Shows a scrolling text for album, title and author
-    - Shows the thumbnail of the track
+  - Shows a scrolling text for album, title and author
+  - Shows the thumbnail of the track
+- Shuffle
+- Repeat
+  - NONE
+  - ALL
+  - ONE
 
 # 5. How to use it?
 
