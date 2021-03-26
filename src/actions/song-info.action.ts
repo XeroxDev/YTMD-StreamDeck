@@ -56,7 +56,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                 if (currentAlbum !== album) albumIndex = 0;
                 if (currentAuthor !== author) authorIndex = 0;
                 if (currentThumbnail !== cover)
-                    await this.plugin.setImage(await this.thumbnailHelper.setImage(cover), context);
+                    await this.plugin.setImage(await this.thumbnailHelper.setImage(cover, context), context);
 
                 currentTitle = title;
                 currentAuthor = author;

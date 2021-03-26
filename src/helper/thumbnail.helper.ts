@@ -46,7 +46,7 @@ export class ThumbnailHelper {
         this._matrix[row][column] = null;
     }
 
-    public async setImage(cover: string) {
+    public async setImage(cover: string, context: string) {
         if (cover !== this._lastCover) {
             this._lastCover = cover;
             this._imageCache = null;
