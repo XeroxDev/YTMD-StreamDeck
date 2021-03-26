@@ -51,10 +51,7 @@ export class ThumbnailHelper {
             this._lastCover = cover;
             this._imageCache = null;
         }
-        return await this.generateThumbnails(cover);
-    }
 
-    private async generateThumbnails(cover: string) {
         // TODO: Generate thumbnails for the perfect squared size
         // for (const matrix of this._matrix) {
         //     for (const item of matrix) {
