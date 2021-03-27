@@ -1,4 +1,4 @@
-import { Coordinates, StateType, TargetType } from 'streamdeck-typescript';
+import { Coordinates } from 'streamdeck-typescript';
 import { DefaultAction } from '../actions/default.action';
 
 type ActionType = {
@@ -52,18 +52,99 @@ export class ThumbnailHelper {
             this._imageCache = null;
         }
 
-        // TODO: Generate thumbnails for the perfect squared size
-        // for (const matrix of this._matrix) {
-        //     for (const item of matrix) {
-        //         if (!item) continue;
-        //         const { context, pos } = item;
-        //         this.setImageFromUrl(this._lastCover, context, pos, 1);
-        //     }
-        // }
+        let currentItem;
+        for (const matrix of this._matrix) {
+            for (const item of matrix) {
+                if (item?.context === context) {
+                    currentItem = item;
+                    break;
+                }
+            }
+        }
+        if (!currentItem) return;
 
-        // Hardcoded until working (so the action has always a image)
-        return this.getImageTile(cover, 1, 0);
+        let tileIndex = 0,
+            currentCol = currentItem.pos.column,
+            currentRow = currentItem.pos.row,
+            squareInfo = this.getSquareDimension(currentRow, currentCol);
+
+        while (this.validateSquare(squareInfo)) {
+            squareInfo.x--;
+            squareInfo.y--;
+            squareInfo.w--;
+            squareInfo.h--;
+            if (squareInfo.w === 1)
+                break;
+        }
+
+        const dimension = squareInfo.w;
+        console.log(dimension);
+
+        return this.getImageTile(cover, dimension === 0 ? 1 : 2, tileIndex);
     }
+
+    private validateSquare({ y, x, h, w }: any) {
+        let iterated = false;
+        for (let rowIndex = y; rowIndex < y + h; rowIndex++) {
+            for (let colIndex = x; colIndex < x + w; colIndex++) {
+                iterated = true;
+                if (!this.checkItem(rowIndex, colIndex)) return false;
+            }
+        }
+        return iterated;
+    }
+
+    private getSquareDimension(currentRow: number, currentCol: number) {
+        let width = 1,
+            height = 1,
+            lowestCol = currentCol,
+            lowestRow = currentRow,
+            colBefore = currentCol - 1,
+            colNext = currentCol + 1,
+            rowBefore = currentRow - 1,
+            rowNext = currentRow + 1;
+        while (this.checkItem(currentRow, colNext++)) {
+            width++;
+        }
+        while (this.checkItem(currentRow, colBefore--)) {
+            width++;
+            lowestCol--;
+        }
+        while (this.checkItem(rowNext++, currentCol)) {
+            height++;
+        }
+        while (this.checkItem(rowBefore--, currentCol)) {
+            height++;
+            lowestRow--;
+        }
+
+        return { x: lowestCol, y: lowestRow, h: height, w: width };
+    }
+
+    private checkItem(rowToCheck: number, colToCheck: number) {
+        if (!this._matrix[rowToCheck]) return false;
+        if (!this._matrix[rowToCheck][colToCheck]) return false;
+        return true;
+    }
+
+    // public async setImage(cover: string, context: string) {
+    //     if (cover !== this._lastCover) {
+    //         this._lastCover = cover;
+    //         this._imageCache = null;
+    //     }
+
+    //     // TODO: Generate thumbnails for the perfect squared size
+    //     // for (const matrix of this._matrix) {
+    //     //     for (const item of matrix) {s
+    //     //         if (!item) continue;
+    //     //         const { context, pos } = item;
+    //     //         this.setImageFromUrl(this._lastCover, context, pos, 1);
+    //     //     }
+    //     // }
+
+    //     // Hardcoded until working (so the action has always a image)
+    //     return this.getImageTile(cover, 1, 0);
+    // }
 
     /**
      * Sets the action image but instead from file, from URL
@@ -82,6 +163,7 @@ export class ThumbnailHelper {
             if (!this._imageCache) {
                 let image = new Image();
                 image.onload = () => {
+                    this._imageCache = image;
                     const calculated = this.calculateImageSize(
                         dimension,
                         tileIndex
@@ -97,7 +179,6 @@ export class ThumbnailHelper {
                     reject(new Error('image failed to load'));
                 };
                 image.src = url;
-                this._imageCache = image;
             } else {
                 const calculated = this.calculateImageSize(
                     dimension,
@@ -115,7 +196,6 @@ export class ThumbnailHelper {
         let canvas = document.createElement('canvas');
         canvas.width = image.naturalWidth;
         canvas.height = image.naturalHeight;
-
 
         const tileWidth = canvas.width / dimension;
         const tileHeight = canvas.height / dimension;

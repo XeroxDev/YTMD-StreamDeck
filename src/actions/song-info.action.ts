@@ -14,7 +14,7 @@ import { DefaultAction } from './default.action';
 export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private thumbnailHelper: ThumbnailHelper;
     private currentUrl: string;
-    private placeholderCover: string = 'https://via.placeholder.com/128?text=';
+    private placeholderCover: string = 'https://via.placeholder.com/544?text=';
     private subscriptions: { [index: string]: { subject: Subject<any> } } = {};
 
     constructor(plugin: YTMD, actionName: string) {
@@ -55,8 +55,11 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                 if (currentTitle !== title) titleIndex = 0;
                 if (currentAlbum !== album) albumIndex = 0;
                 if (currentAuthor !== author) authorIndex = 0;
-                if (currentThumbnail !== cover)
-                    await this.plugin.setImage(await this.thumbnailHelper.setImage(cover, context), context);
+                if (currentThumbnail !== cover) {
+                    const _img = await this.thumbnailHelper.setImage(cover, context);
+                    if (_img)
+                        await this.plugin.setImage(_img, context);
+                }
 
                 currentTitle = title;
                 currentAuthor = author;
