@@ -1,3 +1,4 @@
+import { DidReceiveSettingsEvent } from 'streamdeck-typescript';
 import { VolumeSettings } from '../interfaces/context-settings.interface';
 import { YTMDPi } from '../ytmd-pi';
 import { PisAbstract } from './pis.abstract';
@@ -15,7 +16,6 @@ export class VolumeChangePi extends PisAbstract {
         this.volumeSetting = document.getElementById(
             'volumeInput'
         ) as HTMLInputElement;
-        this.setSettingsToHtml();
         pi.requestSettings();
 
         this.volumeSetting.addEventListener('keyup', () => {
@@ -25,6 +25,7 @@ export class VolumeChangePi extends PisAbstract {
                     : this.volumeSetting.valueAsNumber >= 0
                     ? this.volumeSetting.valueAsNumber
                     : this.volumeSetting.valueAsNumber * -1;
+
             this.settingsManager.setContextSettingsAttributes(
                 this.context,
                 { steps: value ?? 10 },
@@ -33,15 +34,8 @@ export class VolumeChangePi extends PisAbstract {
         });
     }
 
-    public newSettingsReceived(): void {
-        this.setSettingsToHtml();
-    }
-
-    private setSettingsToHtml() {
-        let value =
-            this.settingsManager.getContextSettings<VolumeSettings>(
-                this.context
-            )?.steps ?? 10;
+    public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent): void {
+        let value = settings.steps ?? 10;
 
         if (this.direction === 'DOWN') {
             if (value > 0) value = value * -1;
