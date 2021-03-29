@@ -1,4 +1,4 @@
-import { SettingsManager } from 'streamdeck-typescript';
+import { DidReceiveSettingsEvent, SettingsManager } from 'streamdeck-typescript';
 import { YTMDPi } from '../ytmd-pi';
 
 export class PisAbstract {
@@ -16,5 +16,5 @@ export class PisAbstract {
 
     newGlobalSettingsReceived() {}
 
-    newSettingsReceived() {}
+    newSettingsReceived(event: DidReceiveSettingsEvent) {}
 }
