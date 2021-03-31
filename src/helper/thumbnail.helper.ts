@@ -69,18 +69,19 @@ export class ThumbnailHelper {
             squareInfo = this.getSquareDimension(currentRow, currentCol);
 
         while (this.validateSquare(squareInfo)) {
+            const {x, y, w, h} = squareInfo;
+            if (w <= 1 || h <= 1 || (x <= 0 || y <= 0))
+                break;
             squareInfo.x--;
             squareInfo.y--;
             squareInfo.w--;
             squareInfo.h--;
-            if (squareInfo.w === 1)
-                break;
         }
 
-        const dimension = squareInfo.w;
-        console.log(dimension);
+        const dimension = squareInfo.w < squareInfo.h ? squareInfo.w : squareInfo.h;
+        console.log(dimension, squareInfo);
 
-        return this.getImageTile(cover, dimension === 0 ? 1 : 2, tileIndex);
+        return this.getImageTile(cover, dimension === 0 ? 1 : dimension, tileIndex);
     }
 
     private validateSquare({ y, x, h, w }: any) {
