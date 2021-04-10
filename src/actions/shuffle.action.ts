@@ -4,7 +4,7 @@ import { YTMD } from '../ytmd';
 import { DefaultAction } from './default.action';
 
 export class ShuffleAction extends DefaultAction<ShuffleAction> {
-    constructor(private plugin: YTMD, actionName: ActionTypes) {
+    constructor(plugin: YTMD, actionName: ActionTypes) {
         super(plugin, actionName)
     }
     
