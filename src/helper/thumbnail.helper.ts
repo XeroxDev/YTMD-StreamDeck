@@ -69,19 +69,24 @@ export class ThumbnailHelper {
             squareInfo = this.getSquareDimension(currentRow, currentCol);
 
         while (this.validateSquare(squareInfo)) {
-            const {x, y, w, h} = squareInfo;
-            if (w <= 1 || h <= 1 || (x <= 0 || y <= 0))
-                break;
+            const { x, y, w, h } = squareInfo;
+            if (w <= 1 || h <= 1 || x <= 0 || y <= 0) break;
             squareInfo.x--;
             squareInfo.y--;
             squareInfo.w--;
             squareInfo.h--;
+            tileIndex++;
         }
 
-        const dimension = squareInfo.w < squareInfo.h ? squareInfo.w : squareInfo.h;
-        console.log(dimension, squareInfo);
+        const dimension =
+            squareInfo.w < squareInfo.h ? squareInfo.w : squareInfo.h;
+        console.log(currentItem.pos, dimension, tileIndex, squareInfo);
 
-        return this.getImageTile(cover, dimension === 0 ? 1 : dimension, tileIndex);
+        return this.getImageTile(
+            cover,
+            dimension === 0 ? 1 : dimension,
+            tileIndex
+        );
     }
 
     private validateSquare({ y, x, h, w }: any) {
@@ -128,25 +133,6 @@ export class ThumbnailHelper {
         return true;
     }
 
-    // public async setImage(cover: string, context: string) {
-    //     if (cover !== this._lastCover) {
-    //         this._lastCover = cover;
-    //         this._imageCache = null;
-    //     }
-
-    //     // TODO: Generate thumbnails for the perfect squared size
-    //     // for (const matrix of this._matrix) {
-    //     //     for (const item of matrix) {s
-    //     //         if (!item) continue;
-    //     //         const { context, pos } = item;
-    //     //         this.setImageFromUrl(this._lastCover, context, pos, 1);
-    //     //     }
-    //     // }
-
-    //     // Hardcoded until working (so the action has always a image)
-    //     return this.getImageTile(cover, 1, 0);
-    // }
-
     /**
      * Sets the action image but instead from file, from URL
      * @param {string} url
@@ -161,25 +147,49 @@ export class ThumbnailHelper {
         tileIndex: number
     ): Promise<string> {
         return new Promise((resolve, reject) => {
-            if (!this._imageCache) {
-                let image = new Image();
-                image.onload = () => {
-                    this._imageCache = image;
-                    const calculated = this.calculateImageSize(
-                        dimension,
-                        tileIndex
-                    );
-                    if (calculated) resolve(calculated);
-                    else reject('Could not get image');
-                };
-                image.onerror = () => {
-                    image.onload = null;
-                    image.onerror = null;
-                    (image as any) = null;
+            let image = new Image();
 
-                    reject(new Error('image failed to load'));
-                };
-                image.src = url;
+            image.onload = () => {
+                this._imageCache = image;
+                const calculated = this.calculateImageSize(
+                    dimension,
+                    tileIndex
+                );
+                if (calculated) resolve(calculated);
+                else reject('Could not get image');
+            };
+            image.onerror = (err) => {
+                image.onload = null;
+                image.onerror = null;
+                (image as any) = null;
+
+                reject(new Error('image failed to load'));
+            };
+
+
+            if (!this._imageCache) {
+                if (url.startsWith('TXT:')) {
+                    url = url.replace('TXT:', '');
+
+                    let canvas = document.createElement('canvas');
+                    canvas.height = 544;
+                    canvas.width = 544;
+
+                    const context = canvas.getContext('2d');
+                    if (!context) return;
+
+                    context.fillStyle = "#2b2b2b";
+                    context.fillRect(0, 0, 544, 544);
+
+                    context.fillStyle = "white";
+                    context.textBaseline = 'middle'; 
+                    context.textAlign = 'center'; 
+                    context.font = canvas.width / 5 + 'px san-serif';
+                    context.fillText(url, canvas.width / 2, canvas.width / 2);
+                    image.src = canvas.toDataURL('image/png');
+                } else {
+                    image.src = url;
+                }
             } else {
                 const calculated = this.calculateImageSize(
                     dimension,

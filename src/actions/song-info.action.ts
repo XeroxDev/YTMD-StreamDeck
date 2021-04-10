@@ -14,7 +14,7 @@ import { DefaultAction } from './default.action';
 export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private thumbnailHelper: ThumbnailHelper;
     private currentUrl: string;
-    private placeholderCover: string = 'https://via.placeholder.com/544?text=';
+    private placeholderCover: string = 'TXT:';
     private subscriptions: { [index: string]: { subject: Subject<any> } } = {};
 
     constructor(plugin: YTMD, actionName: string) {
