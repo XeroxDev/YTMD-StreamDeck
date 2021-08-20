@@ -2,7 +2,7 @@
 - [1. Table of content](#1-table-of-content)
 - [2. Badges](#2-badges)
 - [3. What is this Plugin?](#3-what-is-this-plugin)
-- [4. Update policy](#4-update-policy)
+- [4. Support / Feedback](#4-support--feedback)
 - [5. Actions](#5-actions)
 - [6. How to use it?](#6-how-to-use-it)
 - [7. How to contribute?](#7-how-to-contribute)
@@ -33,8 +33,8 @@
 This Stream Deck Plugin allows you to control the YouTube Music Desktop
 App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
-# 4. Update policy
-Updates come once a week. Either Saturday or Sunday. There are no fixed times when these will be published.
+# 4. Support / Feedback
+You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
 
 # 5. Actions
 

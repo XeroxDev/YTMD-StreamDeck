@@ -1,3 +1,4 @@
+import { DidReceiveSettingsEvent } from 'streamdeck-typescript';
 import { VolumeSettings } from '../interfaces/context-settings.interface';
 import { YTMDPi } from '../ytmd-pi';
 import { PisAbstract } from './pis.abstract';
@@ -33,16 +34,14 @@ export class VolumeChangePi extends PisAbstract {
         });
     }
 
-    public newSettingsReceived(): void {
-        this.setSettingsToHtml();
+    public newSettingsReceived({
+        payload: { settings },
+    }: DidReceiveSettingsEvent): void {
+        let value = settings.steps ?? 10;
+        this.setSettingsToHtml(value);
     }
 
-    private setSettingsToHtml() {
-        let value =
-            this.settingsManager.getContextSettings<VolumeSettings>(
-                this.context
-            )?.steps ?? 10;
-
+    private setSettingsToHtml(value: number = 10) {
         if (this.direction === 'DOWN') {
             if (value > 0) value = value * -1;
         }

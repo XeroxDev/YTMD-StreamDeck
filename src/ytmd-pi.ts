@@ -1,4 +1,5 @@
 import {
+    DidReceiveSettingsEvent,
     SDOnPiEvent,
     StreamDeckPropertyInspectorHandler,
 } from 'streamdeck-typescript';
@@ -103,8 +104,8 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     }
 
     @SDOnPiEvent('didReceiveSettings')
-    private receivedSettings() {
-        this.action.newSettingsReceived();
+    private receivedSettings(event: DidReceiveSettingsEvent) {
+        this.action.newSettingsReceived(event);
     }
 }
 
