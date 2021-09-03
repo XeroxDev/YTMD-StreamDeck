@@ -1,9 +1,9 @@
 name: Bug Report
 description: File a bug report
 title: "[Bug]: <title>"
-labels: [Type: Bug]
+labels: ["Type: Bug"]
 body:
-  - type: checkboxes
+- type: checkboxes
   attributes:
     label: Consent
     options:
@@ -11,22 +11,19 @@ body:
       required: true
     - label: I understand that the YTMDesktop Elgato Plugin has NO affiliation with Google, YouTube or the YTMDesktop application.
       required: true
-      
-  - type: textarea
+- type: textarea
   attributes:
     label: Current Behavior
     description: A concise description of what you're experiencing.
   validations:
     required: true
-    
-  - type: textarea
+- type: textarea
   attributes:
     label: Expected Behavior
     description: A concise description of what you expected to happen.
   validations:
     required: true
-    
-  - type: textarea
+- type: textarea
   attributes:
     label: Steps To Reproduce
     description: Steps to reproduce the behavior.
@@ -37,40 +34,35 @@ body:
       4. See error
   validations:
     required: true
-  
-  - type: input
+- type: input
   attributes:
     label: OS
     description: "Which OS are you using?"
     value: Windows
   validations:
     required: true
-    
-  - type: input
+- type: input
   attributes:
     label: OS Version
     description: "Which OS version are you on?"
-    value: 10
+    value: "10"
   validations:
     required: true
-    
-  - type: input
+- type: input
   attributes:
     label: Plugin Version
     description: "Which Version does your plugin has?"
     placeholder: v1.0.4.1
   validations:
     required: true
-  
-  - type: input
+- type: input
   attributes:
     label: YTMDesktop Version
     description: "Which Version does your YTMDesktop application has?"
     placeholder: v1.13.0
   validations:
     required: true
-    
-  - type: dropdown
+- type: dropdown
   attributes:
     label: How did you download the software?
     options:
@@ -79,8 +71,7 @@ body:
       - Discord
   validations:
     required: true
-    
-  - type: textarea
+- type: textarea
   attributes:
     label: Anything else?
     description: |
