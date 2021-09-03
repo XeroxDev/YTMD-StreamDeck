@@ -45,7 +45,7 @@ body:
   attributes:
     label: OS Version
     description: "Which OS version are you on?"
-    value: 10
+    value: "10"
   validations:
     required: true
 - type: input
