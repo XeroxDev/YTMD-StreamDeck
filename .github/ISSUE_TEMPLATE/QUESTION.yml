@@ -1,7 +1,7 @@
 name: Ask a Question
 description: You have questions? Please let us know!
 title: "[QUESTION]: <title>"
-labels: [Type: Question]
+labels: ["Type: Question"]
 body:
 - type: checkboxes
   attributes:
