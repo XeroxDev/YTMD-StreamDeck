@@ -1,0 +1,19 @@
+name: Question
+description: You have questions? Please let us know!
+title: "[QUESTION]: <title>"
+labels: [Type: Question]
+body:
+- type: checkboxes
+  attributes:
+    label: Consent
+    options:
+    - label: I have searched the existing issues and verified that there is no open issue for the same subject.
+      required: true
+    - label: I understand that the YTMDesktop Elgato Plugin has NO affiliation with Google, YouTube or the YTMDesktop application.
+      required: true
+- type: markdown
+  attributes:
+    label: Question
+    description: What is your question?
+  validations:
+    required: true
