@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.3](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.5.2...v1.5.3) (2021-11-27)
+
+
+### Bug Fixes
+
+* update information correctly on profile switch ([6f56ca0](https://github.com/XeroxDev/YTMD-StreamDeck/commit/6f56ca0243fd1b83439cd41c397ea935da98866c))
+
 ### [1.5.2](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.5.1...v1.5.2) (2021-08-20)
 
 
