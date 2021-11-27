@@ -30,6 +30,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
 
     @SDOnActionEvent('willAppear')
     public onContextAppear(event: WillAppearEvent): void {
+        this.reset();
         this.socket.onTick$
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(async (data) => {
@@ -98,6 +99,16 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                     event.context
                 );
             });
+    }
+    reset() {
+        this.titleIndex = 0;
+        this.authorIndex = 0;
+        this.albumIndex = 0;
+        this.currentTitle = '';
+        this.currentAuthor = '';
+        this.currentAlbum = '';
+        this.currentThumbnail = '';
+        this.currentUrl = '';
     }
 
     @SDOnActionEvent('willDisappear')
