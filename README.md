@@ -36,6 +36,8 @@ App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 # 4. Support / Feedback
 You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
 
+You can also join my discord [here](https://s.tswi.me/discord)
+
 # 5. Actions
 
 - Play / Pause Track
