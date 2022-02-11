@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import { AvailableCommandsInterface } from '../interfaces/available-commands.interface';
 import { GlobalSettingsInterface } from '../interfaces/global-settings.interface';
 import {
@@ -13,7 +13,7 @@ import {
 
 export class YtmdSocketHelper {
     private static _instance: YtmdSocketHelper;
-    private socket: SocketIOClient.Socket;
+    private socket: Socket;
     private _onTick$: Subject<TrackAndPlayerInterface> = new Subject<TrackAndPlayerInterface>();
     private _onPlayer$: Subject<PlayerInfoInterface> = new Subject<PlayerInfoInterface>();
     private _onTrack$: Subject<TrackInfoInterface> = new Subject<TrackInfoInterface>();
@@ -75,13 +75,9 @@ export class YtmdSocketHelper {
 
         this.socket = password
             ? io(`http://${host}:${port}`, {
-                  transportOptions: {
-                      polling: {
-                          extraHeaders: {
-                              password,
-                          },
-                      },
-                  },
+                  auth: {
+                      token: password
+                  }
               })
             : io(`http://${host}:${port}`);
 

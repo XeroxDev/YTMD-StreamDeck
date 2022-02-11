@@ -7,7 +7,7 @@ describe('YTMD-Socket-Helper Socket', () => {
     let client: YtmdSocketHelper;
 
     beforeEach(() => {
-        server = new io(5000);
+        server = new Server(5000);
         client = YtmdSocketHelper.getInstance();
 
         server.on('connection', (socket) => {
