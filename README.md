@@ -30,11 +30,12 @@
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
 # 3. What is this Plugin?
-This Stream Deck Plugin allows you to control the YouTube Music Desktop
-App [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
+This Stream Deck Plugin allows you to control the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
 # 4. Support / Feedback
 You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
+
+You can also join my discord [here](https://s.tswi.me/discord)
 
 # 5. Actions
 
