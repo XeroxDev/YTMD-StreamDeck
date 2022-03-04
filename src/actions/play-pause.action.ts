@@ -1,14 +1,9 @@
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import {
-    KeyUpEvent,
-    SDOnActionEvent,
-    WillAppearEvent,
-    WillDisappearEvent,
-} from 'streamdeck-typescript';
-import { StateType } from 'streamdeck-typescript/dist/src/interfaces/enums';
-import { TrackAndPlayerInterface } from '../interfaces/information.interface';
-import { YTMD } from '../ytmd';
-import { DefaultAction } from './default.action';
+import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {KeyUpEvent, SDOnActionEvent, StateType, WillAppearEvent, WillDisappearEvent,} from 'streamdeck-typescript';
+import {TrackAndPlayerInterface} from '../interfaces/information.interface';
+import {YTMD} from '../ytmd';
+import {DefaultAction} from './default.action';
+import {PlayPauseSettings} from "../interfaces/context-settings.interface";
 
 export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private playing = false;
@@ -42,12 +37,28 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     }
 
     @SDOnActionEvent('keyUp')
-    onKeypressUp(event: KeyUpEvent) {
-        this.socket.trackPlayPause();
+    onKeypressUp({context, payload: {settings}}: KeyUpEvent<PlayPauseSettings>) {
+        if (!settings?.action) {
+            this.socket.trackPlayPause();
+            return;
+        }
+        switch (settings?.action.toUpperCase()) {
+            case 'PLAY':
+                this.socket.trackPlay();
+                break;
+            case 'PAUSE':
+                this.socket.trackPause();
+                break;
+            default:
+                this.socket.trackPlayPause();
+                break;
+        }
+
+        this.plugin.setState(this.playing ? StateType.ON : StateType.OFF, context);
     }
 
     handlePlayerData(
-        { context }: WillAppearEvent,
+        {context}: WillAppearEvent,
         data: TrackAndPlayerInterface
     ) {
         if (Object.keys(data).length === 0) {
