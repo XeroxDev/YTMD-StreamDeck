@@ -20,6 +20,8 @@ import { YTMD } from '../src/ytmd';
 import { ActionTypes } from '../src/interfaces/enums';
 import { NextPrevAction } from '../src/actions/next-prev-action';
 
+// TODO: Some day we should write better tests then just checking for undefined. Especially for the actions.
+
 class FakeApi extends StreamDeckPluginHandler {
     state: StateType = StateType.OFF;
     title: string;
@@ -264,10 +266,13 @@ describe('Testing all actions', () => {
             ActionTypes.PLAY_PAUSE
         );
         describe('Test onKeypressUp()', () => {
-            it('stop playing', () => {
+            it('should not throw any exceptions', () => {
+                const playKeyUp = fakeKeyUpEvent;
+                playKeyUp.payload.settings = {action: "TOGGLE"};
                 expect(playPause.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
-            });
-            it('start playing', () => {
+                playKeyUp.payload.settings.action = 'PLAY';
+                expect(playPause.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
+                playKeyUp.payload.settings.action = 'PAUSE';
                 expect(playPause.onKeypressUp(fakeKeyUpEvent)).to.be.undefined;
             });
         });
