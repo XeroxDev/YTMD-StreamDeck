@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.5.3...v1.6.0) (2022-03-31)
+
+
+### Features
+
+* add select dropdown to play-pause action ([d9590cd](https://github.com/XeroxDev/YTMD-StreamDeck/commit/d9590cdf510d23fbcda557b7987ea2d51a89628f)), closes [#44](https://github.com/XeroxDev/YTMD-StreamDeck/issues/44)
+* show cover while paused ([d386607](https://github.com/XeroxDev/YTMD-StreamDeck/commit/d3866074767d58cd55d5e26f9698c92a1b11041d)), closes [#43](https://github.com/XeroxDev/YTMD-StreamDeck/issues/43)
+
+
+### Bug Fixes
+
+* add missing noopener ([d5eb8d7](https://github.com/XeroxDev/YTMD-StreamDeck/commit/d5eb8d700e148f5a21c97b91da5efa942f1f9e22))
+
 ### [1.5.3](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.5.2...v1.5.3) (2021-11-27)
 
 
