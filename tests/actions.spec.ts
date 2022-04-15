@@ -292,15 +292,15 @@ describe('Testing all actions', () => {
             it('should change title', () => {
                 playPause.handlePlayerData(fakeWillAppearEvent, <
                     TrackAndPlayerInterface
-                    >{player: {seekbarCurrentPositionHuman: '01:23'}});
-                expect(fakeApi.title).to.be.equals('01:23');
+                    >{player: {seekbarCurrentPosition: 90}});
+                expect(fakeApi.title).to.be.equals('01:30');
             });
             it('should change state to OFF', () => {
                 playPause.handlePlayerData(fakeWillAppearEvent, <
                     TrackAndPlayerInterface
                     >{
                     player: {
-                        seekbarCurrentPositionHuman: '01:23',
+                        seekbarCurrentPosition: 90,
                         isPaused: false,
                     },
                 });
@@ -311,7 +311,7 @@ describe('Testing all actions', () => {
                     TrackAndPlayerInterface
                     >{
                     player: {
-                        seekbarCurrentPositionHuman: '01:23',
+                        seekbarCurrentPosition: 90,
                         isPaused: true,
                     },
                 });
