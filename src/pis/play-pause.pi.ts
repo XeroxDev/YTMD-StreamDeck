@@ -1,12 +1,15 @@
-import { GlobalSettingsInterface } from '../interfaces/global-settings.interface';
-import { YTMDPi } from '../ytmd-pi';
-import { PisAbstract } from './pis.abstract';
+import {GlobalSettingsInterface} from '../interfaces/global-settings.interface';
+import {YTMDPi} from '../ytmd-pi';
+import {PisAbstract} from './pis.abstract';
+import {DidReceiveSettingsEvent} from "streamdeck-typescript";
+import {PlayPauseSettings} from "../interfaces/context-settings.interface";
 
 export class PlayPausePi extends PisAbstract {
     private mainElement: HTMLElement;
     private hostElement: HTMLInputElement;
     private portElement: HTMLInputElement;
     private passwordElement: HTMLInputElement;
+    private actionElement: HTMLInputElement;
     private saveElement: HTMLButtonElement;
 
     constructor(pi: YTMDPi, context: string) {
@@ -21,15 +24,17 @@ export class PlayPausePi extends PisAbstract {
         this.passwordElement = document.getElementById(
             'password'
         ) as HTMLInputElement;
+        this.actionElement = document.getElementById('action') as HTMLInputElement;
         this.saveElement = document.getElementById('save') as HTMLButtonElement;
 
         this.saveElement.onclick = () => this.saveSettings();
+        pi.requestSettings();
     }
 
     public newGlobalSettingsReceived(): void {
         let settings = this.settingsManager.getGlobalSettings<GlobalSettingsInterface>();
         if (Object.keys(settings).length < 3)
-            settings = { host: 'localhost', port: '9863', password: '' };
+            settings = {host: 'localhost', port: '9863', password: ''};
 
         const {
             host = 'localhost',
@@ -42,10 +47,16 @@ export class PlayPausePi extends PisAbstract {
         this.passwordElement.value = password;
     }
 
+    public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
+        this.actionElement.value = settings.action ?? "TOGGLE";
+    }
+
     private saveSettings() {
         const host = this.hostElement.value,
             port = this.portElement.value,
-            password = this.passwordElement.value;
-        this.settingsManager.setGlobalSettings({ host, port, password });
+            password = this.passwordElement.value,
+            action = this.actionElement.value;
+        this.settingsManager.setGlobalSettings({host, port, password, action});
+        this.settingsManager.setContextSettingsAttributes(this.context, {action: action ?? "TOGGLE"});
     }
 }

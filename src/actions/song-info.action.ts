@@ -18,7 +18,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private currentAlbum: string;
     private currentThumbnail: string;
     private currentUrl: string;
-    private placeholderCover: string = 'https://via.placeholder.com/128?text=';
+    private placeholderCover: string = 'https://via.placeholder.com/128/000000/FFFFFF/?text=';
 
     constructor(private plugin: YTMD, actionName: string) {
         super(plugin, actionName);
@@ -128,7 +128,6 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
             player: { hasSong, isPaused },
         } = data;
         if (isPaused) {
-            data.track.cover = this.placeholderCover + 'Paused';
             data.track.title = 'Paused';
             data.track.author = 'Paused';
             data.track.album = 'Paused';
@@ -137,6 +136,10 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
             data.track.title = 'N/A';
             data.track.author = 'N/A';
             data.track.album = 'N/A';
+        }
+        
+        if (!data.track.cover) {
+            data.track.cover = this.placeholderCover + 'N%2FA';
         }
 
         return data;

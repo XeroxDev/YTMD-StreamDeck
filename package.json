@@ -1,6 +1,6 @@
 {
   "name": "fun.shiro.ytmd.sdplugin",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "",
   "scripts": {
     "watch": "start watchify --debug -p tsify src/ytmd-pi.ts -o bundle-pi.js && start watchify --debug -p tsify src/ytmd.ts -o bundle.js",
@@ -20,9 +20,9 @@
   },
   "homepage": "https://github.com/XeroxDev/YTMD-StreamDeck#readme",
   "dependencies": {
-    "rxjs": "^6.6.3",
+    "rxjs": "^6.6.7",
     "socket.io-client": "^4.4.1",
-    "streamdeck-typescript": "^3.1.2"
+    "streamdeck-typescript": "^3.1.4"
   },
   "keywords": [
     "music",
@@ -44,32 +44,32 @@
     "ytmd-streamdeck"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^12.0.1",
-    "@commitlint/config-conventional": "^12.0.1",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@tsconfig/recommended": "^1.0.1",
-    "@types/chai": "^4.2.15",
-    "@types/mocha": "^8.2.1",
-    "@types/node": "^14.14.31",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^8.2.3",
+    "@types/node": "^14.18.12",
     "@types/socket.io": "^3.0.2",
     "@types/socket.io-client": "^3.0.0",
     "browserify": "^17.0.0",
-    "chai": "^4.3.0",
-    "detect-indent": "^6.0.0",
+    "chai": "^4.3.6",
+    "detect-indent": "^6.1.0",
     "detect-newline": "^3.1.0",
     "esm": "^3.2.25",
     "husky": "^3.1.0",
     "jsdom": "16.4.0",
     "jsdom-global": "3.0.2",
-    "mocha": "^8.3.0",
+    "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "pnpm": "^5.18.10",
     "socket.io": "^4.4.1",
-    "standard-version": "^9.1.1",
+    "standard-version": "^9.3.2",
     "stringify-package": "^1.0.1",
-    "terser": "^5.6.0",
+    "terser": "^5.12.0",
     "ts-node": "^9.1.1",
-    "tsify": "^5.0.2",
-    "typescript": "^4.2.2",
+    "tsify": "^5.0.4",
+    "typescript": "^4.6.2",
     "watchify": "^4.0.0"
   },
   "husky": {
