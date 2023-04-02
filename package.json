@@ -66,9 +66,9 @@
     "standard-version": "^9.3.2",
     "stringify-package": "^1.0.1",
     "terser": "^5.12.0",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.9.1",
     "tsify": "^5.0.4",
-    "typescript": "^4.6.2",
+    "typescript": "^5.0.3",
     "watchify": "^4.0.0"
   },
   "husky": {
