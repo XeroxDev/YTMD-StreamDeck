@@ -295,7 +295,7 @@ describe('Testing all actions', () => {
                     >{player: {seekbarCurrentPosition: 90}});
                 expect(fakeApi.title).to.be.equals('01:30');
             });
-            it('should change state to OFF', () => {
+            it('should change state to ON', () => {
                 playPause.handlePlayerData(fakeWillAppearEvent, <
                     TrackAndPlayerInterface
                     >{
@@ -304,9 +304,9 @@ describe('Testing all actions', () => {
                         isPaused: false,
                     },
                 });
-                expect(fakeApi.state).to.be.equals(StateType.OFF);
+                expect(fakeApi.state).to.be.equals(StateType.ON);
             });
-            it('should change state to ON', () => {
+            it('should change state to OFF', () => {
                 playPause.handlePlayerData(fakeWillAppearEvent, <
                     TrackAndPlayerInterface
                     >{
@@ -315,7 +315,7 @@ describe('Testing all actions', () => {
                         isPaused: true,
                     },
                 });
-                expect(fakeApi.state).to.be.equals(StateType.ON);
+                expect(fakeApi.state).to.be.equals(StateType.OFF);
             });
             it('should set alert to 1', () => {
                 playPause.handlePlayerData(

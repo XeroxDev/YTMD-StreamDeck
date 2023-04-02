@@ -53,10 +53,14 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         }
         switch (settings?.action.toUpperCase()) {
             case 'PLAY':
-                this.socket.trackPlay();
+                if (!this.playing) {
+                    this.socket.trackPlay();
+                }
                 break;
             case 'PAUSE':
-                this.socket.trackPause();
+                if (this.playing) {
+                    this.socket.trackPause();
+                }
                 break;
             default:
                 this.socket.trackPlayPause();
@@ -83,8 +87,8 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
             this.plugin.setTitle(this.currentTitle, context);
         }
 
-        if (this.playing !== data.player.isPaused) {
-            this.playing = data.player.isPaused;
+        if (this.playing === data.player.isPaused) {
+            this.playing = !data.player.isPaused;
             this.plugin.setState(
                 this.playing ? StateType.ON : StateType.OFF,
                 context
