@@ -32,6 +32,8 @@
 # 3. What is this Plugin?
 This Stream Deck Plugin allows you to control the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
+Note: we don't support v1.13.0 or lower, we recommend updating to the latest Nightly pre-release
+
 # 4. Support / Feedback
 You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
 
