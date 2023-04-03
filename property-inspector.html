@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>YTMD - PI</title>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="sdpi.css">
-	<script src="bundle-pi.js"></script>
+    <title>YTMD - PI</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="sdpi.css">
+    <script src="bundle-pi.js"></script>
 </head>
 <body>
 <div class="sdpi-wrapper" id="mainSettings" style="display: none">
-	<div class="sdpi-item">
-		<div class="sdpi-item-label host-label">Host</div>
-		<input class="sdpi-item-value" type="text" id="host">
-	</div>
-	<div class="sdpi-item">
-		<div class="sdpi-item-label port-label">Port</div>
-		<input class="sdpi-item-value" type="number" id="port">
-	</div>
-	<div class="sdpi-item">
-		<div class="sdpi-item-label password-label">Password</div>
-		<input class="sdpi-item-value" type="password" id="password">
-	</div>
-	<div class="sdpi-item">
-		<div class="sdpi-item-label username-label">Action</div>
-		<select class="sdpi-item-value" id="action">
-			<option value="TOGGLE" selected>Toggle</option>
-			<option value="PAUSE">Pause</option>
-			<option value="PLAY">Play</option>
-		</select>
-	</div>
-	<div class="sdpi-item">
-		<button class="sdpi-item-value save-label" id="save">Save</button>
-	</div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label host-label">Host</div>
+        <input class="sdpi-item-value" type="text" id="host">
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label port-label">Port</div>
+        <input class="sdpi-item-value" type="number" id="port">
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label password-label">Password</div>
+        <input class="sdpi-item-value" type="password" id="password">
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label action-label">Action</div>
+        <select class="sdpi-item-value" id="action">
+            <option value="TOGGLE" selected>Toggle</option>
+            <option value="PAUSE">Pause</option>
+            <option value="PLAY">Play</option>
+        </select>
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label display-label">Display Format</div>
+        <textarea class="sdpi-item-value" type="text" id="displayFormat">{current}</textarea>
+    </div>
+    <div style="padding: 5px;">
+        <p><strong>Available variables:</strong> {current}, {remaining}, {duration}</p>
+        <p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p>
+        <p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>
+    </div>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value save-label" id="save">Save</button>
+    </div>
 </div>
 <div class="sdpi-wrapper" id="volumeSettings" style="display: none">
-	<div class="sdpi-item">
-		<div class="sdpi-item-label volume-steps-label">Volume steps</div>
-		<input class="sdpi-item-value" type="number" id="volumeInput">
-	</div>
-	<div class="sdpi-item">
-		<details class="message question">
-			<summary class="automatic-save-label">This saves automatically</summary>
-		</details>
-	</div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label volume-steps-label">Volume steps</div>
+        <input class="sdpi-item-value" type="number" id="volumeInput">
+    </div>
+    <div class="sdpi-item">
+        <details class="message question">
+            <summary class="automatic-save-label">This saves automatically</summary>
+        </details>
+    </div>
 </div>
 <hr>
 <h3>Support / Feedback</h3>
 <p>
-	You found a bug? You have a feature request? <br>
-	I would love to hear about it <a href="https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose" rel="noopener" target="_blank">here</a>!
+    You found a bug? You have a feature request? <br>
+    I would love to hear about it <a href="https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose" rel="noopener"
+                                     target="_blank">here</a>!
 </p>
 </body>
 </html>

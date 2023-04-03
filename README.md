@@ -32,6 +32,8 @@
 # 3. What is this Plugin?
 This Stream Deck Plugin allows you to control the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
+> **Note**: we don't support v1.13.0 or lower, we recommend updating to the latest Nightly pre-release
+
 # 4. Support / Feedback
 You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
 
@@ -64,11 +66,11 @@ You can also join my discord [here](https://s.tswi.me/discord)
 3. Add Actions to Stream Deck.
 4. Activate the Companion Server / Remote control from YTMD App
     - Settings > Integration > "Enable Companion Server" or "Remote control" (Should be the first entry with an open icon)
-6. Click on the open Icon or go to http://localhost:9863/ (Default)
-7. Optional: Activate password protection. else go to 7.
-8. Click on Play/Pause button.
-9. Add all settings. (Host, Port, Password)
-10. Click save
+5. Click on the open Icon or go to http://localhost:9863/ (Default)
+6. Optional: Activate password protection. else go to 7.
+7. Click on Play/Pause button.
+8. Add all settings. (Host, Port, Password)
+9. Click save
 
 # 7. How to contribute?
 

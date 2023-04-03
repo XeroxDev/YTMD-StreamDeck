@@ -1,19 +1,16 @@
-import {
-    DidReceiveGlobalSettingsEvent,
-    SDOnActionEvent,
-    StreamDeckPluginHandler,
-} from 'streamdeck-typescript';
-import { LikeDislikeAction } from './actions/like-dislike.action';
-import { MuteAction } from './actions/mute.action';
-import { NextPrevAction } from './actions/next-prev-action';
-import { PlayPauseAction } from './actions/play-pause.action';
-import { RepeatAction } from './actions/repeat.action';
-import { ShuffleAction } from './actions/shuffle.action';
-import { SongInfoAction } from './actions/song-info.action';
-import { VolChangeAction } from './actions/vol-change.action';
-import { YtmdSocketHelper } from './helper/ytmd-socket.helper';
-import { ActionTypes } from './interfaces/enums';
-import { GlobalSettingsInterface } from './interfaces/global-settings.interface';
+import {DidReceiveGlobalSettingsEvent, SDOnActionEvent, StreamDeckPluginHandler,} from 'streamdeck-typescript';
+import {LikeDislikeAction} from './actions/like-dislike.action';
+import {MuteAction} from './actions/mute.action';
+import {NextPrevAction} from './actions/next-prev-action';
+import {PlayPauseAction} from './actions/play-pause.action';
+import {RepeatAction} from './actions/repeat.action';
+import {ShuffleAction} from './actions/shuffle.action';
+import {SongInfoAction} from './actions/song-info.action';
+import {VolChangeAction} from './actions/vol-change.action';
+import {YtmdSocketHelper} from './helper/ytmd-socket.helper';
+import {ActionTypes} from './interfaces/enums';
+import {GlobalSettingsInterface} from './interfaces/global-settings.interface';
+import {LibraryAction} from "./actions/library.action";
 
 export class YTMD extends StreamDeckPluginHandler {
     constructor() {
@@ -29,6 +26,7 @@ export class YTMD extends StreamDeckPluginHandler {
         new SongInfoAction(this, ActionTypes.SONG_INFO);
         new ShuffleAction(this, ActionTypes.SHUFFLE);
         new RepeatAction(this, ActionTypes.REPEAT);
+        new LibraryAction(this, ActionTypes.LIBRARY);
     }
 
     @SDOnActionEvent('didReceiveGlobalSettings')
