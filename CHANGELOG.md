@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.6.0...v1.7.0) (2023-04-03)
+
+
+### Features
+
+* add display settings ([95aecfd](https://github.com/XeroxDev/YTMD-StreamDeck/commit/95aecfde6b8b0b8333a4bd231c0b41ea9e022a8e)), closes [#48](https://github.com/XeroxDev/YTMD-StreamDeck/issues/48)
+* add library action ([574cb55](https://github.com/XeroxDev/YTMD-StreamDeck/commit/574cb552fab057517a8de1e91cf7cf746fa0056e)), closes [#50](https://github.com/XeroxDev/YTMD-StreamDeck/issues/50)
+
 ## [1.6.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.5.3...v1.6.0) (2022-03-31)
 
 
