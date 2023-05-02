@@ -20,7 +20,7 @@
 [![Issues-pr closed](https://img.shields.io/github/issues-pr-closed/XeroxDev/YTMD-StreamDeck?color=yellow&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/pulls?q=is%3Apr+is%3Aclosed)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/compare)
 
-[![Build](https://img.shields.io/github/workflow/status/XeroxDev/YTMD-StreamDeck/CI-CD?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/actions?query=workflow%3A%22CI-CD%22)
+[![Build](https://img.shields.io/github/actions/workflow/status/XeroxDev/YTMD-StreamDeck/main.yml?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/actions?query=workflow%3A%22CI-CD%22)
 [![Release](https://img.shields.io/github/release/XeroxDev/YTMD-StreamDeck?color=black&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/releases)
 ![Codecov](https://img.shields.io/codecov/c/github/XeroxDev/YTMD-StreamDeck?style=for-the-badge)
 
@@ -71,6 +71,15 @@ You can also join my discord [here](https://s.tswi.me/discord)
 7. Click on Play/Pause button.
 8. Add all settings. (Host, Port, Password)
 9. Click save
+
+<details>
+  <summary>Video Tutorial</summary>
+  <a href="https://www.youtube.com/watch?v=WVpHYHxJsXY" target="_blank" rel="noopener noreferrer">
+  	<img src="https://help.xeroxdev.de/assets/ytmd-streamdeck-video.png" />
+  </a>
+  
+  - By Vahyking (Thank you!)
+</details>
 
 # 7. How to contribute?
 
