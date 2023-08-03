@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   rxjs:
     specifier: ^6.6.7
@@ -1753,7 +1757,7 @@ packages:
     dependencies:
       acorn-node: 1.8.2
       defined: 1.0.0
-      minimist: 1.2.5
+      minimist: 1.2.8
     dev: true
 
   /diff@4.0.2:
@@ -2306,7 +2310,7 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
     dependencies:
-      minimist: 1.2.5
+      minimist: 1.2.8
       neo-async: 2.6.2
       source-map: 0.6.1
       wordwrap: 1.0.0
@@ -2945,7 +2949,7 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
     dependencies:
-      minimist: 1.2.5
+      minimist: 1.2.8
     dev: true
 
   /jsonfile@6.1.0:
@@ -3171,8 +3175,8 @@ packages:
       kind-of: 6.0.3
     dev: true
 
-  /minimist@1.2.5:
-    resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
+  /minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
     dev: true
 
   /mkdirp-classic@0.5.3:
@@ -4397,7 +4401,7 @@ packages:
   /subarg@1.0.0:
     resolution: {integrity: sha1-9izxdYHplrSPyWVpn1TAauJouNI=}
     dependencies:
-      minimist: 1.2.5
+      minimist: 1.2.8
     dev: true
 
   /supports-color@5.5.0:
