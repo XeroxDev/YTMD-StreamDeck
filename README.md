@@ -69,6 +69,15 @@ You can also join my discord [here](https://x.xeroxdev.de/s/discord)
 9. If they match, confirm the authorization in the YTMDesktop App
 10. You are ready to go! (Steps 6-9 are only needed once/when the plugin isn't authorized)
 
+<details>
+  <summary>Video Tutorial</summary>
+  <a href="https://www.youtube.com/watch?v=WVpHYHxJsXY" target="_blank" rel="noopener noreferrer">
+  	<img src="https://help.xeroxdev.de/assets/ytmd-streamdeck-video.png" />
+  </a>
+  
+  - By Vahyking (Thank you!)
+</details>
+
 # 7. How to contribute?
 
 Just fork the repository and create PR's.
