@@ -1,12 +1,13 @@
 name: CI-CD
 
 on:
-  pull_request:
   push:
     branches:
       - master
-    tags:
-      - 'v*'
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   TestAndDeploy:
@@ -22,10 +23,18 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          if [ -e package-lock.json ]; then
+            npm ci
+          else
+            npm i
+          fi
 
-      - name: Run tests
-        run: npm run test
+      - name: release-please
+        uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          default-branch: master
 
       - name: Run build
         run: npm run build
@@ -53,34 +62,8 @@ jobs:
       - name: Validate plugin and build .streamDeckPlugin file
         run: ./DistributionTool.exe -b -i fun.shiro.ytmd.sdPlugin -o ./
 
-      - name: Generate coverage files
-        run: npm run coverage
-
-      - name: Upload codecov
-        uses: codecov/codecov-action@v1
-        with:
-          file: ./coverage/coverage-final.json
-          fail_ci_if_error: false
-
-      - name: Create release
-        if: startsWith(github.ref, 'refs/tags/v')
-        id: create_release
-        uses: actions/create-release@latest
+      - name: Upload Release Artifact
+        if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: For a detailed changelog, view the [CHANGELOG.md](https://github.com/XeroxDev/YTMD-StreamDeck/blob/master/CHANGELOG.md) file
-
-      - name: Upload .streamDeckPlugin
-        if: startsWith(github.ref, 'refs/tags/v')
-        id: upload_release_asset
-        uses: actions/upload-release-asset@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./fun.shiro.ytmd.streamDeckPlugin
-          asset_name: fun.shiro.ytmd.streamDeckPlugin
-          asset_content_type: application/zip
+        run: gh release upload ${{ steps.release.outputs.tag_name }} ./fun.shiro.ytmd.streamDeckPlugin --clobber

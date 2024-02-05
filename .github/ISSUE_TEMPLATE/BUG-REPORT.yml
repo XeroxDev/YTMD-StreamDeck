@@ -52,14 +52,14 @@ body:
   attributes:
     label: Plugin Version
     description: "Which Version does your plugin has?"
-    placeholder: v1.0.4.1
+    placeholder: v1.7.0 # x-release-please-version
   validations:
     required: true
 - type: input
   attributes:
     label: YTMDesktop Version
     description: "Which Version does your YTMDesktop application has?"
-    placeholder: v1.13.0
+    placeholder: v2.0.0
   validations:
     required: true
 - type: dropdown

@@ -1,13 +1,8 @@
-import { distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
-import {
-    WillAppearEvent,
-    KeyUpEvent,
-    WillDisappearEvent,
-    SDOnActionEvent,
-} from 'streamdeck-typescript';
-import { ActionTypes } from '../interfaces/enums';
-import { YTMD } from '../ytmd';
-import { DefaultAction } from './default.action';
+import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent,} from 'streamdeck-typescript';
+import {ActionTypes} from '../interfaces/enums';
+import {YTMD} from '../ytmd';
+import {DefaultAction} from './default.action';
+import {RepeatMode, StateOutput} from "ytmdesktop-ts-companion";
 
 export class RepeatAction extends DefaultAction<RepeatAction> {
     private icons = {
@@ -18,6 +13,9 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
         ALL:
             'iVBORw0KGgoAAAANSUhEUgAAAJAAAACGCAMAAAAFF/MMAAACqVBMVEUAAACcnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJzszOJyAAAA4nRSTlMAAQIDBAYHCAkKCwwNDg8QERIUFRYXGBkaGxwdHh8gISIjJCUmJygpKywtMDEyNDU2Nzk6PD0+P0BBQkNERkdISUpLTE1OT1BRUlNVVldYWVpbXF1eYmNkZWZoaWtsbW5vcHFyc3R1dnd4enx9fn+AgYKEhYaHiIuMjo+QkZOUlZeYmZqbnJ2en6ChoqOkpaanqKmqq62ur7CxsrO0tba3uLm6u7y9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',
     };
+    private events: { context: string, method: (state: StateOutput) => void }[] = [];
+    private currentMode: RepeatMode = RepeatMode.NONE;
+
 
     constructor(private plugin: YTMD, actionName: ActionTypes) {
         super(plugin, actionName);
@@ -25,27 +23,88 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
 
     @SDOnActionEvent('willAppear')
     onContextAppear(event: WillAppearEvent<any>): void {
-        this.socket.onTick$
-            .pipe(
-                map((data) => data.player.repeatType),
-                distinctUntilChanged(),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((repeatType) => {
+        // this.socket.onTick$
+        //     .pipe(
+        //         map((data) => data.player.repeatType),
+        //         distinctUntilChanged(),
+        //         takeUntil(this.destroy$)
+        //     )
+        //     .subscribe((repeatType) => {
+        //         this.plugin.setImage(
+        //             `data:image/png;base64,${this.icons[repeatType]}`,
+        //             event.context
+        //         );
+        //     });
+
+        let found = this.events.find(e => e.context === event.context);
+        if (found) {
+            return;
+        }
+
+        found = {
+            context: event.context,
+            method: (state: StateOutput) => {
+                if (!state.player.queue?.repeatMode) {
+                    return;
+                }
+
+                const currentMode = state.player.queue.repeatMode;
+
+                let mode: "NONE" | "ONE" | "ALL" = "NONE";
+                switch (this.currentMode) {
+                    case RepeatMode.ALL:
+                        mode = "ALL";
+                        break;
+                    case RepeatMode.ONE:
+                        mode = "ONE";
+                        break;
+                    default:
+                        mode = "NONE";
+                        break;
+                }
+
+
                 this.plugin.setImage(
-                    `data:image/png;base64,${this.icons[repeatType]}`,
+                    `data:image/png;base64,${this.icons[mode]}`,
                     event.context
                 );
-            });
-    }
+            }
+        };
 
-    @SDOnActionEvent('keyUp')
-    onKeypressUp(event: KeyUpEvent<any>): void {
-        this.socket.playerRepeat();
+        this.events.push(found);
+
+        this.socket.addStateListener(found.method);
     }
 
     @SDOnActionEvent('willDisappear')
     onContextDisappear(event: WillDisappearEvent<any>): void {
-        this.destroy$.next();
+        const found = this.events.find(e => e.context === event.context);
+        if (!found) {
+            return;
+        }
+
+        this.socket.removeStateListener(found.method);
+        this.events = this.events.filter(e => e.context !== event.context);
+    }
+
+    @SDOnActionEvent('keyUp')
+    onKeypressUp(event: KeyUpEvent<any>): void {
+        let mode: RepeatMode = this.currentMode;
+        switch (this.currentMode) {
+            case RepeatMode.ALL:
+                mode = RepeatMode.NONE;
+                break;
+            case RepeatMode.ONE:
+                mode = RepeatMode.ALL;
+                break;
+            default:
+                mode = RepeatMode.ONE;
+                break;
+        }
+
+        this.rest.repeatMode(mode).catch(reason => {
+            console.error(reason);
+            this.plugin.showAlert(event.context)
+        })
     }
 }

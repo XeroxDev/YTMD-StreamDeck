@@ -193,25 +193,6 @@
       "SupportedInMultiActions": true,
       "Tooltip": "Repeat",
       "UUID": "fun.shiro.ytmdc.repeat"
-    },
-    {
-      "Icon": "icons/library-on",
-      "Name": "Library",
-      "States": [
-        {
-          "Image": "icons/library-off",
-          "TitleAlignment": "middle",
-          "FontSize": "16"
-        },
-        {
-          "Image": "icons/library-on",
-          "TitleAlignment": "middle",
-          "FontSize": "16"
-        }
-      ],
-      "SupportedInMultiActions": true,
-      "Tooltip": "Library",
-      "UUID": "fun.shiro.ytmdc.library"
     }
   ],
   "CodePath": "action.html",

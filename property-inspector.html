@@ -8,6 +8,14 @@
 </head>
 <body>
 <div class="sdpi-wrapper" id="mainSettings" style="display: none">
+    <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
+        <div class="sdpi-item-label auth-label">Auth Status</div>
+        <div class="sdpi-item-value"><strong id="authStatus" style="color: red;">not connected</strong></div>
+    </div>
+    <div class="sdpi-item" style="">
+        <button class="sdpi-item-value" id="authButton">Authorize</button><br>
+    </div>
+    <hr>
     <div class="sdpi-item">
         <div class="sdpi-item-label host-label">Host</div>
         <input class="sdpi-item-value" type="text" id="host">
@@ -15,10 +23,6 @@
     <div class="sdpi-item">
         <div class="sdpi-item-label port-label">Port</div>
         <input class="sdpi-item-value" type="number" id="port">
-    </div>
-    <div class="sdpi-item">
-        <div class="sdpi-item-label password-label">Password</div>
-        <input class="sdpi-item-value" type="password" id="password">
     </div>
     <div class="sdpi-item">
         <div class="sdpi-item-label action-label">Action</div>

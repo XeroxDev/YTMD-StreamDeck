@@ -1,58 +1,53 @@
-import { BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import {
-    KeyUpEvent,
-    SDOnActionEvent,
-    WillAppearEvent,
-    WillDisappearEvent,
-} from 'streamdeck-typescript';
-import { YTMD } from '../ytmd';
-import { DefaultAction } from './default.action';
+import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent,} from 'streamdeck-typescript';
+import {YTMD} from '../ytmd';
+import {DefaultAction} from './default.action';
+import {StateOutput} from "ytmdesktop-ts-companion";
 
 export class MuteAction extends DefaultAction<MuteAction> {
-    static currentVolume$: BehaviorSubject<number> = new BehaviorSubject(50);
-    static lastVolume = 50;
+    private events: { context: string, method: (state: StateOutput) => void }[] = [];
+    private muted: boolean = false;
 
     constructor(private plugin: YTMD, actionName: string) {
         super(plugin, actionName);
     }
 
     @SDOnActionEvent('willAppear')
-    onContextAppear({ context }: WillAppearEvent) {
-        this.socket.onTick$
-            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((data) => {
-                if (Object.keys(data).length === 0) {
-                    return;
-                }
-                const vol = data.player.volumePercent;
-                MuteAction.currentVolume$.next(vol);
-            });
+    onContextAppear({context}: WillAppearEvent) {
+        let found = this.events.find(e => e.context === context);
+        if (found) {
+            return;
+        }
 
-        MuteAction.currentVolume$
-            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((vol) => {
-                MuteAction.lastVolume = vol <= 0 ? MuteAction.lastVolume : vol;
-                this.plugin.setTitle(
-                    `${Math.round(
-                        !vol || vol <= 0 ? 0 : vol >= 100 ? 100 : vol
-                    )}%`,
-                    context
-                );
-            });
+        found = {
+            context: context,
+            method: (state: StateOutput) => this.muted = state.player.volume === 0
+        };
+
+        this.events.push(found);
+
+        this.socket.addStateListener(found.method);
     }
 
     @SDOnActionEvent('willDisappear')
     onContextDisappear(event: WillDisappearEvent): void {
-        this.destroy$.next();
+        const found = this.events.find(e => e.context === event.context);
+        if (!found) {
+            return;
+        }
+
+        this.socket.removeStateListener(found.method);
+        this.events = this.events.filter(e => e.context !== event.context);
     }
 
     @SDOnActionEvent('keyUp')
     onKeypressUp(event: KeyUpEvent) {
-        const current = MuteAction.currentVolume$.getValue();
-        const last = MuteAction.lastVolume;
-        const value = current > 0 ? -1 : last;
-        MuteAction.currentVolume$.next(value);
-        this.socket.playerSetVolume(value);
+        this.muted = !this.muted;
+        this.muted ? this.rest.mute().catch(reason => {
+            console.error(reason);
+            this.plugin.showAlert(event.context)
+        }) : this.rest.unmute().catch(reason => {
+            console.error(reason);
+            this.plugin.showAlert(event.context)
+        });
     }
 }
