@@ -7,13 +7,13 @@
     <script src="bundle-pi.js"></script>
 </head>
 <body>
-<div class="sdpi-wrapper" id="mainSettings" style="display: none">
+<div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
     <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
         <div class="sdpi-item-label auth-label">Auth Status</div>
-        <div class="sdpi-item-value"><strong id="authStatus" style="color: red;">not connected</strong></div>
+        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not authenticated</strong></div>
     </div>
     <div class="sdpi-item" style="">
-        <button class="sdpi-item-value" id="authButton">Authorize</button><br>
+        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button><br>
     </div>
     <hr>
     <div class="sdpi-item">
@@ -36,7 +36,7 @@
         <div class="sdpi-item-label display-label">Display Format</div>
         <textarea class="sdpi-item-value" type="text" id="displayFormat">{current}</textarea>
     </div>
-    <div style="padding: 5px;">
+    <div style="padding: 5px;" class="var-usage-label">
         <p><strong>Available variables:</strong> {current}, {remaining}, {duration}</p>
         <p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p>
         <p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>
@@ -57,8 +57,8 @@
     </div>
 </div>
 <hr>
-<h3>Support / Feedback</h3>
-<p>
+<h3 class="support-feedback-title-label">Support / Feedback</h3>
+<p class="support-feedback-text-label">
     You found a bug? You have a feature request? <br>
     I would love to hear about it <a href="https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose" rel="noopener"
                                      target="_blank">here</a>!

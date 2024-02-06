@@ -7,45 +7,19 @@ import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion/dist";
 import {PluginData} from "../shared/plugin-data";
 
 export class PlayPausePi extends PisAbstract {
-    private mainElement: HTMLElement;
-    private hostElement: HTMLInputElement;
-    private portElement: HTMLInputElement;
-    private actionElement: HTMLInputElement;
-    private displayFormatElement: HTMLInputElement;
-    private saveElement: HTMLButtonElement;
-    private authSectionElement: HTMLElement;
-    private authButtonElement: HTMLButtonElement;
-    private authStatusElement: HTMLElement;
     private authToken: string = '';
 
-    constructor(pi: YTMDPi, context: string) {
-        super(pi, context);
-        this.mainElement = document.getElementById(
-            'mainSettings'
-        ) as HTMLElement;
-        this.mainElement.style.display = 'initial';
-
-        this.hostElement = document.getElementById('host') as HTMLInputElement;
-        this.portElement = document.getElementById('port') as HTMLInputElement;
-        this.actionElement = document.getElementById('action') as HTMLInputElement;
-        this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
-        this.saveElement = document.getElementById('save') as HTMLButtonElement;
-        this.authSectionElement = document.getElementById('authStatusSection') as HTMLElement;
-        this.authButtonElement = document.getElementById('authButton') as HTMLButtonElement;
-        this.authStatusElement = document.getElementById('authStatus') as HTMLElement;
-
-        this.saveElement.onclick = () => this.saveSettings();
-        this.authButtonElement.onclick = () => {
-            if (this.authButtonElement.disabled) return;
+    constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
+        super(pi, context, sectionElement);
+        this.pi.playPauseSettings.style.display = 'initial';
+        this.pi.saveElement.onclick = () => this.saveSettings();
+        this.pi.authButtonElement.onclick = () => {
+            if (this.pi.authButtonElement.disabled) return;
             try {
-                this.authSectionElement.style.visibility = 'visible';
-                this.authSectionElement.style.height = 'auto';
-                this.authStatusElement.innerText = 'Connecting...';
-                this.authStatusElement.style.color = 'yellow';
-                this.authButtonElement.disabled = true;
+                this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTING, 'yellow', true);
 
-                const host = this.hostElement.value,
-                    port = this.portElement.value;
+                const host = this.pi.hostElement.value,
+                    port = this.pi.portElement.value;
 
                 const connector = new CompanionConnector({
                     appId: PluginData.APP_ID,
@@ -56,23 +30,18 @@ export class PlayPausePi extends PisAbstract {
                 });
 
                 connector.restClient.requestCode().then((res) => {
-                    this.authStatusElement.innerText = 'Authorizing...';
-                    this.authStatusElement.style.color = 'yellow';
+                    this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_AUTHORIZING, 'yellow', true);
                     if (!res.code) {
-                        this.authStatusElement.innerText = 'Authentication failed';
-                        this.authStatusElement.style.color = 'red';
-                        this.authButtonElement.disabled = true;
+                        this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_ERROR, 'red', false);
                         return;
                     }
 
-                    this.authStatusElement.innerText = 'AUTH CODE: ' + res.code + '\n\nPlease compare the code with the one on the YTMDesktop app and confirm the authorization.';
+                    this.pi.authStatusElement.innerText = `AUTH CODE: ${res.code}\n\n${this.pi.localization.AUTH_CODE_COMPARE}`;
 
                     connector.restClient.request(res.code).then((res) => {
                         if (res.token) {
                             this.authToken = res.token;
-                            this.authStatusElement.innerText = 'Authenticated';
-                            this.authStatusElement.style.color = 'green';
-                            this.authButtonElement.disabled = false;
+                            this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTED, 'green', false);
                             this.saveSettings();
                         } else {
                             this.authErrorCatched(res);
@@ -98,14 +67,22 @@ export class PlayPausePi extends PisAbstract {
             token = '',
         } = settings as GlobalSettingsInterface;
 
-        this.hostElement.value = host;
-        this.portElement.value = port;
+        this.pi.hostElement.value = host;
+        this.pi.portElement.value = port;
         this.authToken = token;
     }
 
     public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
-        this.actionElement.value = settings.action ?? "TOGGLE";
-        this.displayFormatElement.value = settings.displayFormat ?? "{current}";
+        this.pi.actionElement.value = settings.action ?? "TOGGLE";
+        this.pi.displayFormatElement.value = settings.displayFormat ?? "{current}";
+    }
+
+    private setAuthStatusMessage(text: string, color: string, buttonDisabled: boolean) {
+        this.pi.authSectionElement.style.visibility = 'visible';
+        this.pi.authSectionElement.style.height = 'auto';
+        this.pi.authStatusElement.innerText = text;
+        this.pi.authStatusElement.style.color = color;
+        this.pi.authButtonElement.disabled = buttonDisabled;
     }
 
     private authErrorCatched(err: any) {
@@ -115,20 +92,18 @@ export class PlayPausePi extends PisAbstract {
         } else {
             msg = JSON.stringify(err);
         }
-        if (!this.authStatusElement) {
-            alert('Authentication failed\n' + msg);
+        if (!this.pi.authStatusElement) {
+            alert(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`);
             return;
         }
-        this.authStatusElement.innerText = 'Authentication failed\n' + msg;
-        this.authStatusElement.style.color = 'red';
-        this.authButtonElement.disabled = false;
+        this.setAuthStatusMessage(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`, 'red', false);
     }
 
     private saveSettings() {
-        let host = this.hostElement.value,
-            port = this.portElement.value,
-            action = this.actionElement.value,
-            displayFormat = this.displayFormatElement.value;
+        let host = this.pi.hostElement.value,
+            port = this.pi.portElement.value,
+            action = this.pi.actionElement.value,
+            displayFormat = this.pi.displayFormatElement.value;
 
         if (host == 'localhost') host = '127.0.0.1';
 

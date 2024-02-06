@@ -46,10 +46,21 @@
     "PI": {
       "HOST": "Host",
       "PORT": "Port",
-      "PASSWORD": "Passwort",
       "VOLUME_STEPS": "Schritte der Lautstärke",
       "SAVE": "Speichern",
-      "AUTOMATIC_SAVE": "Dieser Änderung wird automatisch gespeichert"
+      "AUTOMATIC_SAVE": "Dieser Änderung wird automatisch gespeichert",
+      "AUTH_BUTTON": "Authentifizieren",
+      "AUTH_STATUS": "Auth. Status",
+      "AUTH_STATUS_CONNECTING": "Verbinde...",
+      "AUTH_STATUS_AUTHORIZING": "Autorisiere...",
+      "AUTH_STATUS_NOT_CONNECTED": "Nicht authentifiziert",
+      "AUTH_STATUS_CONNECTED": "Authentifiziert",
+      "AUTH_STATUS_ERROR":  "Authentifizierung fehlgeschlagen",
+      "AUTH_CODE_COMPARE": "Bitte vergleichen Sie den Code mit dem in der YTMDesktop-App und bestätigen Sie die Autorisierung.",
+      "DISPLAY_FORMAT": "Anzeigeformat",
+      "SUPPORT_FEEDBACK_TITLE": "Support & Feedback",
+      "SUPPORT_FEEDBACK_TEXT": "Du hast einen Bug gefunden? Du wünschst dir eine neue Funktion?<br>Du kannst dein Anliegen entweder über ein <a href=\"https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose\" rel=\"noopener\" target=\"_blank\">GitHub Issue</a> oder <a href=\"https://x.xeroxdev.de/s/discord\" rel=\"noopener\" target=\"_blank\">Discord</a> senden!",
+      "VAR_USAGE": "<p><strong>Verfügbare Variablen:</strong> {current}, {remaining}, {duration}</p><p><strong>Spezielle Werte:</strong> :S = Sekunden, :H = menschenlesbare Zeit (Standard)</p><p><strong>Beispiel:</strong> {remaining:S} um die verbleibende Zeit in Sekunden anzuzeigen</p>"
     }
   }
 }
