@@ -11,7 +11,6 @@ export class PlayPausePi extends PisAbstract {
 
     constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
         super(pi, context, sectionElement);
-        this.pi.playPauseSettings.style.display = 'initial';
         this.pi.saveElement.onclick = () => this.saveSettings();
         this.pi.authButtonElement.onclick = () => {
             if (this.pi.authButtonElement.disabled) return;

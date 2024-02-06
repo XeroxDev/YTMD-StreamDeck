@@ -60,7 +60,11 @@
       "DISPLAY_FORMAT": "Anzeigeformat",
       "SUPPORT_FEEDBACK_TITLE": "Support & Feedback",
       "SUPPORT_FEEDBACK_TEXT": "Du hast einen Bug gefunden? Du wünschst dir eine neue Funktion?<br>Du kannst dein Anliegen entweder über ein <a href=\"https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose\" rel=\"noopener\" target=\"_blank\">GitHub Issue</a> oder <a href=\"https://x.xeroxdev.de/s/discord\" rel=\"noopener\" target=\"_blank\">Discord</a> senden!",
-      "VAR_USAGE": "<p><strong>Verfügbare Variablen:</strong> {current}, {remaining}, {duration}</p><p><strong>Spezielle Werte:</strong> :S = Sekunden, :H = menschenlesbare Zeit (Standard)</p><p><strong>Beispiel:</strong> {remaining:S} um die verbleibende Zeit in Sekunden anzuzeigen</p>"
+      "VAR_USAGE": "<p><strong>Verfügbare Variablen:</strong> {current}, {remaining}, {duration}</p><p><strong>Spezielle Werte:</strong> :S = Sekunden, :H = menschenlesbare Zeit (Standard)</p><p><strong>Beispiel:</strong> {remaining:S} um die verbleibende Zeit in Sekunden anzuzeigen</p>",
+      "TOGGLE": "Umschalten",
+      "PAUSE": "Pause",
+      "PLAY":  "Start",
+      "ACTION": "Aktion"
     }
   }
 }

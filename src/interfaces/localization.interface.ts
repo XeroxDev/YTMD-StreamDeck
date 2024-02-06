@@ -17,5 +17,9 @@ export interface LocalizationInterface {
         SUPPORT_FEEDBACK_TITLE: string;
         SUPPORT_FEEDBACK_TEXT: string;
         VAR_USAGE: string;
+        TOGGLE: string;
+        PAUSE: string;
+        PLAY: string;
+        ACTION: string;
     };
 }

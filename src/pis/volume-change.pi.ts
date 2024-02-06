@@ -7,7 +7,6 @@ export class VolumeChangePi extends PisAbstract {
 
     constructor(pi: YTMDPi, context: string, private direction: 'UP' | 'DOWN', sectionElement: HTMLElement) {
         super(pi, context, sectionElement);
-        this.pi.volumeSettings.style.display = 'initial';
 
         this.setSettingsToHtml();
         pi.requestSettings();

@@ -117,6 +117,10 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('support-feedback-title-label', status.SUPPORT_FEEDBACK_TITLE);
         this.setInnerHtmlByClass('support-feedback-text-label', status.SUPPORT_FEEDBACK_TEXT);
         this.setInnerHtmlByClass('var-usage-label', status.VAR_USAGE);
+        this.setInnerHtmlByClass('action-label', status.ACTION);
+        this.setInnerHtmlByClass('toggle-label', status.TOGGLE);
+        this.setInnerHtmlByClass('pause-label', status.PAUSE);
+        this.setInnerHtmlByClass('play-label', status.PLAY);
     }
 
     @SDOnPiEvent('didReceiveGlobalSettings')

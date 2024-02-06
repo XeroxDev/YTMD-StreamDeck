@@ -13,7 +13,6 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private albumIndex = 0;
     private currentAlbum: string;
     private currentThumbnail: string;
-    private currentUrl: string;
     private lastChange: Date;
 
     constructor(private plugin: YTMD, actionName: string) {
@@ -54,7 +53,6 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
         this.currentAuthor = '';
         this.currentAlbum = '';
         this.currentThumbnail = '';
-        this.currentUrl = '';
     }
 
     @SDOnActionEvent('willDisappear')
@@ -70,23 +68,24 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
 
     @SDOnActionEvent('keyUp')
     public onKeypressUp(event: KeyUpEvent): void {
-        if (this.currentUrl) this.plugin.openUrl(this.currentUrl);
+        this.rest.playPause().catch(reason => {
+            console.error(reason);
+            this.plugin.showAlert(event.context)
+        });
     }
 
     private getSongData(data: StateOutput): {
         title: string,
         album: string,
         author: string,
-        cover: string,
-        url: string
+        cover: string
     } {
         let title = 'N/A';
         let album = 'N/A';
         let author = 'N/A';
         let cover = this.generatePlaceholderCover('N/A');
-        let url = '';
 
-        if (!data.player || !data.video) return {title, album, author, cover, url};
+        if (!data.player || !data.video) return {title, album, author, cover};
 
         const trackState = data.player.trackState;
 
@@ -106,13 +105,13 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
                 break;
         }
 
-        return {title, album, author, cover, url};
+        return {title, album, author, cover};
     }
 
     private async handleSongInfo(event: WillAppearEvent, state: StateOutput) {
         if (this.lastChange && new Date().getTime() - this.lastChange.getTime() < 250) return;
         this.lastChange = new Date();
-        const {title, album, author, cover, url} = this.getSongData(state);
+        const {title, album, author, cover} = this.getSongData(state);
 
         if (this.currentTitle !== title) this.titleIndex = 0;
         if (this.currentAlbum !== album) this.albumIndex = 0;
@@ -124,7 +123,6 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
         this.currentAuthor = author;
         this.currentAlbum = album;
         this.currentThumbnail = cover;
-        this.currentUrl = url;
 
         let displayTitle = this.currentTitle;
         let displayAlbum =
