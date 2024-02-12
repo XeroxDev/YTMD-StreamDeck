@@ -7,11 +7,12 @@ export class PisAbstract {
     protected settingsManager: SettingsManager;
     protected context: string;
 
-    constructor(pi: YTMDPi, context: string) {
+    constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
         this.pi = pi;
         this.uuid = pi.uuid;
         this.settingsManager = pi.settingsManager;
         this.context = context;
+        sectionElement.style.display = 'initial';
     }
 
     newGlobalSettingsReceived() {}

@@ -1,10 +1,7 @@
 # How to contribute?
 
-Just fork the repository and create PR's, but we use
-[standard-version](https://github.com/conventional-changelog/standard-version) to optimal release the plugin.
+Just fork the repository and create PR's.
 
-standard-version is following the [conventionalcommits](https://www.conventionalcommits.org) specification which follows
-the
-[angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
-
-[Here](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index) is a neat little cheatsheet for Conventional Commits
+> [!NOTE]
+> We're using [release-please](https://github.com/googleapis/release-please) to optimal release the plugin.
+> release-please is following the [conventionalcommits](https://www.conventionalcommits.org) specification.

@@ -7,7 +7,23 @@
     <script src="bundle-pi.js"></script>
 </head>
 <body>
-<div class="sdpi-wrapper" id="mainSettings" style="display: none">
+<div class="sdpi-wrapper" id="errors">
+    <div class="error-item" id="error-template">
+        <h3 class="error-title">Something went wrong</h3>
+        <p class="error-message">Oops. This is awkward. You shouldn't be able to see me. :c</p>
+    </div>
+</div>
+<div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
+    <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
+        <div class="sdpi-item-label auth-label">Auth Status</div>
+        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not
+            authenticated</strong></div>
+    </div>
+    <div class="sdpi-item" style="">
+        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button>
+        <br>
+    </div>
+    <hr>
     <div class="sdpi-item">
         <div class="sdpi-item-label host-label">Host</div>
         <input class="sdpi-item-value" type="text" id="host">
@@ -17,22 +33,18 @@
         <input class="sdpi-item-value" type="number" id="port">
     </div>
     <div class="sdpi-item">
-        <div class="sdpi-item-label password-label">Password</div>
-        <input class="sdpi-item-value" type="password" id="password">
-    </div>
-    <div class="sdpi-item">
         <div class="sdpi-item-label action-label">Action</div>
-        <select class="sdpi-item-value" id="action">
-            <option value="TOGGLE" selected>Toggle</option>
-            <option value="PAUSE">Pause</option>
-            <option value="PLAY">Play</option>
+        <select class="sdpi-item-value action-label" id="action">
+            <option class="toggle-label" value="TOGGLE" selected>Toggle</option>
+            <option class="pause-label" value="PAUSE">Pause</option>
+            <option class="play-label" value="PLAY">Play</option>
         </select>
     </div>
     <div class="sdpi-item">
         <div class="sdpi-item-label display-label">Display Format</div>
         <textarea class="sdpi-item-value" type="text" id="displayFormat">{current}</textarea>
     </div>
-    <div style="padding: 5px;">
+    <div style="padding: 5px;" class="var-usage-label">
         <p><strong>Available variables:</strong> {current}, {remaining}, {duration}</p>
         <p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p>
         <p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>
@@ -53,8 +65,8 @@
     </div>
 </div>
 <hr>
-<h3>Support / Feedback</h3>
-<p>
+<h3 class="support-feedback-title-label">Support / Feedback</h3>
+<p class="support-feedback-text-label">
     You found a bug? You have a feature request? <br>
     I would love to hear about it <a href="https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose" rel="noopener"
                                      target="_blank">here</a>!

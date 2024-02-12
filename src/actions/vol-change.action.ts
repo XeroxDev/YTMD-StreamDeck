@@ -1,16 +1,13 @@
-import {
-    KeyDownEvent,
-    KeyUpEvent,
-    SDOnActionEvent,
-    WillAppearEvent,
-    WillDisappearEvent,
-} from 'streamdeck-typescript';
-import { YTMD } from '../ytmd';
-import { DefaultAction } from './default.action';
-import { MuteAction } from './mute.action';
+import {KeyDownEvent, KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent,} from 'streamdeck-typescript';
+import {YTMD} from '../ytmd';
+import {DefaultAction} from './default.action';
+import {StateOutput} from "ytmdesktop-ts-companion";
 
 export class VolChangeAction extends DefaultAction<VolChangeAction> {
     private keyDown: boolean = false;
+    private currentVolume: number = 50;
+    private events: { context: string, method: (state: StateOutput) => void }[] = [];
+
 
     constructor(
         private plugin: YTMD,
@@ -21,32 +18,52 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
     }
 
     @SDOnActionEvent('willAppear')
-    onContextAppear(event: WillAppearEvent): void {}
+    onContextAppear(event: WillAppearEvent): void {
+        let found = this.events.find(e => e.context === event.context);
+        if (found) {
+            return;
+        }
+
+        found = {
+            context: event.context,
+            method: (state: StateOutput) => this.currentVolume = state.player.volume
+        };
+
+        this.events.push(found);
+
+        this.socket.addStateListener(found.method);
+    }
 
     @SDOnActionEvent('willDisappear')
     onContextDisappear(event: WillDisappearEvent): void {
-        this.destroy$.next();
+        const found = this.events.find(e => e.context === event.context);
+        if (!found) {
+            return;
+        }
+
+        this.socket.removeStateListener(found.method);
+        this.events = this.events.filter(e => e.context !== event.context);
     }
 
     @SDOnActionEvent('keyUp')
-    onKeypressUp({ context, payload: { settings } }: KeyUpEvent) {
+    onKeypressUp({context, payload: {settings}}: KeyUpEvent) {
         this.keyDown = false;
     }
 
     @SDOnActionEvent('keyDown')
-    async onKeypressDown({ context, payload: { settings } }: KeyDownEvent) {
+    async onKeypressDown({context, payload: {settings}}: KeyDownEvent) {
         this.keyDown = true;
 
         while (this.keyDown) {
-            let newVolume = MuteAction.currentVolume$.getValue();
+            let newVolume = this.currentVolume;
             if (this.type === 'UP') newVolume += settings?.steps ?? 10;
             else newVolume -= settings?.steps ?? 10;
 
-            MuteAction.lastVolume = newVolume;
-            MuteAction.currentVolume$.next(newVolume);
-            this.socket.playerSetVolume(
-                newVolume <= 0 ? -1 : newVolume >= 100 ? 100 : newVolume
-            );
+            this.currentVolume = newVolume;
+            this.rest.setVolume(newVolume <= 0 ? 0 : newVolume >= 100 ? 100 : newVolume).catch(reason => {
+                console.error(reason);
+                this.plugin.showAlert(context)
+            });
             await this.wait(500);
         }
     }

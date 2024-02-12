@@ -20,12 +20,7 @@
 [![Issues-pr closed](https://img.shields.io/github/issues-pr-closed/XeroxDev/YTMD-StreamDeck?color=yellow&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/pulls?q=is%3Apr+is%3Aclosed)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/compare)
 
-[![Build](https://img.shields.io/github/actions/workflow/status/XeroxDev/YTMD-StreamDeck/main.yml?style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/actions?query=workflow%3A%22CI-CD%22)
 [![Release](https://img.shields.io/github/release/XeroxDev/YTMD-StreamDeck?color=black&style=for-the-badge)](https://github.com/XeroxDev/YTMD-StreamDeck/releases)
-![Codecov](https://img.shields.io/codecov/c/github/XeroxDev/YTMD-StreamDeck?style=for-the-badge)
-
-[![Downloads](https://img.shields.io/github/downloads/XeroxDev/YTMD-StreamDeck/total.svg?color=cyan&style=for-the-badge&logo=github)]()
-[![Downloads Elgato](https://img.shields.io/badge/dynamic/json?color=cyan&label=Elgato%20Downloads&query=ytmd&style=for-the-badge&url=https%3A%2F%2Fapi.xeroxdev.de%2Fpublic%2Felgato-downloads.json)]()
 
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green?style=for-the-badge)](https://shields.io)
 
@@ -33,12 +28,12 @@
 This Stream Deck Plugin allows you to control the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop)
 
 > [!NOTE]
-> We don't support v1.13.0 or lower, we recommend updating to the latest Nightly pre-release
+> we only support version 2.x.x and above, if you are using an older version, please update to the latest version.
 
 # 4. Support / Feedback
 You found a bug? You have a feature request? I would love to hear about it [here](https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose) or click on the "Issues" tab here on the GitHub repositorie!
 
-You can also join my discord [here](https://s.tswi.me/discord)
+You can also join my discord [here](https://x.xeroxdev.de/s/discord)
 
 # 5. Actions
 
@@ -62,16 +57,18 @@ You can also join my discord [here](https://s.tswi.me/discord)
 # 6. How to use it?
 
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
-2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream
-   Deck Store.
-3. Add Actions to Stream Deck.
-4. Activate the Companion Server / Remote control from YTMD App
-    - Settings > Integration > "Enable Companion Server" or "Remote control" (Should be the first entry with an open icon)
-5. Click on the open Icon or go to http://localhost:9863/ (Default)
-6. Optional: Activate password protection. else go to 7.
-7. Click on Play/Pause button.
-8. Add all settings. (Host, Port, Password)
-9. Click save
+2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream Deck Store.
+3. Add Play/Pause action
+4. Insert, if not already correct, the settings to YTMDesktop (eg. Host and Port)
+5. Make sure the YTMDesktop App and the Companion Server is running
+   - To start the companion server, click at the top right of YTMDesktop on the settings gear
+   - Go on the left side on the "Integrations" tab
+   - Enable the "Companion Server"
+6. Turn on "enable companion authorization" under the Companion Server
+7. Press the Authorize button in the Play/Pause action settings
+8. Compare the authorization code displaying by the plugin with the one displaying in the YTMDesktop App
+9. If they match, confirm the authorization in the YTMDesktop App
+10. You are ready to go! (Steps 6-9 are only needed once/when the plugin isn't authorized)
 
 <details>
   <summary>Video Tutorial</summary>
@@ -84,11 +81,8 @@ You can also join my discord [here](https://s.tswi.me/discord)
 
 # 7. How to contribute?
 
-Just fork the repository and create PR's, but we use
-[standard-version](https://github.com/conventional-changelog/standard-version) to optimal release the plugin.
+Just fork the repository and create PR's.
 
-standard-version is following the [conventionalcommits](https://www.conventionalcommits.org) specification which follows
-the
-[angular commit guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
-
-[Here](https://kapeli.com/cheat_sheets/Conventional_Commits.docset/Contents/Resources/Documents/index) is a neat little cheatsheet for Conventional Commits
+> [!NOTE]
+> We're using [release-please](https://github.com/googleapis/release-please) to optimal release the plugin.
+> release-please is following the [conventionalcommits](https://www.conventionalcommits.org) specification.

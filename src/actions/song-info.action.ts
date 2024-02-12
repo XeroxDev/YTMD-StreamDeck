@@ -1,15 +1,11 @@
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import {
-    KeyUpEvent,
-    SDOnActionEvent,
-    WillAppearEvent,
-    WillDisappearEvent,
-} from 'streamdeck-typescript';
-import { TrackAndPlayerInterface } from '../interfaces/information.interface';
-import { YTMD } from '../ytmd';
-import { DefaultAction } from './default.action';
+import {KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent} from 'streamdeck-typescript';
+import {YTMD} from '../ytmd';
+import {DefaultAction} from './default.action';
+import {StateOutput, TrackState} from "ytmdesktop-ts-companion";
 
 export class SongInfoAction extends DefaultAction<SongInfoAction> {
+    private events: { context: string, method: (state: StateOutput) => void }[] = [];
+
     private titleIndex = 0;
     private currentTitle: string;
     private authorIndex = 0;
@@ -17,8 +13,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private albumIndex = 0;
     private currentAlbum: string;
     private currentThumbnail: string;
-    private currentUrl: string;
-    private placeholderCover: string = 'https://via.placeholder.com/128/000000/FFFFFF/?text=';
+    private lastChange: Date;
 
     constructor(private plugin: YTMD, actionName: string) {
         super(plugin, actionName);
@@ -31,75 +26,25 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     @SDOnActionEvent('willAppear')
     public onContextAppear(event: WillAppearEvent): void {
         this.reset();
-        this.socket.onTick$
-            .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(async (data) => {
-                const {
-                    track: { title, album, author, cover, url },
-                } = this.getSongData(data);
 
-                if (this.currentTitle !== title) this.titleIndex = 0;
-                if (this.currentAlbum !== album) this.albumIndex = 0;
-                if (this.currentAuthor !== author) this.authorIndex = 0;
-                if (this.currentThumbnail !== cover)
-                    await this.plugin.setImageFromUrl(cover, event.context);
+        let found = this.events.find(e => e.context === event.context);
+        if (found) {
+            return;
+        }
 
-                this.currentTitle = title;
-                this.currentAuthor = author;
-                this.currentAlbum = album;
-                this.currentThumbnail = cover;
-                this.currentUrl = url;
+        found = {
+            context: event.context,
+            method: (state: StateOutput) => this.handleSongInfo(event, state).catch(reason => {
+                console.error(reason);
+                this.plugin.showAlert(event.context)
+            })
+        };
 
-                let displayTitle = this.currentTitle;
-                let displayAlbum =
-                    this.currentAlbum === displayTitle ? '' : this.currentAlbum;
-                let displayAuthor =
-                    this.currentAuthor === this.currentTitle
-                        ? ''
-                        : this.currentAuthor;
+        this.events.push(found);
 
-                const plus = 6;
-                if (!displayTitle && !displayAlbum && !displayAuthor) return;
-
-                if (this.currentTitle.length > plus) {
-                    displayTitle = SongInfoAction.getScrollingText(
-                        ''.padStart(plus, ' ') + displayTitle,
-                        this.titleIndex,
-                        plus
-                    );
-                    this.titleIndex++;
-                    if (this.titleIndex >= this.currentTitle.length + plus)
-                        this.titleIndex = 0;
-                }
-
-                if (this.currentAuthor.length > plus) {
-                    displayAuthor = SongInfoAction.getScrollingText(
-                        ''.padStart(plus, ' ') + displayAuthor,
-                        this.authorIndex,
-                        plus
-                    );
-                    this.authorIndex++;
-                    if (this.authorIndex >= this.currentAuthor.length + plus)
-                        this.authorIndex = 0;
-                }
-
-                if (this.currentAlbum.length > plus) {
-                    displayAlbum = SongInfoAction.getScrollingText(
-                        ''.padStart(plus, ' ') + displayAlbum,
-                        this.albumIndex,
-                        plus
-                    );
-                    this.albumIndex++;
-                    if (this.albumIndex >= this.currentAlbum.length + plus)
-                        this.albumIndex = 0;
-                }
-
-                this.plugin.setTitle(
-                    `${displayTitle}\n${displayAlbum}\n${displayAuthor}`,
-                    event.context
-                );
-            });
+        this.socket.addStateListener(found.method);
     }
+
     reset() {
         this.titleIndex = 0;
         this.authorIndex = 0;
@@ -108,40 +53,163 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
         this.currentAuthor = '';
         this.currentAlbum = '';
         this.currentThumbnail = '';
-        this.currentUrl = '';
     }
 
     @SDOnActionEvent('willDisappear')
     public onContextDisappear(event: WillDisappearEvent): void {
-        this.destroy$.next();
+        const found = this.events.find(e => e.context === event.context);
+        if (!found) {
+            return;
+        }
+
+        this.socket.removeStateListener(found.method);
+        this.events = this.events.filter(e => e.context !== event.context);
     }
 
     @SDOnActionEvent('keyUp')
     public onKeypressUp(event: KeyUpEvent): void {
-        if (this.currentUrl) this.plugin.openUrl(this.currentUrl);
+        this.rest.playPause().catch(reason => {
+            console.error(reason);
+            this.plugin.showAlert(event.context)
+        });
     }
 
-    private getSongData(
-        data: TrackAndPlayerInterface
-    ): TrackAndPlayerInterface {
-        const {
-            player: { hasSong, isPaused },
-        } = data;
-        if (isPaused) {
-            data.track.title = 'Paused';
-            data.track.author = 'Paused';
-            data.track.album = 'Paused';
-        } else if (!hasSong) {
-            data.track.cover = this.placeholderCover + 'N%2FA';
-            data.track.title = 'N/A';
-            data.track.author = 'N/A';
-            data.track.album = 'N/A';
-        }
-        
-        if (!data.track.cover) {
-            data.track.cover = this.placeholderCover + 'N%2FA';
+    private getSongData(data: StateOutput): {
+        title: string,
+        album: string,
+        author: string,
+        cover: string
+    } {
+        let title = 'N/A';
+        let album = 'N/A';
+        let author = 'N/A';
+        let cover = this.generatePlaceholderCover('N/A');
+
+        if (!data.player || !data.video) return {title, album, author, cover};
+
+        const trackState = data.player.trackState;
+
+        switch (trackState) {
+            case TrackState.PAUSED:
+                title = 'Paused';
+                album = 'Paused';
+                author = 'Paused';
+                break;
+            case TrackState.PLAYING:
+                title = data.video.title ?? title;
+                album = data.video.album ?? album;
+                author = data.video.author ?? author;
+                cover = data.video.thumbnails[data.video.thumbnails.length - 1].url ?? cover;
+                break;
+            default:
+                break;
         }
 
-        return data;
+        return {title, album, author, cover};
+    }
+
+    private async handleSongInfo(event: WillAppearEvent, state: StateOutput) {
+        if (this.lastChange && new Date().getTime() - this.lastChange.getTime() < 250) return;
+        this.lastChange = new Date();
+        const {title, album, author, cover} = this.getSongData(state);
+
+        if (this.currentTitle !== title) this.titleIndex = 0;
+        if (this.currentAlbum !== album) this.albumIndex = 0;
+        if (this.currentAuthor !== author) this.authorIndex = 0;
+        if (this.currentThumbnail !== cover)
+            await this.plugin.setImageFromUrl(cover, event.context);
+
+        this.currentTitle = title;
+        this.currentAuthor = author;
+        this.currentAlbum = album;
+        this.currentThumbnail = cover;
+
+        let displayTitle = this.currentTitle;
+        let displayAlbum =
+            this.currentAlbum === displayTitle ? '' : this.currentAlbum;
+        let displayAuthor =
+            this.currentAuthor === this.currentTitle
+                ? ''
+                : this.currentAuthor;
+
+        const plus = 6;
+        if (!displayTitle && !displayAlbum && !displayAuthor) return;
+
+        if (this.currentTitle.length > plus) {
+            displayTitle = SongInfoAction.getScrollingText(
+                ''.padStart(plus, ' ') + displayTitle,
+                this.titleIndex,
+                plus
+            );
+            this.titleIndex++;
+            if (this.titleIndex >= this.currentTitle.length + plus)
+                this.titleIndex = 0;
+        }
+
+        if (this.currentAuthor.length > plus) {
+            displayAuthor = SongInfoAction.getScrollingText(
+                ''.padStart(plus, ' ') + displayAuthor,
+                this.authorIndex,
+                plus
+            );
+            this.authorIndex++;
+            if (this.authorIndex >= this.currentAuthor.length + plus)
+                this.authorIndex = 0;
+        }
+
+        if (this.currentAlbum.length > plus) {
+            displayAlbum = SongInfoAction.getScrollingText(
+                ''.padStart(plus, ' ') + displayAlbum,
+                this.albumIndex,
+                plus
+            );
+            this.albumIndex++;
+            if (this.albumIndex >= this.currentAlbum.length + plus)
+                this.albumIndex = 0;
+        }
+
+        this.plugin.setTitle(
+            `${displayTitle}\n${displayAlbum}\n${displayAuthor}`,
+            event.context
+        );
+    }
+
+    private generatePlaceholderCover(text: string): string {
+        // draw a rectangle with black background and white text and then use "toDataURL" to convert to a data URL
+        const canvas = document.createElement('canvas');
+        canvas.width = 144;
+        canvas.height = 144;
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return '';
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'white'; // Text color
+        this.fitTextOnCanvas(text, canvas, ctx, 10);
+
+        return canvas.toDataURL('image/png');
+    }
+
+    private fitTextOnCanvas(text: string, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, padding: number) {
+        let fontSize = 100; // Starting with a high font size
+        ctx.textBaseline = 'middle'; // Align text vertically in the middle
+        ctx.textAlign = 'center'; // Align text horizontally in the center
+
+        // Function to measure text width for a given font size
+        function getTextWidth(text: string, font: string): number {
+            ctx.font = font;
+            return ctx.measureText(text).width;
+        }
+
+        // Reduce font size until the text fits within the canvas with padding
+        let widthWithPadding = canvas.width - 2 * padding;
+        let heightWithPadding = canvas.height - 2 * padding;
+        do {
+            ctx.font = `${fontSize}px Arial`; // Adjust font here as needed
+            fontSize -= 1;
+        } while (getTextWidth(text, ctx.font) > widthWithPadding || fontSize > heightWithPadding);
+
+        // Draw the text on the canvas
+        ctx.fillText(text, canvas.width / 2, canvas.height / 2);
     }
 }

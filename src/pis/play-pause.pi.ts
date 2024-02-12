@@ -3,64 +3,110 @@ import {YTMDPi} from '../ytmd-pi';
 import {PisAbstract} from './pis.abstract';
 import {DidReceiveSettingsEvent} from "streamdeck-typescript";
 import {PlayPauseSettings} from "../interfaces/context-settings.interface";
+import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion";
+import {PluginData} from "../shared/plugin-data";
 
 export class PlayPausePi extends PisAbstract {
-    private mainElement: HTMLElement;
-    private hostElement: HTMLInputElement;
-    private portElement: HTMLInputElement;
-    private passwordElement: HTMLInputElement;
-    private actionElement: HTMLInputElement;
-    private displayFormatElement: HTMLInputElement;
-    private saveElement: HTMLButtonElement;
+    private authToken: string = '';
 
-    constructor(pi: YTMDPi, context: string) {
-        super(pi, context);
-        this.mainElement = document.getElementById(
-            'mainSettings'
-        ) as HTMLElement;
-        this.mainElement.style.display = 'initial';
+    constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
+        super(pi, context, sectionElement);
+        this.pi.saveElement.onclick = () => this.saveSettings();
+        this.pi.authButtonElement.onclick = () => {
+            if (this.pi.authButtonElement.disabled) return;
+            try {
+                this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTING, 'yellow', true);
 
-        this.hostElement = document.getElementById('host') as HTMLInputElement;
-        this.portElement = document.getElementById('port') as HTMLInputElement;
-        this.passwordElement = document.getElementById(
-            'password'
-        ) as HTMLInputElement;
-        this.actionElement = document.getElementById('action') as HTMLInputElement;
-        this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
-        this.saveElement = document.getElementById('save') as HTMLButtonElement;
+                const host = this.pi.hostElement.value,
+                    port = this.pi.portElement.value;
 
-        this.saveElement.onclick = () => this.saveSettings();
+                const connector = new CompanionConnector({
+                    appId: PluginData.APP_ID,
+                    appName: PluginData.APP_NAME,
+                    appVersion: PluginData.APP_VERSION,
+                    host: host,
+                    port: parseInt(port)
+                });
+
+                connector.restClient.getAuthCode().then((res) => {
+                    this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_AUTHORIZING, 'yellow', true);
+                    if (!res.code) {
+                        this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_ERROR, 'red', false);
+                        return;
+                    }
+
+                    this.pi.authStatusElement.innerText = `AUTH CODE: ${res.code}\n\n${this.pi.localization.AUTH_CODE_COMPARE}`;
+
+                    connector.restClient.getAuthToken(res.code).then((res) => {
+                        if (res.token) {
+                            this.authToken = res.token;
+                            this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTED, 'green', false);
+                            this.saveSettings();
+                        } else {
+                            this.authErrorCatched(res);
+                        }
+                    }).catch(err => this.authErrorCatched(err));
+
+                }).catch(err => this.authErrorCatched(err));
+            } catch (e) {
+                this.authErrorCatched(e);
+            }
+        }
         pi.requestSettings();
     }
 
     public newGlobalSettingsReceived(): void {
         let settings = this.settingsManager.getGlobalSettings<GlobalSettingsInterface>();
         if (Object.keys(settings).length < 3)
-            settings = {host: 'localhost', port: '9863', password: ''};
+            settings = {host: '127.0.0.1', port: '9863'};
 
         const {
-            host = 'localhost',
+            host = '127.0.0.1',
             port = '9863',
-            password = '',
+            token = '',
         } = settings as GlobalSettingsInterface;
 
-        this.hostElement.value = host;
-        this.portElement.value = port;
-        this.passwordElement.value = password;
+        this.pi.hostElement.value = host;
+        this.pi.portElement.value = port;
+        this.authToken = token;
     }
 
     public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
-        this.actionElement.value = settings.action ?? "TOGGLE";
-        this.displayFormatElement.value = settings.displayFormat ?? "{current}";
+        this.pi.actionElement.value = settings.action ?? "TOGGLE";
+        this.pi.displayFormatElement.value = settings.displayFormat ?? "{current}";
+    }
+
+    private setAuthStatusMessage(text: string, color: string, buttonDisabled: boolean) {
+        this.pi.authSectionElement.style.visibility = 'visible';
+        this.pi.authSectionElement.style.height = 'auto';
+        this.pi.authStatusElement.innerText = text;
+        this.pi.authStatusElement.style.color = color;
+        this.pi.authButtonElement.disabled = buttonDisabled;
+    }
+
+    private authErrorCatched(err: any) {
+        let msg = "";
+        if (err satisfies ErrorOutput) {
+            msg = err.message;
+        } else {
+            msg = JSON.stringify(err);
+        }
+        if (!this.pi.authStatusElement) {
+            alert(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`);
+            return;
+        }
+        this.setAuthStatusMessage(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`, 'red', false);
     }
 
     private saveSettings() {
-        const host = this.hostElement.value,
-            port = this.portElement.value,
-            password = this.passwordElement.value,
-            action = this.actionElement.value,
-            displayFormat = this.displayFormatElement.value;
-        this.settingsManager.setGlobalSettings({host, port, password, action});
+        let host = this.pi.hostElement.value,
+            port = this.pi.portElement.value,
+            action = this.pi.actionElement.value,
+            displayFormat = this.pi.displayFormatElement.value;
+
+        if (host == 'localhost') host = '127.0.0.1';
+
+        this.settingsManager.setGlobalSettings({host, port, token: this.authToken, action});
         this.settingsManager.setContextSettingsAttributes(this.context, {
             action: action ?? "TOGGLE",
             displayFormat: displayFormat ?? "{current}"
