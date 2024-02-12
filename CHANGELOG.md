@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.7.0...v2.0.0) (2024-02-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove library action (not available anymore)
+* migrate to v2 of ytmdesktop
+
+### Features
+
+* add discord link to help section ([67b67ad](https://github.com/XeroxDev/YTMD-StreamDeck/commit/67b67ad9a5a916c45e1ab933af55f7084540964e))
+* add more translations ([67b67ad](https://github.com/XeroxDev/YTMD-StreamDeck/commit/67b67ad9a5a916c45e1ab933af55f7084540964e))
+* migrate to v2 of ytmdesktop ([67b67ad](https://github.com/XeroxDev/YTMD-StreamDeck/commit/67b67ad9a5a916c45e1ab933af55f7084540964e))
+
+
+### Bug Fixes
+
+* remove library action (not available anymore) ([67b67ad](https://github.com/XeroxDev/YTMD-StreamDeck/commit/67b67ad9a5a916c45e1ab933af55f7084540964e))
+
 ## [1.7.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.6.0...v1.7.0) (2023-04-03)
 
 
