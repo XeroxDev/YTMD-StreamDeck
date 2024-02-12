@@ -26,11 +26,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          if [ -e package-lock.json ]; then
+          if exist package-lock.json (
             npm ci
-          else
+          ) else (
             npm i
-          fi
+          )
 
       - name: release-please
         uses: google-github-actions/release-please-action@v4
