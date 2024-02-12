@@ -6,7 +6,6 @@ import {StateOutput} from "ytmdesktop-ts-companion";
 export class VolChangeAction extends DefaultAction<VolChangeAction> {
     private keyDown: boolean = false;
     private currentVolume: number = 50;
-    private lastVolume: number = 50;
     private events: { context: string, method: (state: StateOutput) => void }[] = [];
 
 
@@ -60,7 +59,6 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
             if (this.type === 'UP') newVolume += settings?.steps ?? 10;
             else newVolume -= settings?.steps ?? 10;
 
-            this.lastVolume = newVolume;
             this.currentVolume = newVolume;
             this.rest.setVolume(newVolume <= 0 ? 0 : newVolume >= 100 ? 100 : newVolume).catch(reason => {
                 console.error(reason);

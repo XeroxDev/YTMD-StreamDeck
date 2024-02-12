@@ -9,8 +9,8 @@ dependencies:
     specifier: ^3.1.4
     version: 3.1.4
   ytmdesktop-ts-companion:
-    specifier: ^1.0.3
-    version: 1.0.3
+    specifier: ^1.0.5
+    version: 1.0.5
 
 devDependencies:
   '@commitlint/cli':
@@ -1533,7 +1533,7 @@ packages:
     dependencies:
       '@socket.io/component-emitter': 3.1.0
       debug: 4.3.4(supports-color@8.1.1)
-      engine.io-parser: 5.2.1
+      engine.io-parser: 5.2.2
       ws: 8.11.0
       xmlhttprequest-ssl: 2.0.0
     transitivePeerDependencies:
@@ -1542,8 +1542,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /engine.io-parser@5.2.1:
-    resolution: {integrity: sha512-9JktcM3u18nU9N2Lz3bWeBgxVgOKpw7yhRaoxQA3FUDZzzw+9WlA6p4G4u0RixNkg14fH7EfEc/RhpurtiROTQ==}
+  /engine.io-parser@5.2.2:
+    resolution: {integrity: sha512-RcyUFKA93/CXH20l4SoVvzZfrSDMOTUS3bWVpTt2FuFP+XYrL8i8oonHP7WInRyVHXh0n/ORtoeiE1os+8qkSw==}
     engines: {node: '>=10.0.0'}
     dev: false
 
@@ -4138,8 +4138,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /ytmdesktop-ts-companion@1.0.3:
-    resolution: {integrity: sha512-eSYG2Ew/BbnZMOgMkEiU+6XGlDeT6NV5J/we2nolq2gBhAhgwWtO6x6yExhoDDA/kDqx4JNET8wjC/aqRzibqA==}
+  /ytmdesktop-ts-companion@1.0.5:
+    resolution: {integrity: sha512-aTueujqW5bQ9YZdPXF4foih4NIS8cj/ayi3SwKHl/GudbGHpkzbaEViOTatKrBw3RFMqA/Kxy6qMF5T2/Z8LKw==}
     dependencies:
       socket.io-client: 4.7.4
     transitivePeerDependencies:

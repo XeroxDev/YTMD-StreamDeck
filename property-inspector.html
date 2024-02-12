@@ -7,13 +7,21 @@
     <script src="bundle-pi.js"></script>
 </head>
 <body>
+<div class="sdpi-wrapper" id="errors">
+    <div class="error-item" id="error-template">
+        <h3 class="error-title">Something went wrong</h3>
+        <p class="error-message">Oops. This is awkward. You shouldn't be able to see me. :c</p>
+    </div>
+</div>
 <div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
     <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
         <div class="sdpi-item-label auth-label">Auth Status</div>
-        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not authenticated</strong></div>
+        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not
+            authenticated</strong></div>
     </div>
     <div class="sdpi-item" style="">
-        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button><br>
+        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button>
+        <br>
     </div>
     <hr>
     <div class="sdpi-item">

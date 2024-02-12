@@ -20,6 +20,10 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Volume Settings
     public volumeSettings: HTMLElement;
     public volumeInput: HTMLInputElement;
+    // Error messages
+    private errorsElement: HTMLElement;
+    private errorTemplateElement: HTMLElement;
+
     private action: PisAbstract;
 
     constructor() {
@@ -68,6 +72,28 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         if (element)
             for (let i = 0; i < element.length; i++)
                 (<HTMLElement>element.item(i)).innerHTML = text;
+    }
+
+    public showError(id: string, title: string, message: string) {
+        const error = this.errorTemplateElement.cloneNode(true) as HTMLElement;
+        error.id = id;
+        const titleElement = error.querySelector('.error-title');
+        const messageElement = error.querySelector('.error-message');
+        if (titleElement) titleElement.textContent = title;
+        if (messageElement) messageElement.textContent = message;
+        this.errorsElement.appendChild(error);
+    }
+
+    public removeError(id: string) {
+        const error = document.getElementById(id);
+        if (error) error.remove();
+    }
+
+    public clearErrors() {
+        const errors = this.errorsElement.querySelectorAll('.error-item');
+        errors.forEach((error) => {
+            if (error.id !== 'error-template') error.remove();
+        });
     }
 
     @SDOnPiEvent('setupReady')
@@ -146,6 +172,9 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
 
         this.volumeSettings = document.getElementById('volumeSettings') as HTMLElement;
         this.volumeInput = document.getElementById('volumeInput') as HTMLInputElement;
+
+        this.errorsElement = document.getElementById('errors') as HTMLElement;
+        this.errorTemplateElement = document.getElementById('error-template') as HTMLElement;
     }
 }
 

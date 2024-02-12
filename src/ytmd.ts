@@ -10,7 +10,7 @@ import {VolChangeAction} from './actions/vol-change.action';
 import {ActionTypes} from './interfaces/enums';
 import {GlobalSettingsInterface} from './interfaces/global-settings.interface';
 import VERSION from "./version";
-import {CompanionConnector, LikeStatus, Settings} from "ytmdesktop-ts-companion/dist";
+import {CompanionConnector, LikeStatus, Settings} from "ytmdesktop-ts-companion";
 import {PluginData} from "./shared/plugin-data";
 
 export class YTMD extends StreamDeckPluginHandler {

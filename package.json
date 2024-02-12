@@ -18,7 +18,7 @@
   "homepage": "https://github.com/XeroxDev/YTMD-StreamDeck#readme",
   "dependencies": {
     "streamdeck-typescript": "^3.1.4",
-    "ytmdesktop-ts-companion": "^1.0.3"
+    "ytmdesktop-ts-companion": "^1.0.5"
   },
   "keywords": [
     "music",

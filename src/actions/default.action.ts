@@ -6,7 +6,7 @@ import {
     WillDisappearEvent,
 } from 'streamdeck-typescript';
 import { YTMD } from '../ytmd';
-import {RestClient, SocketClient} from "ytmdesktop-ts-companion/dist";
+import {RestClient, SocketClient} from "ytmdesktop-ts-companion";
 
 export abstract class DefaultAction<Instance> extends StreamDeckAction<
     YTMD,
@@ -19,7 +19,7 @@ export abstract class DefaultAction<Instance> extends StreamDeckAction<
         super(plugin, actionName);
         this.socket = YTMD.COMPANION.socketClient;
         this.rest = YTMD.COMPANION.restClient;
-        console.log(`Initialized ${actionName}`);
+        console.info(`Initialized ${actionName}`);
     }
 
     abstract onContextAppear(event: WillAppearEvent): void;

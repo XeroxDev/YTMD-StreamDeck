@@ -3,7 +3,7 @@ import {YTMDPi} from '../ytmd-pi';
 import {PisAbstract} from './pis.abstract';
 import {DidReceiveSettingsEvent} from "streamdeck-typescript";
 import {PlayPauseSettings} from "../interfaces/context-settings.interface";
-import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion/dist";
+import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion";
 import {PluginData} from "../shared/plugin-data";
 
 export class PlayPausePi extends PisAbstract {
@@ -28,7 +28,7 @@ export class PlayPausePi extends PisAbstract {
                     port: parseInt(port)
                 });
 
-                connector.restClient.requestCode().then((res) => {
+                connector.restClient.getAuthCode().then((res) => {
                     this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_AUTHORIZING, 'yellow', true);
                     if (!res.code) {
                         this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_ERROR, 'red', false);
@@ -37,7 +37,7 @@ export class PlayPausePi extends PisAbstract {
 
                     this.pi.authStatusElement.innerText = `AUTH CODE: ${res.code}\n\n${this.pi.localization.AUTH_CODE_COMPARE}`;
 
-                    connector.restClient.request(res.code).then((res) => {
+                    connector.restClient.getAuthToken(res.code).then((res) => {
                         if (res.token) {
                             this.authToken = res.token;
                             this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTED, 'green', false);
