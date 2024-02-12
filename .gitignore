@@ -4,6 +4,7 @@
 node_modules/
 dist/
 coverage/
+build/
 bundle.js
 bundle-pi.js
-fun.shiro.ytmd.sdPlugin/
+DistributionTool.exe

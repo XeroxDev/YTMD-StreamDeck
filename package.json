@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "watch": "start watchify --debug -p tsify src/ytmd-pi.ts -o bundle-pi.js && start watchify --debug -p tsify src/ytmd.ts -o bundle.js",
-    "build": "browserify -p tsify src/ytmd-pi.ts | terser -cm --comments false -o bundle-pi.js && browserify -p tsify src/ytmd.ts | terser -cm --comments false -o bundle.js"
+    "build": "node scripts/build.js"
   },
   "repository": {
     "type": "git",
