@@ -31,7 +31,7 @@ jobs:
         uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          default-branch: master
+          target-branch: master
 
       - name: Run build
         run: npm run build
