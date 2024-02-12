@@ -25,12 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        run: |
-          if exist package-lock.json (
-            npm ci
-          ) else (
-            npm i
-          )
+        run: npm install
 
       - name: release-please
         uses: google-github-actions/release-please-action@v4
