@@ -4,11 +4,11 @@
       "release-type": "node",
       "include-component-in-tag": false,
       "extra-files": [
-        "./src/version.ts",
-        "./.github/ISSUE_TEMPLATE/BUG-REPORT.yml",
+        "src/version.ts",
+        ".github/ISSUE_TEMPLATE/BUG-REPORT.yml",
         {
           "type": "json",
-          "path": "./manifest.json",
+          "path": "manifest.json",
           "jsonpath": "$.Version"
         }
       ]
