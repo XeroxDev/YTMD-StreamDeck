@@ -1,7 +1,5 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
 ## [1.7.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.6.0...v1.7.0) (2023-04-03)
 
 
