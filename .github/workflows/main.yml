@@ -14,7 +14,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Check out Git repository
         uses: actions/checkout@v2
