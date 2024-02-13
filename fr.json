@@ -1,0 +1,74 @@
+{
+  "Name": "YTMD Connector",
+  "Category": "YTMD Connector",
+  "Description": "Ce plugin Stream Deck permet de contrôler l'application YouTube Music Desktop (https://github.com/ytmdesktop/ytmdesktop)",
+  "fun.shiro.ytmdc.play-pause": {
+    "Name": "Lecture/Pause",
+    "Tooltip": "Jouer ou mettre en pause la musique"
+  },
+  "fun.shiro.ytmdc.next": {
+    "Name": "Piste suivante",
+    "Tooltip": "Jouer la piste suivante"
+  },
+  "fun.shiro.ytmdc.prev": {
+    "Name": "Piste précédente",
+    "Tooltip": "Jouer la piste précédente"
+  },
+  "fun.shiro.ytmdc.like": {
+    "Name": "J'aime",
+    "Tooltip": "Mettre un \"J'aime\" à la piste actuelle"
+  },
+  "fun.shiro.ytmdc.dislike": {
+    "Name": "Je n'aime pas",
+    "Tooltip": "Mettre un \"Je n'aime pas\" à la piste actuelle"
+  },
+  "fun.shiro.ytmdc.mute": {
+    "Name": "Couper le son",
+    "Tooltip": "Couper ou rétablir le son"
+  },
+  "fun.shiro.ytmdc.volume-down": {
+    "Name": "Réduire le volume",
+    "Tooltip": "Réduire le volume"
+  },
+  "fun.shiro.ytmdc.volume-up": {
+    "Name": "Augmenter le volume",
+    "Tooltip": "Augmenter le volume"
+  },
+  "fun.shiro.ytmdc.song-info": {
+    "Name": "Infos sur la piste",
+    "Tooltip": "Afficher les informations sur la piste actuelle (titre et image)"
+  },
+  "fun.shiro.ytmdc.shuffle": {
+    "Name": "Lecture aléatoire",
+    "Tooltip": "Activer ou désactiver la lecture aléatoire"
+  },
+  "fun.shiro.ytmdc.repeat": {
+    "Name": "Lecture en boucle",
+    "Tooltip": "Activer ou désactiver la lecture en boucle"
+  },
+  "Localization": {
+    "PI": {
+      "HOST": "Hôte",
+      "PORT": "Port",
+      "VOLUME_STEPS": "Taille des pas",
+      "SAVE": "Sauvegarder",
+      "AUTOMATIC_SAVE": "Ce paramètre sera sauvegardé automatiquement",
+      "AUTH_BUTTON": "Lier à YTMDesktop",
+      "AUTH_STATUS": "Statut",
+      "AUTH_STATUS_CONNECTING": "Connexion...",
+      "AUTH_STATUS_AUTHORIZING": "Autorisation...",
+      "AUTH_STATUS_NOT_CONNECTED": "Non authentifié",
+      "AUTH_STATUS_CONNECTED": "Authentifié",
+      "AUTH_STATUS_ERROR": "Authentification échouée :",
+      "AUTH_CODE_COMPARE": "Comparez le code avec celui de l'application YTMDesktop et confirmer l'autorisation.",
+      "DISPLAY_FORMAT": "Format d'affichage",
+      "SUPPORT_FEEDBACK_TITLE": "Support & Retours",
+      "SUPPORT_FEEDBACK_TEXT": "Vous avez trouvé un bug ? Vous avez une idée de fonctionnalité ?<br>Vous pouvez les envoyer sur <a href=\"https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose\" rel=\"noopener\" target=\"_blank\">GitHub</a> ou sur <a href=\"https://x.xeroxdev.de/s/discord\" rel=\"noopener\" target=\"_blank\">Discord</a> !",
+      "VAR_USAGE": "<p><strong>Variables disponibles :</strong> {current}, {remaining}, {duration}</p><p><strong>Valeurs spéciales :</strong> :S = en secondes, :H = format naturel (par défaut)</p><p><strong>Utilisation :</strong> {remaining:S} pour afficher le temps restant en secondes</p>",
+      "TOGGLE": "Basculer",
+      "PAUSE": "Pause",
+      "PLAY": "Lecture",
+      "ACTION": "Action"
+    }
+  }
+}
