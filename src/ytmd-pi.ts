@@ -6,7 +6,6 @@ import {PlayPausePi} from './pis/play-pause.pi';
 import {VolumeChangePi} from './pis/volume-change.pi';
 
 export class YTMDPi extends StreamDeckPropertyInspectorHandler {
-    public localization: LocalizationInterface['PI'];
     // Play / Pause Settings
     public playPauseSettings: HTMLElement;
     public hostElement: HTMLInputElement;
@@ -20,6 +19,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Volume Settings
     public volumeSettings: HTMLElement;
     public volumeInput: HTMLInputElement;
+    private localization: LocalizationInterface['PI'];
     // Error messages
     private errorsElement: HTMLElement;
     private errorTemplateElement: HTMLElement;
@@ -31,7 +31,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     }
 
     // Load the localizations
-    public getLocalization(
+    public fetchLocalizationFile(
         inLanguage: string,
         inCallback: (b: boolean, s: string | LocalizationInterface) => void
     ) {
@@ -98,11 +98,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
 
     @SDOnPiEvent('setupReady')
     private documentLoaded() {
-        this.getLocalization(this.info.application.language ?? 'en', (b, s) => {
-                this.localization = (s as LocalizationInterface).PI;
-                this.setupLocalization(b, this.localization);
-            }
-        );
+        this.setupLocalization();
         this.setupElements();
         const _action: ActionTypes = this.actionInfo.action as ActionTypes;
         switch (_action) {
@@ -128,25 +124,46 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         }
     }
 
-    private setupLocalization(succeed: boolean, status: LocalizationInterface['PI']) {
-        if (!succeed) return;
+    public getLangString(key: keyof LocalizationInterface['PI'], defaultValue: string = 'NOT TRANSLATED') {
+        try {
+            return this.localization[key] ?? defaultValue;
+        } catch (e) {
+            return defaultValue;
+        }
+    }
 
-        this.setInnerHtmlByClass('host-label', status.HOST);
-        this.setInnerHtmlByClass('port-label', status.PORT);
-        this.setInnerHtmlByClass('display-label', status.DISPLAY_FORMAT);
-        this.setInnerHtmlByClass('save-label', status.SAVE);
-        this.setInnerHtmlByClass('volume-steps-label', status.VOLUME_STEPS);
-        this.setInnerHtmlByClass('automatic-save-label', status.AUTOMATIC_SAVE);
-        this.setInnerHtmlByClass('auth-button-label', status.AUTH_BUTTON);
-        this.setInnerHtmlByClass('auth-label', status.AUTH_STATUS);
-        this.setInnerHtmlByClass('auth-status-label', status.AUTH_STATUS_NOT_CONNECTED);
-        this.setInnerHtmlByClass('support-feedback-title-label', status.SUPPORT_FEEDBACK_TITLE);
-        this.setInnerHtmlByClass('support-feedback-text-label', status.SUPPORT_FEEDBACK_TEXT);
-        this.setInnerHtmlByClass('var-usage-label', status.VAR_USAGE);
-        this.setInnerHtmlByClass('action-label', status.ACTION);
-        this.setInnerHtmlByClass('toggle-label', status.TOGGLE);
-        this.setInnerHtmlByClass('pause-label', status.PAUSE);
-        this.setInnerHtmlByClass('play-label', status.PLAY);
+    private setupLocalization() {
+        this.fetchLocalizationFile(this.info.application.language ?? 'en', (b, s) => {
+            if (!b) {
+                // try to load the default language
+                this.fetchLocalizationFile('en', (b2, s2) => {
+                    this.localization = (s2 as LocalizationInterface).PI;
+                    this.translateHtml();
+                });
+                return;
+            }
+            this.localization = (s as LocalizationInterface).PI;
+            this.translateHtml();
+        });
+    }
+
+    private translateHtml() {
+        this.setInnerHtmlByClass('host-label', this.getLangString("HOST"));
+        this.setInnerHtmlByClass('port-label', this.getLangString("PORT"));
+        this.setInnerHtmlByClass('display-label', this.getLangString("DISPLAY_FORMAT"));
+        this.setInnerHtmlByClass('save-label', this.getLangString("SAVE"));
+        this.setInnerHtmlByClass('volume-steps-label', this.getLangString("VOLUME_STEPS"));
+        this.setInnerHtmlByClass('automatic-save-label', this.getLangString("AUTOMATIC_SAVE"));
+        this.setInnerHtmlByClass('auth-button-label', this.getLangString("AUTH_BUTTON"));
+        this.setInnerHtmlByClass('auth-label', this.getLangString("AUTH_STATUS"));
+        this.setInnerHtmlByClass('auth-status-label', this.getLangString("AUTH_STATUS_NOT_CONNECTED"));
+        this.setInnerHtmlByClass('support-feedback-title-label', this.getLangString("SUPPORT_FEEDBACK_TITLE"));
+        this.setInnerHtmlByClass('support-feedback-text-label', this.getLangString("SUPPORT_FEEDBACK_TEXT"));
+        this.setInnerHtmlByClass('var-usage-label', this.getLangString("VAR_USAGE"));
+        this.setInnerHtmlByClass('action-label', this.getLangString("ACTION"));
+        this.setInnerHtmlByClass('toggle-label', this.getLangString("TOGGLE"));
+        this.setInnerHtmlByClass('pause-label', this.getLangString("PAUSE"));
+        this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
     }
 
     @SDOnPiEvent('didReceiveGlobalSettings')

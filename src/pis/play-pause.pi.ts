@@ -15,7 +15,7 @@ export class PlayPausePi extends PisAbstract {
         this.pi.authButtonElement.onclick = () => {
             if (this.pi.authButtonElement.disabled) return;
             try {
-                this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTING, 'yellow', true);
+                this.setAuthStatusMessage(this.pi.getLangString("AUTH_STATUS_CONNECTING"), 'yellow', true);
 
                 const host = this.pi.hostElement.value,
                     port = this.pi.portElement.value;
@@ -29,18 +29,18 @@ export class PlayPausePi extends PisAbstract {
                 });
 
                 connector.restClient.getAuthCode().then((res) => {
-                    this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_AUTHORIZING, 'yellow', true);
+                    this.setAuthStatusMessage(this.pi.getLangString("AUTH_STATUS_AUTHORIZING"), 'yellow', true);
                     if (!res.code) {
-                        this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_ERROR, 'red', false);
+                        this.setAuthStatusMessage(this.pi.getLangString("AUTH_STATUS_ERROR"), 'red', false);
                         return;
                     }
 
-                    this.pi.authStatusElement.innerText = `AUTH CODE: ${res.code}\n\n${this.pi.localization.AUTH_CODE_COMPARE}`;
+                    this.pi.authStatusElement.innerText = `AUTH CODE: ${res.code}\n\n${this.pi.getLangString("AUTH_CODE_COMPARE")}`;
 
                     connector.restClient.getAuthToken(res.code).then((res) => {
                         if (res.token) {
                             this.authToken = res.token;
-                            this.setAuthStatusMessage(this.pi.localization.AUTH_STATUS_CONNECTED, 'green', false);
+                            this.setAuthStatusMessage(this.pi.getLangString("AUTH_STATUS_CONNECTED"), 'green', false);
                             this.saveSettings();
                         } else {
                             this.authErrorCatched(res);
@@ -92,10 +92,10 @@ export class PlayPausePi extends PisAbstract {
             msg = JSON.stringify(err);
         }
         if (!this.pi.authStatusElement) {
-            alert(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`);
+            alert(`${this.pi.getLangString("AUTH_STATUS_ERROR")}\n${msg}`);
             return;
         }
-        this.setAuthStatusMessage(`${this.pi.localization.AUTH_STATUS_ERROR}\n${msg}`, 'red', false);
+        this.setAuthStatusMessage(`${this.pi.getLangString("AUTH_STATUS_ERROR")}\n${msg}`, 'red', false);
     }
 
     private saveSettings() {
