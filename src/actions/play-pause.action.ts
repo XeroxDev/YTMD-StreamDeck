@@ -202,7 +202,6 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
     @SDOnActionEvent('didReceiveSettings')
     private handleSettings(e: DidReceiveSettingsEvent<PlayPauseSettings>) {
-        // this.format = e?.payload?.settings?.displayFormat ?? this.format;
         this.contextFormat[e.context] = e.payload.settings?.displayFormat ?? this.contextFormat[e.context];
     }
 }
