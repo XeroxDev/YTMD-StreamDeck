@@ -85,6 +85,7 @@ export class PlayPausePi extends PisAbstract {
     }
 
     private authErrorCatched(err: any) {
+        this.pi.logMessage(`Auth error: ${JSON.stringify(err)}`);
         let msg = "";
         if (err satisfies ErrorOutput) {
             msg = err.message;

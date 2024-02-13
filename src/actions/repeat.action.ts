@@ -31,7 +31,6 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
         found = {
             context: event.context,
             method: (state: StateOutput) => {
-                console.log("Repeat mode", state.player.queue?.repeatMode);
                 if (state.player.queue?.repeatMode === undefined || state.player.queue.repeatMode === null || state.player.queue.repeatMode === this.currentMode) {
                     return;
                 }
@@ -89,9 +88,9 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
                 mode = RepeatMode.ONE;
                 break;
         }
-        console.log("Repeat mode", mode);
         this.rest.repeatMode(mode).catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while setting repeat mode. mode: ${mode}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         })
     }

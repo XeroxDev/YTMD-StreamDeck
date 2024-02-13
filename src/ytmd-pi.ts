@@ -135,8 +135,12 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     private setupLocalization() {
         this.fetchLocalizationFile(this.info.application.language ?? 'en', (b, s) => {
             if (!b) {
+                this.logMessage(`Failed to load the localization file. Reason: ${s}. Using default language.`);
                 // try to load the default language
                 this.fetchLocalizationFile('en', (b2, s2) => {
+                    if (!b2) {
+                        this.logMessage(`Failed to load the default localization file. Reason: ${s2}.`);
+                    }
                     this.localization = (s2 as LocalizationInterface).PI;
                     this.translateHtml();
                 });

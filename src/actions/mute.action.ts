@@ -60,6 +60,7 @@ export class MuteAction extends DefaultAction<MuteAction> {
 
             this.rest.setVolume(this.volume).catch(reason => {
                 console.error(reason);
+                this.plugin.logMessage(`Error while setting volume. volume: ${this.volume}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
                 this.plugin.showAlert(event.context)
             });
 
@@ -71,6 +72,7 @@ export class MuteAction extends DefaultAction<MuteAction> {
 
         this.rest.setVolume(this.volume).catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while setting volume. volume: ${this.volume}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         });
     }

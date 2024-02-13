@@ -36,6 +36,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
             context: event.context,
             method: (state: StateOutput) => this.handleSongInfo(event, state).catch(reason => {
                 console.error(reason);
+                this.plugin.logMessage(`Error while executing handleSongInfo. state: ${JSON.stringify(state)}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
                 this.plugin.showAlert(event.context)
             })
         };
@@ -70,6 +71,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     public onKeypressUp(event: KeyUpEvent): void {
         this.rest.playPause().catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while playPause toggle (song info). event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         });
     }

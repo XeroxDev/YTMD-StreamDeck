@@ -113,6 +113,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         if (!settings?.action) {
             this.rest.playPause().catch(reason => {
                 console.error(reason);
+                this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
                 this.plugin.showAlert(context)
             })
             return;
@@ -121,18 +122,21 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
             case 'PLAY':
                 this.rest.play().catch(reason => {
                     console.error(reason);
+                    this.plugin.logMessage(`Error while play. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
                     this.plugin.showAlert(context)
                 });
                 break;
             case 'PAUSE':
                 this.rest.pause().catch(reason => {
                     console.error(reason);
+                    this.plugin.logMessage(`Error while pause. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
                     this.plugin.showAlert(context)
                 });
                 break;
             default:
                 this.rest.playPause().catch(reason => {
                     console.error(reason);
+                    this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
                     this.plugin.showAlert(context)
                 });
                 break;
