@@ -15,7 +15,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private trackState: TrackState = TrackState.UNKNOWN;
     private currentTitle: string;
     private firstTimes = 10;
-    private format = '{current}';
+    private contextFormat: { [key: string]: string } = {};
     private events: {
         context: string,
         onTick: (state: StateOutput) => void,
@@ -146,7 +146,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     }
 
     handlePlayerData(
-        {context}: WillAppearEvent,
+        {context, payload: {settings}}: WillAppearEvent<PlayPauseSettings>,
         data: StateOutput
     ) {
         if (Object.keys(data).length === 0) {
@@ -155,9 +155,9 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         }
         let current = Math.floor(data.player.videoProgress);
         let duration = Math.floor(data.video?.durationSeconds ?? 0);
-        let remaining = Math.floor(data.player.videoProgress - (data.video?.durationSeconds ?? 0));
+        let remaining = duration - current;
 
-        const title = this.formatTitle(current, duration, remaining);
+        const title = this.formatTitle(current, duration, remaining, context, settings);
 
         if (this.currentTitle !== title || this.firstTimes >= 1) {
             this.firstTimes--;
@@ -174,24 +174,27 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         }
     }
 
-    private formatTitle(current: number, duration: number, remaining: number): string {
+    private formatTitle(current: number, duration: number, remaining: number, context: string, settings: PlayPauseSettings): string {
         current = current ?? 0;
         duration = duration ?? 0;
         remaining = remaining ?? 0;
         const varMapping: { [key: string]: string } = {
             'current': PlayPauseAction.formatTime(current),
+            'current:H': PlayPauseAction.formatTime(current),
             'current:S': current.toString(),
             'duration': PlayPauseAction.formatTime(duration),
+            'duration:H': PlayPauseAction.formatTime(duration),
             'duration:S': duration.toString(),
             'remaining': PlayPauseAction.formatTime(remaining),
+            'remaining:H': PlayPauseAction.formatTime(remaining),
             'remaining:S': remaining.toString()
         };
 
-        let result = this.format;
+        let result = this.contextFormat[context] ?? settings.displayFormat ?? '{current}';
 
         for (let varMappingKey in varMapping) {
             const value = varMapping[varMappingKey];
-            result = result.replace(new RegExp(`\{${varMappingKey}\}`, 'g'), value);
+            result = result.replace(new RegExp(`\{${varMappingKey}\}`, 'gi'), value);
         }
 
         return result;
@@ -199,6 +202,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
     @SDOnActionEvent('didReceiveSettings')
     private handleSettings(e: DidReceiveSettingsEvent<PlayPauseSettings>) {
-        this.format = e?.payload?.settings?.displayFormat ?? this.format;
+        // this.format = e?.payload?.settings?.displayFormat ?? this.format;
+        this.contextFormat[e.context] = e.payload.settings?.displayFormat ?? this.contextFormat[e.context];
     }
 }
