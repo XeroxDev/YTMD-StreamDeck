@@ -13,7 +13,7 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     private albumIndex = 0;
     private currentAlbum: string;
     private currentThumbnail: string;
-    private lastChange: Date;
+    private lastChange: {context: string, date:Date }[] = [];
 
     constructor(private plugin: YTMD, actionName: string) {
         super(plugin, actionName);
@@ -109,8 +109,11 @@ export class SongInfoAction extends DefaultAction<SongInfoAction> {
     }
 
     private async handleSongInfo(event: WillAppearEvent, state: StateOutput) {
-        if (this.lastChange && new Date().getTime() - this.lastChange.getTime() < 250) return;
-        this.lastChange = new Date();
+        const lastChange = this.lastChange.find(l => l.context === event.context);
+        if (lastChange && new Date().getTime() - lastChange.date.getTime() < 450) return;
+        this.lastChange = this.lastChange.filter(l => l.context !== event.context);
+        this.lastChange.push({context: event.context, date: new Date()});
+
         const {title, album, author, cover} = this.getSongData(state);
 
         if (this.currentTitle !== title) this.titleIndex = 0;
