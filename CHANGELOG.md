@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.1.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.0.0...v2.1.0) (2024-02-14)
+
+
+### Features
+
+* add better error logging ([6408555](https://github.com/XeroxDev/YTMD-StreamDeck/commit/6408555e11cd6bbc16c70a6608bbd1208cf95ca4))
+* add French translation ([#102](https://github.com/XeroxDev/YTMD-StreamDeck/issues/102)) ([cfca17a](https://github.com/XeroxDev/YTMD-StreamDeck/commit/cfca17a615a429eb3189e095fe037e6b93d1c784))
+
+
+### Bug Fixes
+
+* missing actions in property inspector ([ad39dd8](https://github.com/XeroxDev/YTMD-StreamDeck/commit/ad39dd8677306601f0d5b169a99b39856d643fd9))
+* missing translation file causes crash ([716c464](https://github.com/XeroxDev/YTMD-StreamDeck/commit/716c464578b291cfdff41f52fb88fbc074541373))
+* mute/unmute just mutes ([64d546d](https://github.com/XeroxDev/YTMD-StreamDeck/commit/64d546dab289078e9c58c5760c1ac727261fa85e))
+* repeat mode only disables ([20c89d1](https://github.com/XeroxDev/YTMD-StreamDeck/commit/20c89d1e0d4f29bcf6ad64977dbeef9926972623))
+* track info breaks when adding two instances ([cd33b8d](https://github.com/XeroxDev/YTMD-StreamDeck/commit/cd33b8da4ad36c46bd14324cab0ebe7afc9acf8f))
+* variables are wrong calculated ([083a2dd](https://github.com/XeroxDev/YTMD-StreamDeck/commit/083a2dd40bcd6d461e806b3d52a972c25637e1cf))
+
 ## [2.0.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v1.7.0...v2.0.0) (2024-02-12)
 
 
