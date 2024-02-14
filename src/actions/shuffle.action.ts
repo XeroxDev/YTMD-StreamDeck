@@ -17,6 +17,7 @@ export class ShuffleAction extends DefaultAction<ShuffleAction> {
             .then(() => this.plugin.showOk(event.context))
             .catch(reason => {
                 console.error(reason);
+                this.plugin.logMessage(`Error while shuffle. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
                 this.plugin.showAlert(event.context)
             });
     }

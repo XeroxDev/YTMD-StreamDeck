@@ -65,6 +65,9 @@ browserify({entries: ['src/ytmd-pi.ts'], plugin: [tsify]}).bundle((err, buf) => 
         fs.copyFileSync('manifest.json', 'build/fun.shiro.ytmd.sdPlugin/manifest.json');
         fs.copyFileSync('property-inspector.html', 'build/fun.shiro.ytmd.sdPlugin/property-inspector.html');
         fs.copyFileSync('action.html', 'build/fun.shiro.ytmd.sdPlugin/action.html');
+        fs.copyFileSync('de.json', 'build/fun.shiro.ytmd.sdPlugin/de.json');
+        fs.copyFileSync('en.json', 'build/fun.shiro.ytmd.sdPlugin/en.json');
+        fs.copyFileSync('fr.json', 'build/fun.shiro.ytmd.sdPlugin/fr.json');
         fs.cpSync('icons', 'build/fun.shiro.ytmd.sdPlugin/icons', {recursive: true});
 
         // Run distribution tool

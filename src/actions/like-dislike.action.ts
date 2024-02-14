@@ -46,10 +46,12 @@ export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
     onKeypressUp(event: KeyUpEvent): void {
         if (this.likeStatus === LikeStatus.LIKE) this.rest.toggleLike().catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while like toggle. like status: ${this.likeStatus}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         });
         else if (this.likeStatus === LikeStatus.DISLIKE) this.rest.toggleDislike().catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while dislike toggle. like status: ${this.likeStatus}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         });
     }

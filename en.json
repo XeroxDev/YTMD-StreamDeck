@@ -42,6 +42,10 @@
     "Name": "Shuffle",
     "Tooltip": "Shuffle"
   },
+  "fun.shiro.ytmdc.repeat": {
+    "Name": "Repeat mode",
+    "Tooltip": "Change repeat mode"
+  },
   "Localization": {
     "PI": {
       "HOST": "Host",

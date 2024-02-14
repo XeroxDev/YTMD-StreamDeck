@@ -29,6 +29,7 @@ export class YTMD extends StreamDeckPluginHandler {
             YTMD._COMPANION.socketClient.connect();
         } catch (e) {
             console.error(e);
+            this.logMessage(`Error while connecting. error: ${JSON.stringify(e)}`);
         }
         new PlayPauseAction(this, ActionTypes.PLAY_PAUSE);
         new NextPrevAction(this, ActionTypes.NEXT_TRACK, 'NEXT');

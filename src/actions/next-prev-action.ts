@@ -23,10 +23,12 @@ export class NextPrevAction extends DefaultAction<NextPrevAction> {
     onKeypressUp(event: KeyUpEvent) {
         if (this.nextOrPrev === 'NEXT') this.rest.next().catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while next. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         });
         else this.rest.previous().catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while previous. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         })
     }

@@ -62,6 +62,7 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
             this.currentVolume = newVolume;
             this.rest.setVolume(newVolume <= 0 ? 0 : newVolume >= 100 ? 100 : newVolume).catch(reason => {
                 console.error(reason);
+                this.plugin.logMessage(`Error while setting volume. volume: ${newVolume}, context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
                 this.plugin.showAlert(context)
             });
             await this.wait(500);

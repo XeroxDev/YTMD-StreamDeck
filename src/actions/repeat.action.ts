@@ -23,19 +23,6 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
 
     @SDOnActionEvent('willAppear')
     onContextAppear(event: WillAppearEvent<any>): void {
-        // this.socket.onTick$
-        //     .pipe(
-        //         map((data) => data.player.repeatType),
-        //         distinctUntilChanged(),
-        //         takeUntil(this.destroy$)
-        //     )
-        //     .subscribe((repeatType) => {
-        //         this.plugin.setImage(
-        //             `data:image/png;base64,${this.icons[repeatType]}`,
-        //             event.context
-        //         );
-        //     });
-
         let found = this.events.find(e => e.context === event.context);
         if (found) {
             return;
@@ -44,11 +31,11 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
         found = {
             context: event.context,
             method: (state: StateOutput) => {
-                if (!state.player.queue?.repeatMode) {
+                if (state.player.queue?.repeatMode === undefined || state.player.queue.repeatMode === null || state.player.queue.repeatMode === this.currentMode) {
                     return;
                 }
 
-                const currentMode = state.player.queue.repeatMode;
+                this.currentMode = state.player.queue.repeatMode;
 
                 let mode: "NONE" | "ONE" | "ALL" = "NONE";
                 switch (this.currentMode) {
@@ -89,7 +76,7 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp(event: KeyUpEvent<any>): void {
-        let mode: RepeatMode = this.currentMode;
+        let mode: RepeatMode;
         switch (this.currentMode) {
             case RepeatMode.ALL:
                 mode = RepeatMode.NONE;
@@ -101,9 +88,9 @@ export class RepeatAction extends DefaultAction<RepeatAction> {
                 mode = RepeatMode.ONE;
                 break;
         }
-
         this.rest.repeatMode(mode).catch(reason => {
             console.error(reason);
+            this.plugin.logMessage(`Error while setting repeat mode. mode: ${mode}, event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(event.context)
         })
     }
