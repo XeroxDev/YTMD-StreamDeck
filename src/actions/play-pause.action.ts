@@ -1,4 +1,6 @@
 import {
+    DialUpEvent,
+    DialRotateEvent,
     DidReceiveSettingsEvent,
     KeyUpEvent,
     SDOnActionEvent,
@@ -203,5 +205,56 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     @SDOnActionEvent('didReceiveSettings')
     private handleSettings(e: DidReceiveSettingsEvent<PlayPauseSettings>) {
         this.contextFormat[e.context] = e.payload.settings?.displayFormat ?? this.contextFormat[e.context];
+    }
+
+    @SDOnActionEvent('dialUp')
+    onDialUp({context, payload: {settings}}: DialUpEvent<PlayPauseSettings>) {
+        if (!settings?.action) {
+            this.rest.playPause().catch(reason => {
+                console.error(reason);
+                this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                this.plugin.showAlert(context)
+            })
+            return;
+        }
+        switch (settings?.action.toUpperCase()) {
+            case 'PLAY':
+                this.rest.play().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while play. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+            case 'PAUSE':
+                this.rest.pause().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while pause. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+            default:
+                this.rest.playPause().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+        }
+
+        this.plugin.setState(this.trackState === TrackState.PLAYING ? StateType.ON : StateType.OFF, context);
+    }
+
+    @SDOnActionEvent('dialRotate')
+    onDialRotate({context, payload: {settings, ticks}}: DialRotateEvent) {
+        if (ticks > 0) this.rest.next().catch(reason => {
+            console.error(reason);
+            this.plugin.logMessage(`Error while next. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
+            //this.plugin.showAlert(event.context)
+        })
+        else this.rest.previous().catch(reason => {
+            console.error(reason);
+            this.plugin.logMessage(`Error while previous. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
+            //this.plugin.showAlert(event.context)
+        })
     }
 }

@@ -1,4 +1,4 @@
-import {KeyDownEvent, KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent,} from 'streamdeck-typescript';
+import {KeyDownEvent, KeyUpEvent, SDOnActionEvent, WillAppearEvent, WillDisappearEvent, DialRotateEvent,} from 'streamdeck-typescript';
 import {YTMD} from '../ytmd';
 import {DefaultAction} from './default.action';
 import {StateOutput} from "ytmdesktop-ts-companion";
@@ -67,6 +67,20 @@ export class VolChangeAction extends DefaultAction<VolChangeAction> {
             });
             await this.wait(500);
         }
+    }
+
+    @SDOnActionEvent('dialRotate')
+    onDialRotate({context, payload: {settings, ticks}}: DialRotateEvent) {
+        let newVolume = this.currentVolume;
+        newVolume += (settings?.steps ?? 2) * ticks;
+
+        this.plugin.setFeedback(context, {"value": newVolume,"indicator": { "value": newVolume, "enabled": true }});
+        this.currentVolume = newVolume;
+        this.rest.setVolume(newVolume <= 0 ? 0 : newVolume >= 100 ? 100 : newVolume).catch(reason => {
+            console.error(reason);
+            this.plugin.logMessage(`Error while setting volume. volume: ${newVolume}, context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+            this.plugin.showAlert(context)
+        });
     }
 
     private wait(ms: number): Promise<void> {
