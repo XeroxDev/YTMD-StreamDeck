@@ -5,6 +5,7 @@ import {LikeStatus, StateOutput} from 'ytmdesktop-ts-companion';
 
 export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
     private events: { context: string, method: (state: StateOutput) => void }[] = [];
+    private lastLikeStatus: LikeStatus = LikeStatus.UNKNOWN;
 
     constructor(
         private plugin: YTMD,
@@ -64,7 +65,16 @@ export class LikeDislikeAction extends DefaultAction<LikeDislikeAction> {
             return;
         }
 
-        const correctState: boolean = data.video.likeStatus === this.likeStatus;
+        const {likeStatus} = data.video;
+        if (likeStatus === LikeStatus.UNKNOWN) {
+            return;
+        }
+
+        if (this.lastLikeStatus === likeStatus) {
+            return;
+        }
+
+        const correctState: boolean = likeStatus === this.likeStatus;
         this.plugin.setState(correctState ? StateType.ON : StateType.OFF, context);
     }
 }
