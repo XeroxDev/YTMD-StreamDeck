@@ -53,6 +53,7 @@ export class PlayPausePi extends PisAbstract {
             }
         }
         pi.requestSettings();
+        pi.requestGlobalSettings();
     }
 
     public newGlobalSettingsReceived(): void {
