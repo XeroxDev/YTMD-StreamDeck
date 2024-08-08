@@ -3,65 +3,65 @@
   "Category": "YTMD Connector",
   "Description": "This Stream Deck Plugin allows you to control the YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop)",
   "fun.shiro.ytmdc.play-pause": {
-    "Name": "Play-Pause",
+    "Name": "Play/Pause",
     "Tooltip": "Plays or pauses the current track"
   },
   "fun.shiro.ytmdc.next": {
-    "Name": "Next track",
+    "Name": "Next Track",
     "Tooltip": "Go to the next track"
   },
   "fun.shiro.ytmdc.prev": {
-    "Name": "previous track",
+    "Name": "Previous Track",
     "Tooltip": "Go to the previous track"
   },
   "fun.shiro.ytmdc.like": {
-    "Name": "Like track",
+    "Name": "Like Track",
     "Tooltip": "Likes the current track"
   },
   "fun.shiro.ytmdc.dislike": {
-    "Name": "Dislike track",
+    "Name": "Dislike Track",
     "Tooltip": "Dislikes the current track"
   },
   "fun.shiro.ytmdc.mute": {
     "Name": "Mute",
-    "Tooltip": "Toggles mute state on / off"
+    "Tooltip": "Toggles mute on/off"
   },
   "fun.shiro.ytmdc.volume-down": {
-    "Name": "Volume down",
-    "Tooltip": "Volume down"
+    "Name": "Volume Down",
+    "Tooltip": "Turns the player volume down"
   },
   "fun.shiro.ytmdc.volume-up": {
-    "Name": "Volume up",
-    "Tooltip": "Volume up"
+    "Name": "Volume Up",
+    "Tooltip": "Turns the player volume up"
   },
   "fun.shiro.ytmdc.song-info": {
-    "Name": "Track info",
-    "Tooltip": "Shows track title and thumbnail"
+    "Name": "Track Info",
+    "Tooltip": "Shows track title and cover"
   },
   "fun.shiro.ytmdc.shuffle": {
     "Name": "Shuffle",
-    "Tooltip": "Shuffle"
+    "Tooltip": "Toggle shuffle on/off"
   },
   "fun.shiro.ytmdc.repeat": {
     "Name": "Repeat mode",
-    "Tooltip": "Change repeat mode"
+    "Tooltip": "Change the repeat mode (None/All/One)"
   },
   "Localization": {
     "PI": {
       "HOST": "Host",
       "PORT": "Port",
-      "VOLUME_STEPS": "Volume steps",
+      "VOLUME_STEPS": "Volume Steps",
       "SAVE": "Save",
       "AUTOMATIC_SAVE": "This setting will save automatically",
       "AUTH_BUTTON": "Authorize",
       "AUTH_STATUS": "Auth Status",
       "AUTH_STATUS_CONNECTING": "Connecting...",
       "AUTH_STATUS_AUTHORIZING": "Authorizing...",
-      "AUTH_STATUS_NOT_CONNECTED": "Not authenticated",
-      "AUTH_STATUS_CONNECTED": "Authenticated",
-      "AUTH_STATUS_ERROR":  "Authentication failed",
+      "AUTH_STATUS_NOT_CONNECTED": "Not authenticated!",
+      "AUTH_STATUS_CONNECTED": "Authenticated!",
+      "AUTH_STATUS_ERROR":  "Authentication failed!",
       "AUTH_CODE_COMPARE": "Please compare the code with the one on the YTMDesktop app and confirm the authorization.",
-      "DISPLAY_FORMAT": "Display format",
+      "DISPLAY_FORMAT": "Display Format",
       "SUPPORT_FEEDBACK_TITLE": "Support & Feedback",
       "SUPPORT_FEEDBACK_TEXT": "You found a bug? You have a feature request?<br>You can either send them via an <a href=\"https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose\" rel=\"noopener\" target=\"_blank\">GitHub Issue</a> or <a href=\"https://x.xeroxdev.de/s/discord\" rel=\"noopener\" target=\"_blank\">Discord</a>!",
       "VAR_USAGE": "<p><strong>Available variables:</strong> {current}, {remaining}, {duration}</p><p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p><p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>",
