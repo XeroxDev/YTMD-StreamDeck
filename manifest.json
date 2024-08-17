@@ -40,15 +40,11 @@
       "Controllers": ["Keypad", "Encoder"],
       "DisableAutomaticStates": false,
       "Encoder": {
-        "background": "backgroundImage",
-        "Icon": "StackAndLayoutImage",
-        "layout": "layoutName",
+        "layout": "$B1",
         "StackColor": "#AABBCC",
         "TriggerDescription": {
-          "Rotate": "Describe the rotation",
-          "Push": "Describe the encoder push",
-          "Touch": "Describe the touch",
-          "LongTouch": "Describe the long touch"
+          "Rotate": "Switch song",
+          "Push": "Plays or Pauses the current song"
         }
       },
       "SupportedInMultiActions": true,
@@ -167,15 +163,11 @@
       "Controllers": ["Keypad", "Encoder"],
       "DisableAutomaticStates": false,
       "Encoder": {
-        "background": "backgroundImage",
-        "Icon": "StackAndLayoutImage",
         "layout": "$B1",
         "StackColor": "#AABBCC",
         "TriggerDescription": {
-          "Rotate": "Describe the rotation",
-          "Push": "Describe the encoder push",
-          "Touch": "Describe the touch",
-          "LongTouch": "Describe the long touch"
+          "Rotate": "Volume control",
+          "Push": "Mute"
         }
       },
       "SupportedInMultiActions": true,

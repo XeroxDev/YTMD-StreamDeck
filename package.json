@@ -58,7 +58,8 @@
     "ts-node": "^10.9.2",
     "tsify": "^5.0.4",
     "typescript": "^5.3.3",
-    "watchify": "^4.0.0"
+    "watchify": "^4.0.0",
+    "node-canvas": "^2.0.0"
   },
   "husky": {
     "hooks": {

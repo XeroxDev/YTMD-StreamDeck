@@ -12,6 +12,7 @@ import {YTMD} from '../ytmd';
 import {DefaultAction} from './default.action';
 import {PlayPauseSettings} from "../interfaces/context-settings.interface";
 import {SocketState, StateOutput, TrackState} from "ytmdesktop-ts-companion";
+const { createCanvas, loadImage } = require('canvas');
 
 export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private trackState: TrackState = TrackState.UNKNOWN;
@@ -24,7 +25,10 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         onError: (error: any) => void,
         onConChange: (state: SocketState) => void
     }[] = [];
-
+    private currentThumbnail: string;
+    private thumbnail: string;
+    private ticks = 0;
+    private lastcheck = 0;
 
     constructor(private plugin: YTMD, actionName: string) {
         super(plugin, actionName);
@@ -73,7 +77,28 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
         found = {
             context: event.context,
-            onTick: (state: StateOutput) => this.handlePlayerData(event, state),
+            onTick: (state: StateOutput) => {
+                this.handlePlayerData(event, state);
+                if (this.lastcheck === 0 && this.ticks !== 0)
+                    {
+                    if (this.ticks > 0) this.rest.next().catch(reason => {
+                        console.error(reason);
+                        this.plugin.logMessage(`Error while next. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
+                        this.plugin.showAlert(event.context)
+                    })
+                    else this.rest.previous().catch(reason => {
+                        console.error(reason);
+                        this.plugin.logMessage(`Error while previous. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
+                        this.plugin.showAlert(event.context)
+                    })
+                    this.ticks = 0;
+                    this.lastcheck = 3;
+                }
+                if (this.lastcheck > 0)
+                {
+                    this.lastcheck -= 1;
+                }
+            },
             onConChange: (state: SocketState) => {
                 switch (state) {
                     case SocketState.CONNECTED:
@@ -111,39 +136,12 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     }
 
     @SDOnActionEvent('keyUp')
-    onKeypressUp({context, payload: {settings}}: KeyUpEvent<PlayPauseSettings>) {
-        if (!settings?.action) {
-            this.rest.playPause().catch(reason => {
-                console.error(reason);
-                this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                this.plugin.showAlert(context)
-            })
-            return;
-        }
-        switch (settings?.action.toUpperCase()) {
-            case 'PLAY':
-                this.rest.play().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while play. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-            case 'PAUSE':
-                this.rest.pause().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while pause. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-            default:
-                this.rest.playPause().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-        }
-
+    onKeypressUp({context, payload: {settings}}: KeyUpEvent) {
+        this.rest.playPause().catch(reason => {
+            console.error(reason);
+            this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+            this.plugin.showAlert(context);
+        });
         this.plugin.setState(this.trackState === TrackState.PLAYING ? StateType.ON : StateType.OFF, context);
     }
 
@@ -160,11 +158,23 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         let remaining = duration - current;
 
         const title = this.formatTitle(current, duration, remaining, context, settings);
+        const cover = this.getSongCover(data);
 
         if (this.currentTitle !== title || this.firstTimes >= 1) {
             this.firstTimes--;
             this.currentTitle = title;
             this.plugin.setTitle(this.currentTitle, context);
+            this.plugin.setFeedback(context, {"icon": this.thumbnail, "value": this.currentTitle, "indicator": { "value": current / duration * 100, "enabled": true}});
+            if (this.currentThumbnail !== cover)
+            {
+                this.currentThumbnail = cover;
+                const canvas = createCanvas(48, 48);
+                const ctx = canvas.getContext('2d');
+                loadImage(cover).then((image: any) => {
+                    ctx.drawImage(image, 0, 0, 48, 48)
+                    this.thumbnail = canvas.toDataURL('image/png');
+                });
+            }
         }
 
         if (this.trackState !== data.player.trackState) {
@@ -174,6 +184,24 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
                 context
             );
         }
+    }
+
+    private getSongCover(data: StateOutput): string {
+        let cover = "";
+
+        if (!data.player || !data.video) return cover;
+
+        const trackState = data.player.trackState;
+
+        switch (trackState) {
+            case TrackState.PLAYING:
+                cover = data.video.thumbnails[data.video.thumbnails.length - 1].url ?? cover;
+                break;
+            default:
+                break;
+        }
+
+        return cover;
     }
 
     private formatTitle(current: number, duration: number, remaining: number, context: string, settings: PlayPauseSettings): string {
@@ -209,52 +237,16 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
     @SDOnActionEvent('dialUp')
     onDialUp({context, payload: {settings}}: DialUpEvent<PlayPauseSettings>) {
-        if (!settings?.action) {
-            this.rest.playPause().catch(reason => {
-                console.error(reason);
-                this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                this.plugin.showAlert(context)
-            })
-            return;
-        }
-        switch (settings?.action.toUpperCase()) {
-            case 'PLAY':
-                this.rest.play().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while play. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-            case 'PAUSE':
-                this.rest.pause().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while pause. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-            default:
-                this.rest.playPause().catch(reason => {
-                    console.error(reason);
-                    this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-                    this.plugin.showAlert(context)
-                });
-                break;
-        }
-
+        this.rest.playPause().catch(reason => {
+            console.error(reason);
+            this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+            this.plugin.showAlert(context)
+        });
         this.plugin.setState(this.trackState === TrackState.PLAYING ? StateType.ON : StateType.OFF, context);
     }
 
     @SDOnActionEvent('dialRotate')
     onDialRotate({context, payload: {settings, ticks}}: DialRotateEvent) {
-        if (ticks > 0) this.rest.next().catch(reason => {
-            console.error(reason);
-            this.plugin.logMessage(`Error while next. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
-            //this.plugin.showAlert(event.context)
-        })
-        else this.rest.previous().catch(reason => {
-            console.error(reason);
-            this.plugin.logMessage(`Error while previous. event: ${JSON.stringify(event)}, error: ${JSON.stringify(reason)}`);
-            //this.plugin.showAlert(event.context)
-        })
+        this.ticks += ticks;
     }
 }
