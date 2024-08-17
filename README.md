@@ -1,3 +1,5 @@
+![Thumbnail](assets/thumbnail/ytmdc-thumbnail.png)
+
 # 1. Table of content
 - [1. Table of content](#1-table-of-content)
 - [2. Badges](#2-badges)
@@ -55,6 +57,8 @@ You can also join my discord [here](https://x.xeroxdev.de/s/discord)
   - ONE
 
 # 6. How to use it?
+> [!NOTE]
+> This is just a simplified version, please visit the [official documentation](https://help.xeroxdev.de/en/stream-deck/ytmd/home#h-5-how-to-use-it) for a more detailed guide.
 
 1. Install the [YouTube Music Desktop App](https://github.com/ytmdesktop/ytmdesktop).
 2. Install the Plugin from [Releases](https://github.com/XeroxDev/YTMD-StreamDeck/releases) or from the official Stream Deck Store.
@@ -69,15 +73,6 @@ You can also join my discord [here](https://x.xeroxdev.de/s/discord)
 8. Compare the authorization code displaying by the plugin with the one displaying in the YTMDesktop App
 9. If they match, confirm the authorization in the YTMDesktop App
 10. You are ready to go! (Steps 6-9 are only needed once/when the plugin isn't authorized)
-
-<details>
-  <summary>Video Tutorial</summary>
-  <a href="https://www.youtube.com/watch?v=WVpHYHxJsXY" target="_blank" rel="noopener noreferrer">
-  	<img src="https://help.xeroxdev.de/assets/ytmd-streamdeck-video.png" />
-  </a>
-  
-  - By Vahyking (Thank you!)
-</details>
 
 # 7. How to contribute?
 

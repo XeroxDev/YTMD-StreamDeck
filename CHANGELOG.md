@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.1.0...v2.1.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* **likedislike:** ignore unknown state for like/dislike state due to ytmd native issues ([#121](https://github.com/XeroxDev/YTMD-StreamDeck/issues/121)) ([36b44eb](https://github.com/XeroxDev/YTMD-StreamDeck/commit/36b44eb7252c63c523ba52809199bae0b1d0f5f1)), closes [#116](https://github.com/XeroxDev/YTMD-StreamDeck/issues/116)
+* **pi:** settings don't get auto-populated ([7e4d781](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7e4d7818c4854fdf09c644564dec3f7aa7895c6e)), closes [#115](https://github.com/XeroxDev/YTMD-StreamDeck/issues/115)
+
 ## [2.1.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.0.0...v2.1.0) (2024-02-14)
 
 
