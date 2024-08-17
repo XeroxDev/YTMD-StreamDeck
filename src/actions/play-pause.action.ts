@@ -137,11 +137,37 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp({context, payload: {settings}}: KeyUpEvent) {
-        this.rest.playPause().catch(reason => {
-            console.error(reason);
-            this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
-            this.plugin.showAlert(context);
-        });
+        if (!settings?.action) {
+            this.rest.playPause().catch(reason => {
+                console.error(reason);
+                this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                this.plugin.showAlert(context)
+            })
+            return;
+        }
+        switch (settings?.action.toUpperCase()) {
+            case 'PLAY':
+                this.rest.play().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while play. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+            case 'PAUSE':
+                this.rest.pause().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while pause. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+            default:
+                this.rest.playPause().catch(reason => {
+                    console.error(reason);
+                    this.plugin.logMessage(`Error while playPause toggle. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
+                    this.plugin.showAlert(context)
+                });
+                break;
+        }
         this.plugin.setState(this.trackState === TrackState.PLAYING ? StateType.ON : StateType.OFF, context);
     }
 
