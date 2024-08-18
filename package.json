@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/XeroxDev/YTMD-StreamDeck#readme",
   "dependencies": {
-    "streamdeck-typescript": "C:/Users/Nosjo/Documents/Stream-Deck-TS-SDK",
+    "streamdeck-typescript": "^3.2.0",
     "ytmdesktop-ts-companion": "^1.0.5"
   },
   "keywords": [
