@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: release-please
-        uses: google-github-actions/release-please-action@v4
+        uses: googleapis/release-please-action@v4
         id: release
         with:
           target-branch: master
