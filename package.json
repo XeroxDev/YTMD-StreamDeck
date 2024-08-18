@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/XeroxDev/YTMD-StreamDeck#readme",
   "dependencies": {
-    "streamdeck-typescript": "^3.2.0",
+    "streamdeck-typescript": "^3.1.4",
     "ytmdesktop-ts-companion": "^1.0.5"
   },
   "keywords": [
@@ -58,8 +58,7 @@
     "ts-node": "^10.9.2",
     "tsify": "^5.0.4",
     "typescript": "^5.3.3",
-    "watchify": "^4.0.0",
-    "node-canvas": "^2.0.0"
+    "watchify": "^4.0.0"
   },
   "husky": {
     "hooks": {
