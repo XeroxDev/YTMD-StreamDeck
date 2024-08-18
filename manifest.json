@@ -37,16 +37,6 @@
           "FontSize": "16"
         }
       ],
-      "Controllers": ["Keypad", "Encoder"],
-      "DisableAutomaticStates": false,
-      "Encoder": {
-        "layout": "$B1",
-        "StackColor": "#AABBCC",
-        "TriggerDescription": {
-          "Rotate": "Switch song",
-          "Push": "Plays or Pauses the current song"
-        }
-      },
       "SupportedInMultiActions": true,
       "Tooltip": "Plays or Pauses the current song",
       "UUID": "fun.shiro.ytmdc.play-pause"
@@ -160,16 +150,6 @@
           "FontSize": "16"
         }
       ],
-      "Controllers": ["Keypad", "Encoder"],
-      "DisableAutomaticStates": false,
-      "Encoder": {
-        "layout": "$B1",
-        "StackColor": "#AABBCC",
-        "TriggerDescription": {
-          "Rotate": "Volume control",
-          "Push": "Mute"
-        }
-      },
       "SupportedInMultiActions": true,
       "Tooltip": "Volume Up",
       "UUID": "fun.shiro.ytmdc.volume-up"
