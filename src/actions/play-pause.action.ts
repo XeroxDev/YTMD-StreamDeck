@@ -12,7 +12,6 @@ import {YTMD} from '../ytmd';
 import {DefaultAction} from './default.action';
 import {PlayPauseSettings} from "../interfaces/context-settings.interface";
 import {SocketState, StateOutput, TrackState} from "ytmdesktop-ts-companion";
-const { createCanvas, loadImage } = require('canvas');
 
 export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private trackState: TrackState = TrackState.UNKNOWN;
@@ -194,12 +193,26 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
             if (this.currentThumbnail !== cover)
             {
                 this.currentThumbnail = cover;
-                const canvas = createCanvas(48, 48);
-                const ctx = canvas.getContext('2d');
-                loadImage(cover).then((image: any) => {
-                    ctx.drawImage(image, 0, 0, 48, 48)
+                let image = new Image();
+
+                image.onload = () => {
+                    let canvas = document.createElement('canvas');
+                    canvas.width = 48;
+                    canvas.height = 48;
+
+                    let ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        return;
+                    }
+
+                    ctx.drawImage(image, 0, 0, 48, 48);
+
+                    image.onload = null;
+                    (image as any) = null;
+
                     this.thumbnail = canvas.toDataURL('image/png');
-                });
+                };
+                image.src = cover;
             }
         }
 
