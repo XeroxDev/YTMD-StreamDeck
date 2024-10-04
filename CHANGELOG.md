@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.1.1...v2.2.0) (2024-08-18)
+
+
+### Features
+
+* add streamdeck+ support ([ba5e573](https://github.com/XeroxDev/YTMD-StreamDeck/commit/ba5e5736898c8e296f8900c5c432afcf9a969dcd))
+
+
+### Bug Fixes
+
+* english grammar issues. ([6b6b8b4](https://github.com/XeroxDev/YTMD-StreamDeck/commit/6b6b8b4d933821da0f29f1f505e6779e2b60ee8a))
+
 ## [2.1.1](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.1.0...v2.1.1) (2024-06-06)
 
 
