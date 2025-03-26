@@ -102,16 +102,24 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
                 switch (state) {
                     case SocketState.CONNECTED:
                         this.plugin.showOk(event.context);
+                        this.plugin.setTitle("", event.context);
+                        this.plugin.setFeedback(event.context, {"icon": this.thumbnail, "value": "00:00", "indicator": { "enabled": true}});
                         break;
                     case SocketState.DISCONNECTED:
                     case SocketState.ERROR:
-                        this.plugin.showAlert(event.context);
+                        this.plugin.setTitle("⚠", event.context);
+                        this.plugin.setFeedback(event.context, {"icon": this.thumbnail, "value": "⚠", "indicator": { "enabled": false}});
                         break;
                     default:
                         break;
                 }
             },
-            onError: () => this.plugin.showAlert(event.context)
+            onError: (error: any) => {
+                if (error.toString() != "Error: websocket error")
+                {
+                    this.plugin.showAlert(event.context);
+                }
+            }
         };
 
         this.events.push(found);
