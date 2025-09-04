@@ -12,6 +12,9 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     public portElement: HTMLInputElement;
     public actionElement: HTMLInputElement;
     public displayFormatElement: HTMLInputElement;
+    public displayTitleFormatElement: HTMLInputElement;
+    public sdplusSettingsElement: HTMLInputElement;
+    public customLayout: HTMLInputElement;
     public saveElement: HTMLButtonElement;
     public authSectionElement: HTMLElement;
     public authButtonElement: HTMLButtonElement;
@@ -186,6 +189,9 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.portElement = document.getElementById('port') as HTMLInputElement;
         this.actionElement = document.getElementById('action') as HTMLInputElement;
         this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
+        this.displayTitleFormatElement = document.getElementById('displayTitleFormat') as HTMLInputElement;
+        this.sdplusSettingsElement = document.getElementById('sdplus-settings') as HTMLInputElement;
+        this.customLayout = document.getElementById('sdplus-customLayout') as HTMLInputElement;
         this.saveElement = document.getElementById('save') as HTMLButtonElement;
         this.authSectionElement = document.getElementById('authStatusSection') as HTMLElement;
         this.authButtonElement = document.getElementById('authButton') as HTMLButtonElement;

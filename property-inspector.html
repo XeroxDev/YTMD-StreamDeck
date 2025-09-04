@@ -49,6 +49,25 @@
         <p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p>
         <p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>
     </div>
+    <div id="sdplus-settings" style="display: none;">
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Title Format</div>
+            <textarea class="sdpi-item-value" type="text" id="displayTitleFormat">{title}</textarea>
+        </div>
+        <div style="padding: 5px;">
+            <p><strong>Available variables:</strong> {title}, {author}, {album}</p>
+            <p><strong>Usage:</strong> {title} to display song title</p>
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Custom Layout File</div>
+            <textarea class="sdpi-item-value" type="text" id="sdplus-customLayout"></textarea>
+        </div>
+        <div style="padding: 5px;">
+            <p><strong>Usage:</strong> Path to custom layout in the plugin folder</p>
+            Use the following key values on text objects to get information</p>
+            <p><strong>Key values:</strong> song, author, album</p>
+        </div>
+    </div>
     <div class="sdpi-item">
         <button class="sdpi-item-value save-label" id="save">Save</button>
     </div>

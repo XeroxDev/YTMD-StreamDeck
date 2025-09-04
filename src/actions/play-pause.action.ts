@@ -18,6 +18,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     private currentTitle: string;
     private firstTimes = 10;
     private contextFormat: { [key: string]: string } = {};
+    private contextTitleFormat: { [key: string]: string } = {};
     private events: {
         context: string,
         onTick: (state: StateOutput) => void,
@@ -179,7 +180,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     }
 
     handlePlayerData(
-        {context, payload: {settings}}: WillAppearEvent<PlayPauseSettings>,
+        {action, context, payload: {settings}}: WillAppearEvent<PlayPauseSettings>,
         data: StateOutput
     ) {
         if (Object.keys(data).length === 0) {
@@ -190,14 +191,32 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         let duration = Math.floor(data.video?.durationSeconds ?? 0);
         let remaining = duration - current;
 
-        const title = this.formatTitle(current, duration, remaining, context, settings);
-        const cover = this.getSongCover(data);
+        const time = this.formatTime(current, duration, remaining, context, settings);
+        const {title, album, author, cover} = this.getSongData(data);
+        const formattitle = this.formatTitle(title, album, author, context, settings);
 
-        if (this.currentTitle !== title || this.firstTimes >= 1) {
+        if (this.currentTitle !== time || this.firstTimes >= 1) {
             this.firstTimes--;
-            this.currentTitle = title;
+            this.currentTitle = time;
             this.plugin.setTitle(this.currentTitle, context);
             this.plugin.setFeedback(context, {"icon": this.thumbnail, "value": this.currentTitle, "indicator": { "value": current / duration * 100, "enabled": true}});
+            if (formattitle != "")
+            {
+                this.plugin.setFeedback(context, {"title": formattitle});
+            }
+            // these 3 below are for custom layout support with more text fields
+            if (title != "")
+            {
+                this.plugin.setFeedback(context, {"song": title});
+            }
+            if (author != "")
+            {
+                this.plugin.setFeedback(context, {"author": author});
+            }
+            if (album != "")
+            {
+                this.plugin.setFeedback(context, {"album": album});
+            }
             if (this.currentThumbnail !== cover)
             {
                 this.currentThumbnail = cover;
@@ -205,15 +224,15 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
 
                 image.onload = () => {
                     let canvas = document.createElement('canvas');
-                    canvas.width = 48;
-                    canvas.height = 48;
+                    canvas.width = 100;
+                    canvas.height = 100;
 
                     let ctx = canvas.getContext('2d');
                     if (!ctx) {
                         return;
                     }
 
-                    ctx.drawImage(image, 0, 0, 48, 48);
+                    ctx.drawImage(image, 0, 0, 100, 100);
 
                     image.onload = null;
                     (image as any) = null;
@@ -233,25 +252,50 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         }
     }
 
-    private getSongCover(data: StateOutput): string {
-        let cover = "";
+    private getSongData(data: StateOutput): {
+        title: string,
+        album: string,
+        author: string,
+        cover: string
+    } {
+        let title = '';
+        let album = '';
+        let author = '';
+        let cover = '';
 
-        if (!data.player || !data.video) return cover;
+        if (!data.player || !data.video) return {title, album, author, cover};
 
         const trackState = data.player.trackState;
 
-        switch (trackState) {
-            case TrackState.PLAYING:
-                cover = data.video.thumbnails[data.video.thumbnails.length - 1].url ?? cover;
-                break;
-            default:
-                break;
-        }
+        title = data.video.title ?? title;
+        album = data.video.album ?? album;
+        author = data.video.author ?? author;
+        cover = data.video.thumbnails[data.video.thumbnails.length - 1].url ?? cover;
 
-        return cover;
+        return {title, album, author, cover};
     }
 
-    private formatTitle(current: number, duration: number, remaining: number, context: string, settings: PlayPauseSettings): string {
+    private formatTitle(title: string, album: string, author: string, context: string, settings: PlayPauseSettings): string {
+        title = title ?? '';
+        album = album ?? '';
+        author = author ?? '';
+        const varMapping: { [key: string]: string } = {
+            'title': title,
+            'album': album,
+            'author': author,
+        };
+
+        let result = this.contextTitleFormat[context] ?? settings.displayTitleFormat ?? '{title}';
+
+        for (let varMappingKey in varMapping) {
+            const value = varMapping[varMappingKey];
+            result = result.replace(new RegExp(`\{${varMappingKey}\}`, 'gi'), value);
+        }
+
+        return result;
+    }
+
+    private formatTime(current: number, duration: number, remaining: number, context: string, settings: PlayPauseSettings): string {
         current = current ?? 0;
         duration = duration ?? 0;
         remaining = remaining ?? 0;
@@ -280,6 +324,9 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     @SDOnActionEvent('didReceiveSettings')
     private handleSettings(e: DidReceiveSettingsEvent<PlayPauseSettings>) {
         this.contextFormat[e.context] = e.payload.settings?.displayFormat ?? this.contextFormat[e.context];
+        this.contextTitleFormat[e.context] = e.payload.settings?.displayTitleFormat ?? this.contextTitleFormat[e.context];
+        let clayout = e.payload.settings?.customLayout;
+        this.plugin.setFeedbackLayout(e.context, clayout == '' ? '$B1' : clayout);
     }
 
     @SDOnActionEvent('dialUp')

@@ -5,6 +5,7 @@ import {DidReceiveSettingsEvent} from "streamdeck-typescript";
 import {PlayPauseSettings} from "../interfaces/context-settings.interface";
 import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion";
 import {PluginData} from "../shared/plugin-data";
+import {ControllerType} from 'streamdeck-typescript/dist/src/interfaces/enums';
 
 export class PlayPausePi extends PisAbstract {
     private authToken: string = '';
@@ -72,9 +73,12 @@ export class PlayPausePi extends PisAbstract {
         this.authToken = token;
     }
 
-    public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
+    public newSettingsReceived({payload: {settings, controller}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
         this.pi.actionElement.value = settings.action ?? "TOGGLE";
         this.pi.displayFormatElement.value = settings.displayFormat ?? "{current}";
+        this.pi.displayTitleFormatElement.value = settings.displayTitleFormat ?? "{title}";
+        this.pi.customLayout.value = settings.customLayout ?? '';
+        this.pi.sdplusSettingsElement.style.display = controller === ControllerType[ControllerType.Encoder] ? 'block' : 'none';
     }
 
     private setAuthStatusMessage(text: string, color: string, buttonDisabled: boolean) {
@@ -104,14 +108,18 @@ export class PlayPausePi extends PisAbstract {
         let host = this.pi.hostElement.value,
             port = this.pi.portElement.value,
             action = this.pi.actionElement.value,
-            displayFormat = this.pi.displayFormatElement.value;
+            displayFormat = this.pi.displayFormatElement.value,
+            displayTitleFormat = this.pi.displayTitleFormatElement.value,
+            customLayout = this.pi.customLayout.value
 
         if (host == 'localhost') host = '127.0.0.1';
 
         this.settingsManager.setGlobalSettings({host, port, token: this.authToken, action});
         this.settingsManager.setContextSettingsAttributes(this.context, {
             action: action ?? "TOGGLE",
-            displayFormat: displayFormat ?? "{current}"
+            displayFormat: displayFormat ?? "{current}",
+            displayTitleFormat: displayTitleFormat ?? '{title}',
+            customLayout: customLayout ?? false
         });
     }
 }
