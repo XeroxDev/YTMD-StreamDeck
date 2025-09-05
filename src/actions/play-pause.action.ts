@@ -128,6 +128,9 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
         this.socket.addStateListener(found.onTick);
         this.socket.addConnectionStateListener(found.onConChange);
         this.socket.addErrorListener(found.onError)
+
+        let clayout = event.payload.settings.customLayout;
+        this.plugin.setFeedbackLayout(event.context, clayout == '' ? '$B1' : clayout);
     }
 
     @SDOnActionEvent('willDisappear')
