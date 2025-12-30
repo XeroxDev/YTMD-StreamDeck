@@ -1,84 +1,72 @@
+const esbuild = require('esbuild');
 const fs = require('fs');
-const browserify = require('../node_modules/browserify');
-const tsify = require('../node_modules/tsify');
-const {minify_sync} = require('../node_modules/terser');
-const {execSync} = require('child_process');
 // Create release folder
 console.log('Creating release folder');
 if (fs.existsSync('build')) {
-    execSync('rmdir /s /q build');
+    fs.rmSync('build', {recursive: true, force: true});
 }
 fs.mkdirSync('build');
 
 // Create plugin folder
 console.log('Creating plugin folder');
 if (fs.existsSync('build/fun.shiro.ytmd.sdPlugin')) {
-    execSync('rmdir /s /q build/fun.shiro.ytmd.sdPlugin');
+    fs.rmSync('build/fun.shiro.ytmd.sdPlugin', {recursive: true, force: true});
 }
 fs.mkdirSync('build/fun.shiro.ytmd.sdPlugin');
 
 // Build plugin
 console.log('Building plugin');
 
-// I know, this is a mess, but it works.
-browserify({entries: ['src/ytmd-pi.ts'], plugin: [tsify]}).bundle((err, buf) => {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    const minified = minify_sync(buf.toString(), {
-        mangle: {
-            toplevel: true
-        },
-        output: {
-            comments: false
-        }
+async function bundle(entryPoint, outFile) {
+    await esbuild.build({
+        entryPoints: [entryPoint],
+        outfile: outFile,
+        bundle: true,
+        format: 'iife',
+        platform: 'browser',
+        target: ['es2017'],
+        minify: true
     });
-    if (minified.error) {
-        console.error(minified.error);
-        return;
-    }
-    fs.writeFileSync('build/fun.shiro.ytmd.sdPlugin/bundle-pi.js', minified.code);
+}
 
-    browserify({entries: ['src/ytmd.ts'], plugin: [tsify]}).bundle((err, buf) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        const minified = minify_sync(buf.toString(), {
-            mangle: {
-                toplevel: true
-            },
-            output: {
-                comments: false
-            }
-        });
-        if (minified.error) {
-            console.error(minified.error);
-            return;
-        }
-        fs.writeFileSync('build/fun.shiro.ytmd.sdPlugin/bundle.js', minified.code);
+async function main() {
+    await Promise.all([
+        bundle('src/ytmd-pi.ts', 'build/fun.shiro.ytmd.sdPlugin/bundle-pi.js'),
+        bundle('src/ytmd.ts', 'build/fun.shiro.ytmd.sdPlugin/bundle.js')
+    ]);
 
-        // Copy files
-        console.log('Copying files');
-        fs.copyFileSync('sdpi.css', 'build/fun.shiro.ytmd.sdPlugin/sdpi.css');
-        fs.copyFileSync('manifest.json', 'build/fun.shiro.ytmd.sdPlugin/manifest.json');
-        fs.copyFileSync('property-inspector.html', 'build/fun.shiro.ytmd.sdPlugin/property-inspector.html');
-        fs.copyFileSync('action.html', 'build/fun.shiro.ytmd.sdPlugin/action.html');
-        fs.copyFileSync('de.json', 'build/fun.shiro.ytmd.sdPlugin/de.json');
-        fs.copyFileSync('en.json', 'build/fun.shiro.ytmd.sdPlugin/en.json');
-        fs.copyFileSync('fr.json', 'build/fun.shiro.ytmd.sdPlugin/fr.json');
-        fs.cpSync('icons', 'build/fun.shiro.ytmd.sdPlugin/icons', {recursive: true});
+    // Copy files
+    console.log('Copying files');
+    const outputDir = 'build/fun.shiro.ytmd.sdPlugin';
+    const rootEntries = fs.readdirSync('.');
 
-        // Run distribution tool
-        console.log('Running distribution tool');
-        execSync('DistributionTool.exe -b -i build/fun.shiro.ytmd.sdPlugin -o build');
+    const excludedJson = new Set([
+        'package.json',
+        'package-lock.json',
+        'tsconfig.json',
+        'release-please-config.json',
+        '.release-please-manifest.json'
+    ]);
 
-        // Clean up
-        console.log('Cleaning up');
-        fs.rmSync('build/fun.shiro.ytmd.sdPlugin', {recursive: true});
+    rootEntries
+        .filter((name) => name.endsWith('.json') && !excludedJson.has(name))
+        .forEach((name) => fs.copyFileSync(name, `${outputDir}/${name}`));
 
-        // Done building release, check the build folder
-        console.log('Done building release, check the build folder');
-    });
+    rootEntries
+        .filter((name) => name.endsWith('.html'))
+        .forEach((name) => fs.copyFileSync(name, `${outputDir}/${name}`));
+
+    rootEntries
+        .filter((name) => name.endsWith('.css'))
+        .forEach((name) => fs.copyFileSync(name, `${outputDir}/${name}`));
+
+    fs.cpSync('icons', 'build/fun.shiro.ytmd.sdPlugin/icons', {recursive: true});
+
+    // Done building plugin folder, check the build directory
+    console.log('Done building plugin folder, check the build directory');
+}
+
+main().catch((error) => {
+    console.error(error);
+    process.exit(1);
 });

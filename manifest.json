@@ -3,13 +3,14 @@
   "Author": "XeroxDev",
   "Description": "This Stream Deck Plugin allows you to control the YouTube Music Desktop App (https://github.com/ytmdesktop/ytmdesktop). If you need help, please visit my repository and open a issue https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose",
   "URL": "https://github.com/XeroxDev/YTMD-StreamDeck",
+  "UUID": "fun.shiro.ytmd",
   "Icon": "icons/action-image",
   "Version": "2.2.0",
   "Category": "YTMD Connector",
   "CategoryIcon": "icons/category-icon",
   "SDKVersion": 2,
   "Software": {
-    "MinimumVersion": "4.9"
+    "MinimumVersion": "6.4"
   },
   "OS": [
     {
@@ -29,12 +30,12 @@
         {
           "Image": "icons/music-pause",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         },
         {
           "Image": "icons/music-play",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "Controllers": [
@@ -61,7 +62,7 @@
         {
           "Image": "icons/music-next",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -75,7 +76,7 @@
         {
           "Image": "icons/music-prev",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -89,12 +90,12 @@
         {
           "Image": "icons/like-on",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         },
         {
           "Image": "icons/like-off",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -108,12 +109,12 @@
         {
           "Image": "icons/dislike-on",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         },
         {
           "Image": "icons/dislike-off",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -127,12 +128,12 @@
         {
           "Image": "icons/volume-on",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         },
         {
           "Image": "icons/volume-mute",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -146,7 +147,7 @@
         {
           "Image": "icons/volume-down",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "SupportedInMultiActions": true,
@@ -160,7 +161,7 @@
         {
           "Image": "icons/volume-up",
           "TitleAlignment": "middle",
-          "FontSize": "16"
+          "FontSize": 16
         }
       ],
       "Controllers": [
@@ -187,7 +188,7 @@
         {
           "Image": "icons/action-image",
           "TitleAlignment": "middle",
-          "FontSize": "12",
+          "FontSize": 12,
           "FontFamily": "Courier New",
           "FontStyle": "Bold"
         }

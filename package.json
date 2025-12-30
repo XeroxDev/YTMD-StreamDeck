@@ -3,8 +3,9 @@
   "version": "2.2.0",
   "description": "",
   "scripts": {
-    "watch": "start watchify --debug -p tsify src/ytmd-pi.ts -o bundle-pi.js && start watchify --debug -p tsify src/ytmd.ts -o bundle.js",
-    "build": "node scripts/build.js"
+    "watch": "node scripts/watch.js",
+    "build": "node scripts/build.js",
+    "prepare:streamdeck-cli": "node scripts/prepare-streamdeck-cli.js"
   },
   "repository": {
     "type": "git",
@@ -46,19 +47,16 @@
     "@types/chai": "^4.3.11",
     "@types/mocha": "^8.2.3",
     "@types/node": "^14.18.63",
-    "browserify": "^17.0.0",
     "chai": "^4.4.1",
+    "esbuild": "^0.25.10",
     "esm": "^3.2.25",
     "husky": "^3.1.0",
     "jsdom": "^16.7.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "terser": "^5.27.0",
     "ts-node": "^10.9.2",
-    "tsify": "^5.0.4",
-    "typescript": "^5.3.3",
-    "watchify": "^4.0.0"
+    "typescript": "^5.3.3"
   },
   "husky": {
     "hooks": {
