@@ -194,6 +194,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
             {
                 this.currentThumbnail = cover;
                 let image = new Image();
+                image.crossOrigin = "anonymous";
 
                 image.onload = () => {
                     let canvas = document.createElement('canvas');
