@@ -37,18 +37,7 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
             return;
         }
 
-        this.rest.changeVideo({playlistId, url: playlistUrl}).then(() => {
-            this.plugin.logMessage(`Play playlist started. context: ${JSON.stringify(context)}`);
-            this.plugin.showOk(context);
-        }).catch(reason => {
-            console.error(reason);
-            let message = JSON.stringify(reason);
-            if (reason satisfies ErrorOutput) {
-                message = reason.message;
-            }
-            this.plugin.logMessage(`Error while starting playlist. context: ${JSON.stringify(context)}, error: ${message}`);
-            this.plugin.showAlert(context);
-        });
+        this.startPlayback(context, playlistId, playlistUrl);
     }
 
     private isValidPlaylistUrl(url: string) {
@@ -57,6 +46,43 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
             return parsed.searchParams.has('list');
         } catch (e) {
             return false;
+        }
+    }
+
+    private async startPlayback(context: string, playlistId?: string, playlistUrl?: string) {
+        try {
+            await this.withTimeout(
+                this.rest.changeVideo({playlistId, url: playlistUrl}),
+                8000,
+                'Playlist start timed out'
+            );
+            this.plugin.logMessage(`Play playlist started. context: ${JSON.stringify(context)}`);
+            this.plugin.showOk(context);
+        } catch (reason) {
+            console.error(reason);
+            let message = JSON.stringify(reason);
+            if (reason satisfies ErrorOutput) {
+                message = reason.message;
+            }
+            this.plugin.logMessage(`Error while starting playlist. context: ${JSON.stringify(context)}, error: ${message}`);
+            this.plugin.showAlert(context);
+        }
+    }
+
+    private async withTimeout<T>(promise: Promise<T>, timeoutMs: number, message: string): Promise<T> {
+        let timeoutId: number | undefined;
+        const timeoutPromise = new Promise<T>((_, reject) => {
+            timeoutId = window.setTimeout(() => {
+                reject(new Error(message));
+            }, timeoutMs);
+        });
+
+        try {
+            return await Promise.race([promise, timeoutPromise]);
+        } finally {
+            if (timeoutId) {
+                window.clearTimeout(timeoutId);
+            }
         }
     }
 }
