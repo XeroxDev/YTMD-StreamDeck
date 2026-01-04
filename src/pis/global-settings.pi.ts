@@ -1,11 +1,11 @@
-import {CompanionConnector, ErrorOutput, SocketClient, SocketState} from "ytmdesktop-ts-companion";
+import {ErrorOutput, SocketState} from "ytmdesktop-ts-companion";
 import {YTMDPi} from "../ytmd-pi";
 import {PluginData} from "../shared/plugin-data";
 import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
+import {getCompanionConnector} from "./companion-singleton";
 
 export class GlobalSettingsPi {
     private authToken: string = '';
-    private static socketClient?: SocketClient;
     private static socketListenersAttached = false;
     private static lastSettingsKey = '';
 
@@ -66,18 +66,12 @@ export class GlobalSettingsPi {
     private ensureSocketClient(host: string, port: string, token: string) {
         const normalizedHost = host === 'localhost' ? '127.0.0.1' : host;
         const settingsKey = `${normalizedHost}:${port}:${token ?? ''}`;
-        if (!GlobalSettingsPi.socketClient) {
-            GlobalSettingsPi.socketClient = new SocketClient({
+        const connector = getCompanionConnector();
+        if (GlobalSettingsPi.lastSettingsKey !== settingsKey) {
+            connector.settings = {
                 appId: PluginData.APP_ID,
                 appName: PluginData.APP_NAME,
                 appVersion: PluginData.APP_VERSION,
-                host: normalizedHost,
-                port: parseInt(port),
-                token
-            });
-        } else if (GlobalSettingsPi.lastSettingsKey !== settingsKey) {
-            GlobalSettingsPi.socketClient.settings = {
-                ...GlobalSettingsPi.socketClient.settings,
                 host: normalizedHost,
                 port: parseInt(port),
                 token
@@ -87,7 +81,7 @@ export class GlobalSettingsPi {
 
         if (!GlobalSettingsPi.socketListenersAttached) {
             GlobalSettingsPi.socketListenersAttached = true;
-            GlobalSettingsPi.socketClient.addConnectionStateListener((state: SocketState) => {
+            connector.socketClient.addConnectionStateListener((state: SocketState) => {
                 switch (state) {
                     case SocketState.CONNECTING:
                         this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CHECKING"), 'gray');
@@ -105,7 +99,7 @@ export class GlobalSettingsPi {
                         break;
                 }
             });
-            GlobalSettingsPi.socketClient.addErrorListener((error: any) => {
+            connector.socketClient.addErrorListener((error: any) => {
                 this.pi.logMessage(`Connection status check failed: ${JSON.stringify(error)}`);
                 if (error satisfies ErrorOutput && error.statusCode === 429) {
                     this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT"), 'orange');
@@ -116,7 +110,7 @@ export class GlobalSettingsPi {
         }
 
         if (token) {
-            GlobalSettingsPi.socketClient.connect();
+            connector.socketClient.connect();
         } else {
             this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_AUTH_REQUIRED"), 'red');
         }
@@ -131,13 +125,14 @@ export class GlobalSettingsPi {
             const port = this.pi.globalPortElement.value;
             if (host === 'localhost') host = '127.0.0.1';
 
-            const connector = new CompanionConnector({
+            const connector = getCompanionConnector();
+            connector.settings = {
                 appId: PluginData.APP_ID,
                 appName: PluginData.APP_NAME,
                 appVersion: PluginData.APP_VERSION,
                 host,
                 port: parseInt(port)
-            });
+            };
 
             const authCode = await connector.restClient.getAuthCode();
             this.setAuthStatusMessage(this.pi.getLangString("AUTH_STATUS_AUTHORIZING"), 'yellow');

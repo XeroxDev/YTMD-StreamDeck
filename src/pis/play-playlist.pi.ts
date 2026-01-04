@@ -1,8 +1,8 @@
 import {DidReceiveSettingsEvent} from 'streamdeck-typescript';
 import {YTMDPi} from '../ytmd-pi';
 import {PisAbstract} from './pis.abstract';
-import {CompanionConnector, ErrorOutput, PlaylistOutput} from "ytmdesktop-ts-companion";
-import {PluginData} from "../shared/plugin-data";
+import {ErrorOutput, PlaylistOutput} from "ytmdesktop-ts-companion";
+import {getCompanionConnector} from "./companion-singleton";
 import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
 import {PlaylistSettings} from "../interfaces/context-settings.interface";
 
@@ -85,14 +85,13 @@ export class PlayPlaylistPi extends PisAbstract {
         this.updatePlaylistSelect();
 
         try {
-            const connector = new CompanionConnector({
-                appId: PluginData.APP_ID,
-                appName: PluginData.APP_NAME,
-                appVersion: PluginData.APP_VERSION,
+            const connector = getCompanionConnector();
+            connector.settings = {
+                ...connector.settings,
                 host,
                 port,
                 token: settings.token
-            });
+            };
 
             this.playlists = await connector.restClient.getPlaylists();
             this.updatePlaylistSelect(this.currentSettings.playlistId ?? '');
