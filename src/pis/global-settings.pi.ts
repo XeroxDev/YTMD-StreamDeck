@@ -1,11 +1,13 @@
-import {CompanionConnector, ErrorOutput} from "ytmdesktop-ts-companion";
+import {CompanionConnector, ErrorOutput, SocketClient, SocketState} from "ytmdesktop-ts-companion";
 import {YTMDPi} from "../ytmd-pi";
 import {PluginData} from "../shared/plugin-data";
 import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
 
 export class GlobalSettingsPi {
     private authToken: string = '';
-    private nextAllowedCheck = 0;
+    private static socketClient?: SocketClient;
+    private static socketListenersAttached = false;
+    private static lastSettingsKey = '';
 
     constructor(private pi: YTMDPi) {
         this.pi.globalAuthButtonElement.onclick = () => this.startAuthorization();
@@ -34,13 +36,11 @@ export class GlobalSettingsPi {
             token ? 'green' : 'red'
         );
         this.pi.globalSettingsDetailsElement.open = !token;
-        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_NOT_CHECKED"), 'gray');
+        this.ensureSocketClient(host, port, token);
+        this.refreshConnectionStatus();
     }
 
     private async refreshConnectionStatus() {
-        if (Date.now() < this.nextAllowedCheck) {
-            return;
-        }
         const settings = this.pi.settingsManager.getGlobalSettings<GlobalSettingsInterface>();
         if (!settings?.token) {
             this.setConnectionStatus(
@@ -50,42 +50,7 @@ export class GlobalSettingsPi {
             return;
         }
 
-        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CHECKING"), 'gray');
-
-        let host = settings.host;
-        const port = parseInt(settings.port);
-        if (host === 'localhost') host = '127.0.0.1';
-
-        try {
-            const connector = new CompanionConnector({
-                appId: PluginData.APP_ID,
-                appName: PluginData.APP_NAME,
-                appVersion: PluginData.APP_VERSION,
-                host,
-                port,
-                token: settings.token
-            });
-            await connector.restClient.getState();
-            this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CONNECTED"), 'green');
-        } catch (e) {
-            this.pi.logMessage(`Connection status check failed: ${JSON.stringify(e)}`);
-            if (e satisfies ErrorOutput && e.statusCode === 429) {
-                const retryMs = this.getRetryDelayMs(e.message);
-                this.nextAllowedCheck = Date.now() + retryMs;
-                this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT"), 'orange');
-                return;
-            }
-            this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
-        }
-    }
-
-    private getRetryDelayMs(message: string | undefined) {
-        if (!message) return 60000;
-        const match = message.match(/retry in (\\d+) seconds?/i);
-        if (!match) return 60000;
-        const seconds = parseInt(match[1], 10);
-        if (Number.isNaN(seconds)) return 60000;
-        return Math.max(5000, seconds * 1000);
+        this.ensureSocketClient(settings.host, settings.port, settings.token);
     }
 
     private setAuthStatusMessage(text: string, color: string) {
@@ -96,6 +61,65 @@ export class GlobalSettingsPi {
     private setConnectionStatus(text: string, color: string) {
         this.pi.globalConnectionStatusElement.innerText = text;
         this.pi.globalConnectionStatusElement.style.color = color;
+    }
+
+    private ensureSocketClient(host: string, port: string, token: string) {
+        const normalizedHost = host === 'localhost' ? '127.0.0.1' : host;
+        const settingsKey = `${normalizedHost}:${port}:${token ?? ''}`;
+        if (!GlobalSettingsPi.socketClient) {
+            GlobalSettingsPi.socketClient = new SocketClient({
+                appId: PluginData.APP_ID,
+                appName: PluginData.APP_NAME,
+                appVersion: PluginData.APP_VERSION,
+                host: normalizedHost,
+                port: parseInt(port),
+                token
+            });
+        } else if (GlobalSettingsPi.lastSettingsKey !== settingsKey) {
+            GlobalSettingsPi.socketClient.settings = {
+                ...GlobalSettingsPi.socketClient.settings,
+                host: normalizedHost,
+                port: parseInt(port),
+                token
+            };
+        }
+        GlobalSettingsPi.lastSettingsKey = settingsKey;
+
+        if (!GlobalSettingsPi.socketListenersAttached) {
+            GlobalSettingsPi.socketListenersAttached = true;
+            GlobalSettingsPi.socketClient.addConnectionStateListener((state: SocketState) => {
+                switch (state) {
+                    case SocketState.CONNECTING:
+                        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CHECKING"), 'gray');
+                        break;
+                    case SocketState.CONNECTED:
+                        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CONNECTED"), 'green');
+                        break;
+                    case SocketState.DISCONNECTED:
+                        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
+                        break;
+                    case SocketState.ERROR:
+                        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
+                        break;
+                    default:
+                        break;
+                }
+            });
+            GlobalSettingsPi.socketClient.addErrorListener((error: any) => {
+                this.pi.logMessage(`Connection status check failed: ${JSON.stringify(error)}`);
+                if (error satisfies ErrorOutput && error.statusCode === 429) {
+                    this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT"), 'orange');
+                    return;
+                }
+                this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
+            });
+        }
+
+        if (token) {
+            GlobalSettingsPi.socketClient.connect();
+        } else {
+            this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_AUTH_REQUIRED"), 'red');
+        }
     }
 
     private async startAuthorization() {
@@ -160,6 +184,6 @@ export class GlobalSettingsPi {
         if (host == 'localhost') host = '127.0.0.1';
 
         this.pi.settingsManager.setGlobalSettings({host, port, token: this.authToken});
-        this.refreshConnectionStatus();
+        this.ensureSocketClient(host, port, this.authToken);
     }
 }
