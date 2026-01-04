@@ -20,7 +20,7 @@
   "dependencies": {
     "intl-messageformat": "^10.7.10",
     "streamdeck-typescript": "^3.2.0",
-    "ytmdesktop-ts-companion": "^1.0.5"
+    "ytmdesktop-ts-companion": "^1.1.0"
   },
   "keywords": [
     "music",
