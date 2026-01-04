@@ -40,6 +40,7 @@ export interface LocalizationInterface {
         CONNECTION_STATUS_AUTH_REQUIRED: string;
         CONNECTION_STATUS_CHECKING: string;
         CONNECTION_STATUS_RATE_LIMIT: string;
+        CONNECTION_STATUS_NOT_CHECKED: string;
         GLOBAL_REFRESH: string;
     };
 }

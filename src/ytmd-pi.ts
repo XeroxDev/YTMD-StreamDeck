@@ -197,7 +197,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
         this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
         this.setInnerHtmlByClass('connection-status-label', this.getLangString("CONNECTION_STATUS"));
-        this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_CHECKING"));
+        this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_NOT_CHECKED"));
         this.setInnerHtmlByClass('global-refresh-label', this.getLangString("GLOBAL_REFRESH"));
     }
 

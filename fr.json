@@ -88,6 +88,7 @@
       "CONNECTION_STATUS_AUTH_REQUIRED": "Non authentifié",
       "CONNECTION_STATUS_CHECKING": "Vérification...",
       "CONNECTION_STATUS_RATE_LIMIT": "Limite atteinte. Nouvel essai bientôt...",
+      "CONNECTION_STATUS_NOT_CHECKED": "Pas encore vérifié",
       "GLOBAL_REFRESH": "Actualiser l'état"
     }
   }

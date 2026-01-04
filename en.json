@@ -88,6 +88,7 @@
       "CONNECTION_STATUS_AUTH_REQUIRED": "Not authenticated",
       "CONNECTION_STATUS_CHECKING": "Checking...",
       "CONNECTION_STATUS_RATE_LIMIT": "Rate limited. Retrying soon...",
+      "CONNECTION_STATUS_NOT_CHECKED": "Not checked yet",
       "GLOBAL_REFRESH": "Refresh Status"
     }
   }

@@ -5,7 +5,6 @@ import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
 
 export class GlobalSettingsPi {
     private authToken: string = '';
-    private refreshIntervalId?: number;
     private nextAllowedCheck = 0;
 
     constructor(private pi: YTMDPi) {
@@ -13,7 +12,6 @@ export class GlobalSettingsPi {
         this.pi.globalSaveElement.onclick = () => this.saveSettings();
         this.pi.globalRefreshElement.onclick = () => this.refreshConnectionStatus();
         this.pi.requestGlobalSettings();
-        this.startRefreshTimer();
     }
 
     public newGlobalSettingsReceived(): void {
@@ -36,12 +34,7 @@ export class GlobalSettingsPi {
             token ? 'green' : 'red'
         );
         this.pi.globalSettingsDetailsElement.open = !token;
-        this.refreshConnectionStatus();
-    }
-
-    private startRefreshTimer() {
-        if (this.refreshIntervalId) return;
-        this.refreshIntervalId = window.setInterval(() => this.refreshConnectionStatus(), 30000);
+        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_NOT_CHECKED"), 'gray');
     }
 
     private async refreshConnectionStatus() {
@@ -56,6 +49,8 @@ export class GlobalSettingsPi {
             );
             return;
         }
+
+        this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CHECKING"), 'gray');
 
         let host = settings.host;
         const port = parseInt(settings.port);
