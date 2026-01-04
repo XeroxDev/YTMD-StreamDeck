@@ -23,6 +23,12 @@ export interface LocalizationInterface {
         ACTION: string;
         PLAYLIST: string;
         PLAYLIST_URL: string;
+        PLAYLIST_URL_STATUS: string;
+        PLAYLIST_URL_STATUS_VALID: string;
+        PLAYLIST_URL_STATUS_INVALID: string;
+        PLAYLIST_URL_STATUS_MISSING_LIST: string;
+        PLAYLIST_SOURCE: string;
+        PLAYLIST_SOURCE_HELP: string;
         PLAYLIST_CUSTOM: string;
         PLAYLIST_REFRESH: string;
         PLAYLIST_SELECT: string;
@@ -33,6 +39,7 @@ export interface LocalizationInterface {
         CONNECTION_STATUS_DISCONNECTED: string;
         CONNECTION_STATUS_AUTH_REQUIRED: string;
         CONNECTION_STATUS_CHECKING: string;
+        CONNECTION_STATUS_RATE_LIMIT: string;
         GLOBAL_REFRESH: string;
     };
 }

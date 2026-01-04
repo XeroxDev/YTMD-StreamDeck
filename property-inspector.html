@@ -72,6 +72,12 @@
 </div>
 <div class="sdpi-wrapper" id="playlistSettings" style="display: none">
     <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-source-label">Playlist Source</div>
+        <div class="sdpi-item-value playlist-source-help">
+            Use one option below. If Playlist URL is set, it takes priority over the dropdown or custom ID.
+        </div>
+    </div>
+    <div class="sdpi-item">
         <div class="sdpi-item-label playlist-label">Playlist</div>
         <select class="sdpi-item-value" id="playlistSelect">
             <option value="">Select playlist</option>
@@ -80,6 +86,10 @@
     <div class="sdpi-item">
         <div class="sdpi-item-label playlist-url-label">Playlist URL</div>
         <input class="sdpi-item-value" type="text" id="playlistUrl">
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-url-status-label">Playlist URL Status</div>
+        <div class="sdpi-item-value" id="playlistUrlStatus"></div>
     </div>
     <div class="sdpi-item">
         <div class="sdpi-item-label playlist-custom-label">Custom Playlist ID</div>

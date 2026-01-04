@@ -6,6 +6,7 @@ import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
 export class GlobalSettingsPi {
     private authToken: string = '';
     private refreshIntervalId?: number;
+    private nextAllowedCheck = 0;
 
     constructor(private pi: YTMDPi) {
         this.pi.globalAuthButtonElement.onclick = () => this.startAuthorization();
@@ -44,6 +45,9 @@ export class GlobalSettingsPi {
     }
 
     private async refreshConnectionStatus() {
+        if (Date.now() < this.nextAllowedCheck) {
+            return;
+        }
         const settings = this.pi.settingsManager.getGlobalSettings<GlobalSettingsInterface>();
         if (!settings?.token) {
             this.setConnectionStatus(
@@ -70,8 +74,23 @@ export class GlobalSettingsPi {
             this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_CONNECTED"), 'green');
         } catch (e) {
             this.pi.logMessage(`Connection status check failed: ${JSON.stringify(e)}`);
+            if (e satisfies ErrorOutput && e.statusCode === 429) {
+                const retryMs = this.getRetryDelayMs(e.message);
+                this.nextAllowedCheck = Date.now() + retryMs;
+                this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT"), 'orange');
+                return;
+            }
             this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
         }
+    }
+
+    private getRetryDelayMs(message: string | undefined) {
+        if (!message) return 60000;
+        const match = message.match(/retry in (\\d+) seconds?/i);
+        if (!match) return 60000;
+        const seconds = parseInt(match[1], 10);
+        if (Number.isNaN(seconds)) return 60000;
+        return Math.max(5000, seconds * 1000);
     }
 
     private setAuthStatusMessage(text: string, color: string) {

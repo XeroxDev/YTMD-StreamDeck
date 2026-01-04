@@ -27,6 +27,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     public playlistSettings: HTMLElement;
     public playlistSelectElement: HTMLSelectElement;
     public playlistUrlElement: HTMLInputElement;
+    public playlistUrlStatusElement: HTMLElement;
     public playlistCustomElement: HTMLInputElement;
     public playlistSaveElement: HTMLButtonElement;
     public playlistRefreshButtonElement: HTMLButtonElement;
@@ -189,6 +190,9 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
         this.setInnerHtmlByClass('playlist-label', this.getLangString("PLAYLIST"));
         this.setInnerHtmlByClass('playlist-url-label', this.getLangString("PLAYLIST_URL"));
+        this.setInnerHtmlByClass('playlist-url-status-label', this.getLangString("PLAYLIST_URL_STATUS"));
+        this.setInnerHtmlByClass('playlist-source-label', this.getLangString("PLAYLIST_SOURCE"));
+        this.setInnerHtmlByClass('playlist-source-help', this.getLangString("PLAYLIST_SOURCE_HELP"));
         this.setInnerHtmlByClass('playlist-custom-label', this.getLangString("PLAYLIST_CUSTOM"));
         this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
         this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
@@ -226,6 +230,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.playlistSettings = document.getElementById('playlistSettings') as HTMLElement;
         this.playlistSelectElement = document.getElementById('playlistSelect') as HTMLSelectElement;
         this.playlistUrlElement = document.getElementById('playlistUrl') as HTMLInputElement;
+        this.playlistUrlStatusElement = document.getElementById('playlistUrlStatus') as HTMLElement;
         this.playlistCustomElement = document.getElementById('playlistCustom') as HTMLInputElement;
         this.playlistSaveElement = document.getElementById('playlistSave') as HTMLButtonElement;
         this.playlistRefreshButtonElement = document.getElementById('playlistRefresh') as HTMLButtonElement;

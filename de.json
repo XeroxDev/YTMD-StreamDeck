@@ -71,6 +71,12 @@
       "ACTION": "Aktion",
       "PLAYLIST": "Playlist",
       "PLAYLIST_URL": "Playlist-URL",
+      "PLAYLIST_URL_STATUS": "Playlist-URL-Status",
+      "PLAYLIST_URL_STATUS_VALID": "Gültige Playlist-URL",
+      "PLAYLIST_URL_STATUS_INVALID": "Ungültige URL",
+      "PLAYLIST_URL_STATUS_MISSING_LIST": "URL muss einen list-Parameter enthalten",
+      "PLAYLIST_SOURCE": "Playlist-Quelle",
+      "PLAYLIST_SOURCE_HELP": "Nutze eine der Optionen unten. Eine Playlist-URL hat Vorrang vor Auswahl oder ID.",
       "PLAYLIST_CUSTOM": "Benutzerdefinierte Playlist-ID",
       "PLAYLIST_REFRESH": "Playlists aktualisieren",
       "PLAYLIST_SELECT": "Playlist auswählen",
@@ -81,6 +87,7 @@
       "CONNECTION_STATUS_DISCONNECTED": "Getrennt",
       "CONNECTION_STATUS_AUTH_REQUIRED": "Nicht authentifiziert",
       "CONNECTION_STATUS_CHECKING": "Überprüfen...",
+      "CONNECTION_STATUS_RATE_LIMIT": "Ratenlimit erreicht. Neuer Versuch folgt...",
       "GLOBAL_REFRESH": "Status aktualisieren"
     }
   }

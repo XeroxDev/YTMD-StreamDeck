@@ -14,6 +14,7 @@ export class PlayPlaylistPi extends PisAbstract {
         super(pi, context, sectionElement);
         this.pi.playlistSaveElement.onclick = () => this.saveSettings();
         this.pi.playlistRefreshButtonElement.onclick = () => this.loadPlaylists();
+        this.pi.playlistUrlElement.addEventListener('input', () => this.updateUrlStatus());
         this.pi.requestSettings();
         this.pi.requestGlobalSettings();
     }
@@ -36,6 +37,7 @@ export class PlayPlaylistPi extends PisAbstract {
         this.pi.playlistCustomElement.value = settings.customPlaylistId ?? '';
         this.pi.playlistUrlElement.value = settings.playlistUrl ?? '';
         this.applyPlaylistSelection();
+        this.updateUrlStatus();
     }
 
     private applyPlaylistSelection() {
@@ -123,5 +125,30 @@ export class PlayPlaylistPi extends PisAbstract {
             customPlaylistId: customPlaylistId || undefined,
             playlistUrl: playlistUrl || undefined
         });
+    }
+
+    private updateUrlStatus() {
+        const status = this.pi.playlistUrlStatusElement;
+        const urlValue = this.pi.playlistUrlElement.value.trim();
+        if (!urlValue) {
+            status.textContent = '';
+            status.style.color = '';
+            return;
+        }
+
+        try {
+            const parsed = new URL(urlValue);
+            const listParam = parsed.searchParams.get('list');
+            if (!listParam) {
+                status.textContent = this.pi.getLangString("PLAYLIST_URL_STATUS_MISSING_LIST");
+                status.style.color = 'orange';
+                return;
+            }
+            status.textContent = this.pi.getLangString("PLAYLIST_URL_STATUS_VALID");
+            status.style.color = 'green';
+        } catch (e) {
+            status.textContent = this.pi.getLangString("PLAYLIST_URL_STATUS_INVALID");
+            status.style.color = 'red';
+        }
     }
 }
