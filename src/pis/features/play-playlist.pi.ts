@@ -134,8 +134,6 @@ export class PlayPlaylistPi extends PisAbstract {
                     this.pi.getLangString("PLAYLIST_ERROR_TITLE"),
                     msg
                 );
-            } else {
-                this.pi.logMessage(`Playlist fetch failed: ${JSON.stringify(e)}`);
             }
         } finally {
             this.pi.playlistSelectElement.disabled = false;
