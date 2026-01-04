@@ -1,0 +1,65 @@
+{
+    "id": "com.remote.ytmd.main",
+    "items": [
+        {
+          "key": "icon",
+          "type": "pixmap",
+          "rect": [104, 0, 96, 96],
+          "enabled": true, 
+           "zOrder": 0
+          },
+        {
+            "key": "song",
+            "type": "text",
+            "font": { "size": 20, "weight": 600 },
+            "rect": [5, 5, 100, 21],
+            "alignment": "left",
+            "value": "Song",
+            "zOrder": 1
+          },
+        {
+            "key": "author",
+            "type": "text",
+            "font": { "size": 20, "weight": 500 },
+            "rect": [5, 28, 100, 21],
+            "alignment": "left",
+            "value": "Artist",
+            "zOrder": 2
+          },      
+          {
+            "key": "album",
+            "type": "text",
+            "font": { "size": 15, "weight": 400 },
+            "rect": [5, 50, 100, 21],
+            "alignment": "left",
+            "value": "Album",
+            "zOrder": 6
+          },
+        {
+          "key": "value",
+          "type": "text",
+          "rect": [5, 70, 60, 21],
+          "font": { "size": 18, "weight": 400 },
+          "alignment": "left",
+            "zOrder": 3
+           },
+        {
+          "key": "like-icon",
+          "type": "pixmap",
+          "rect": [71, 36, 24, 24],
+          "enabled": true, 
+           "zOrder": 4
+          },
+        {
+          "key": "indicator",
+          "type": "bar",
+          "subtype": 0,
+          "rect": [0, 90, 200, 10],
+          "border_w": 0,
+          "bar_fill_c": "0:yellow, 0.9:orange, 1: white",
+          "value": 0, 
+            "zOrder": 5
+          }
+
+    ]
+}
