@@ -15,7 +15,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     public displayFormatElement: HTMLInputElement;
     public displayTitleFormatElement: HTMLInputElement;
     public sdplusSettingsElement: HTMLInputElement;
-    public customLayout: HTMLInputElement;
+    public customLayoutElement: HTMLInputElement;
     public saveElement: HTMLButtonElement;
     // Global Settings
     public globalSettings: HTMLElement;
@@ -191,6 +191,9 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     @SDOnPiEvent('didReceiveSettings')
     private receivedSettings(event: DidReceiveSettingsEvent) {
         this.action?.newSettingsReceived(event);
+        if (event.payload.controller === "Encoder") {
+            this.sdplusSettingsElement.style.display = "block";
+        }
     }
 
     private setupElements() {
@@ -199,7 +202,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
         this.displayTitleFormatElement = document.getElementById('displayTitleFormat') as HTMLInputElement;
         this.sdplusSettingsElement = document.getElementById('sdplus-settings') as HTMLInputElement;
-        this.customLayout = document.getElementById('sdplus-customLayout') as HTMLInputElement;
+        this.customLayoutElement = document.getElementById('sdplus-customLayout') as HTMLInputElement;
         this.saveElement = document.getElementById('save') as HTMLButtonElement;
         this.globalSettings = document.getElementById('globalSettings') as HTMLElement;
         this.globalHostElement = document.getElementById('globalHost') as HTMLInputElement;
