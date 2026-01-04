@@ -2,10 +2,10 @@ import {DidReceiveSettingsEvent, SDOnPiEvent, StreamDeckPropertyInspectorHandler
 import {ActionTypes} from './interfaces/enums';
 import {LocalizationInterface} from './interfaces/localization.interface';
 import {PisAbstract} from './pis/pis.abstract';
-import {GlobalSettingsPi} from './pis/global-settings.pi';
-import {PlayPausePi} from './pis/play-pause.pi';
-import {PlayPlaylistPi} from './pis/play-playlist.pi';
-import {VolumeChangePi} from './pis/volume-change.pi';
+import {GlobalSettingsPi} from './pis/features/global-settings.pi';
+import {PlayPausePi} from './pis/features/play-pause.pi';
+import {PlayPlaylistPi} from './pis/features/play-playlist.pi';
+import {VolumeChangePi} from './pis/features/volume-change.pi';
 
 export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Play / Pause Settings

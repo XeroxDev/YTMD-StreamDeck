@@ -1,8 +1,8 @@
 import {ErrorOutput, SocketState} from "ytmdesktop-ts-companion";
-import {YTMDPi} from "../ytmd-pi";
-import {PluginData} from "../shared/plugin-data";
-import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
-import {getCompanionConnector} from "./companion-singleton";
+import {YTMDPi} from "../../ytmd-pi";
+import {PluginData} from "../../shared/plugin-data";
+import {GlobalSettingsInterface} from "../../interfaces/global-settings.interface";
+import {getCompanionConnector} from "../services/companion-singleton";
 
 export class GlobalSettingsPi {
     private authToken: string = '';

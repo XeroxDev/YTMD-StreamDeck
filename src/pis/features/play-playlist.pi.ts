@@ -1,10 +1,10 @@
 import {DidReceiveSettingsEvent} from 'streamdeck-typescript';
-import {YTMDPi} from '../ytmd-pi';
-import {PisAbstract} from './pis.abstract';
+import {YTMDPi} from '../../ytmd-pi';
+import {PisAbstract} from '../pis.abstract';
 import {ErrorOutput, PlaylistOutput} from "ytmdesktop-ts-companion";
-import {getCompanionConnector} from "./companion-singleton";
-import {GlobalSettingsInterface} from "../interfaces/global-settings.interface";
-import {PlaylistSettings} from "../interfaces/context-settings.interface";
+import {getCompanionConnector} from "../services/companion-singleton";
+import {GlobalSettingsInterface} from "../../interfaces/global-settings.interface";
+import {PlaylistSettings} from "../../interfaces/context-settings.interface";
 
 export class PlayPlaylistPi extends PisAbstract {
     private playlists: PlaylistOutput[] = [];

@@ -1,7 +1,7 @@
-import {YTMDPi} from '../ytmd-pi';
-import {PisAbstract} from './pis.abstract';
+import {YTMDPi} from '../../ytmd-pi';
+import {PisAbstract} from '../pis.abstract';
 import {DidReceiveSettingsEvent} from "streamdeck-typescript";
-import {PlayPauseSettings} from "../interfaces/context-settings.interface";
+import {PlayPauseSettings} from "../../interfaces/context-settings.interface";
 
 export class PlayPausePi extends PisAbstract {
     constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
