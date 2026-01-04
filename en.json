@@ -78,6 +78,8 @@
       "PLAYLIST_SOURCE": "Playlist Source",
       "PLAYLIST_SOURCE_HELP": "Use one option below. If Playlist URL is set, it takes priority over the dropdown.",
       "PLAYLIST_REFRESH": "Refresh Playlists",
+      "PLAYLIST_ERROR_TITLE": "Playlist error",
+      "PLAYLIST_ERROR_RATE_LIMIT": "Rate limited while fetching playlists. Try again shortly.",
       "PLAYLIST_SELECT": "Select playlist",
       "PLAYLIST_AUTH_HINT": "Authorize using the connection settings above.",
       "GLOBAL_SETTINGS_TITLE": "Connection Settings",

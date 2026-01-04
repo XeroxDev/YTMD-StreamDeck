@@ -78,6 +78,8 @@
       "PLAYLIST_SOURCE": "Playlist-Quelle",
       "PLAYLIST_SOURCE_HELP": "Nutze eine der Optionen unten. Eine Playlist-URL hat Vorrang vor der Auswahl.",
       "PLAYLIST_REFRESH": "Playlists aktualisieren",
+      "PLAYLIST_ERROR_TITLE": "Playlist-Fehler",
+      "PLAYLIST_ERROR_RATE_LIMIT": "Ratenlimit beim Laden der Playlists. Bitte später erneut versuchen.",
       "PLAYLIST_SELECT": "Playlist auswählen",
       "PLAYLIST_AUTH_HINT": "Bitte über die Verbindungseinstellungen oben autorisieren.",
       "GLOBAL_SETTINGS_TITLE": "Verbindungseinstellungen",

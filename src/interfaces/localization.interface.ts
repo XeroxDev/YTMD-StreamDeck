@@ -30,6 +30,8 @@ export interface LocalizationInterface {
         PLAYLIST_SOURCE: string;
         PLAYLIST_SOURCE_HELP: string;
         PLAYLIST_REFRESH: string;
+        PLAYLIST_ERROR_TITLE: string;
+        PLAYLIST_ERROR_RATE_LIMIT: string;
         PLAYLIST_SELECT: string;
         PLAYLIST_AUTH_HINT: string;
         GLOBAL_SETTINGS_TITLE: string;

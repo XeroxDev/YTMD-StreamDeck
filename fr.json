@@ -78,6 +78,8 @@
       "PLAYLIST_SOURCE": "Source de la playlist",
       "PLAYLIST_SOURCE_HELP": "Utilisez une option ci-dessous. L’URL a la priorité sur la sélection.",
       "PLAYLIST_REFRESH": "Actualiser les playlists",
+      "PLAYLIST_ERROR_TITLE": "Erreur de playlist",
+      "PLAYLIST_ERROR_RATE_LIMIT": "Limite atteinte lors du chargement des playlists. Réessayez bientôt.",
       "PLAYLIST_SELECT": "Sélectionner une playlist",
       "PLAYLIST_AUTH_HINT": "Autorisez via les paramètres de connexion ci-dessus.",
       "GLOBAL_SETTINGS_TITLE": "Paramètres de connexion",

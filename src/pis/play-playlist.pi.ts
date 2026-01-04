@@ -9,11 +9,13 @@ import {PlaylistSettings} from "../interfaces/context-settings.interface";
 export class PlayPlaylistPi extends PisAbstract {
     private playlists: PlaylistOutput[] = [];
     private currentSettings: PlaylistSettings = {};
+    private static lastLoadAt = 0;
+    private static loadTimer?: number;
 
     constructor(pi: YTMDPi, context: string, sectionElement: HTMLElement) {
         super(pi, context, sectionElement);
         this.pi.playlistSaveElement.onclick = () => this.saveSettings();
-        this.pi.playlistRefreshButtonElement.onclick = () => this.loadPlaylists();
+        this.pi.playlistRefreshButtonElement.onclick = () => this.loadPlaylists(true);
         this.pi.playlistUrlElement.addEventListener('input', () => this.updateUrlStatus());
         this.pi.requestSettings();
         this.pi.requestGlobalSettings();
@@ -29,7 +31,7 @@ export class PlayPlaylistPi extends PisAbstract {
             port = '9863',
             token = '',
         } = settings as GlobalSettingsInterface;
-        if (token) this.loadPlaylists();
+        if (token) this.scheduleInitialLoad();
     }
 
     public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlaylistSettings>): void {
@@ -64,15 +66,32 @@ export class PlayPlaylistPi extends PisAbstract {
         select.value = selectedId ?? '';
     }
 
-    private async loadPlaylists() {
-        this.pi.removeError('playlist-fetch-error');
+    private scheduleInitialLoad() {
+        const now = Date.now();
+        if (now - PlayPlaylistPi.lastLoadAt < 15000) {
+            return;
+        }
+        if (PlayPlaylistPi.loadTimer) {
+            window.clearTimeout(PlayPlaylistPi.loadTimer);
+        }
+        PlayPlaylistPi.loadTimer = window.setTimeout(() => {
+            this.loadPlaylists(false);
+        }, 2000);
+    }
+
+    private async loadPlaylists(showErrors: boolean) {
+        if (showErrors) {
+            this.pi.removeError('playlist-fetch-error');
+        }
         const settings = this.settingsManager.getGlobalSettings<GlobalSettingsInterface>();
         if (!settings?.token) {
-            this.pi.showError(
-                'playlist-fetch-error',
-                this.pi.getLangString("AUTH_STATUS_ERROR"),
-                this.pi.getLangString("PLAYLIST_AUTH_HINT")
-            );
+            if (showErrors) {
+                this.pi.showError(
+                    'playlist-fetch-error',
+                    this.pi.getLangString("PLAYLIST_ERROR_TITLE"),
+                    this.pi.getLangString("PLAYLIST_AUTH_HINT")
+                );
+            }
             return;
         }
 
@@ -93,21 +112,30 @@ export class PlayPlaylistPi extends PisAbstract {
             };
 
             this.playlists = await connector.restClient.getPlaylists();
+            PlayPlaylistPi.lastLoadAt = Date.now();
             this.updatePlaylistSelect(this.currentSettings.playlistId ?? '');
         } catch (e) {
             this.playlists = [];
             this.updatePlaylistSelect();
-            let msg = "";
-            if (e satisfies ErrorOutput) {
-                msg = e.message;
+            if (showErrors) {
+                let msg = "";
+                if (e satisfies ErrorOutput) {
+                    if (e.statusCode === 429) {
+                        msg = this.pi.getLangString("PLAYLIST_ERROR_RATE_LIMIT");
+                    } else {
+                        msg = e.message;
+                    }
+                } else {
+                    msg = JSON.stringify(e);
+                }
+                this.pi.showError(
+                    'playlist-fetch-error',
+                    this.pi.getLangString("PLAYLIST_ERROR_TITLE"),
+                    msg
+                );
             } else {
-                msg = JSON.stringify(e);
+                this.pi.logMessage(`Playlist fetch failed: ${JSON.stringify(e)}`);
             }
-            this.pi.showError(
-                'playlist-fetch-error',
-                this.pi.getLangString("AUTH_STATUS_ERROR"),
-                msg
-            );
         } finally {
             this.pi.playlistSelectElement.disabled = false;
         }

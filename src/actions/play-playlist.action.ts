@@ -22,6 +22,7 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp({context, payload: {settings}}: KeyUpEvent<PlaylistSettings>) {
+        this.plugin.logMessage(`Play playlist pressed. context: ${JSON.stringify(context)}, settings: ${JSON.stringify(settings)}`);
         const playlistUrl = settings?.playlistUrl?.trim();
         const playlistId = settings?.playlistId?.trim();
         if (!playlistUrl && !playlistId) {
@@ -37,6 +38,7 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
         }
 
         this.rest.changeVideo({playlistId, url: playlistUrl}).then(() => {
+            this.plugin.logMessage(`Play playlist started. context: ${JSON.stringify(context)}`);
             this.plugin.showOk(context);
         }).catch(reason => {
             console.error(reason);
