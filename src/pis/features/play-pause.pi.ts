@@ -13,15 +13,22 @@ export class PlayPausePi extends PisAbstract {
     public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlayPauseSettings>): void {
         this.pi.actionElement.value = settings.action ?? "TOGGLE";
         this.pi.displayFormatElement.value = settings.displayFormat ?? "{current}";
+        this.pi.displayTitleFormatElement.value = settings.displayTitleFormat ?? "{title}";
+        this.pi.customLayoutElement.value = settings.customLayout ?? "";
+
     }
 
     private saveSettings() {
         const action = this.pi.actionElement.value,
-            displayFormat = this.pi.displayFormatElement.value;
+            displayFormat = this.pi.displayFormatElement.value,
+            displayTitleFormat = this.pi.displayTitleFormatElement.value,
+            customLayout = this.pi.customLayoutElement.value;
 
         this.settingsManager.setContextSettingsAttributes(this.context, {
             action: action ?? "TOGGLE",
-            displayFormat: displayFormat ?? "{current}"
+            displayFormat: displayFormat ?? "{current}",
+            displayTitleFormat: displayTitleFormat ?? "{title}",
+            customLayout: customLayout ?? ""
         });
     }
 }

@@ -116,7 +116,7 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
                 }
             },
             onError: (error: any) => {
-                if (error.toString() != "Error: websocket error")
+                if (error.toString() !== "Error: websocket error")
                 {
                     this.plugin.showAlert(event.context);
                 }
@@ -280,9 +280,6 @@ export class PlayPauseAction extends DefaultAction<PlayPauseAction> {
     }
 
     private formatTitle(title: string, album: string, author: string, context: string, settings: PlayPauseSettings): string {
-        title = title ?? '';
-        album = album ?? '';
-        author = author ?? '';
         const varMapping: { [key: string]: string } = {
             'title': title,
             'album': album,
