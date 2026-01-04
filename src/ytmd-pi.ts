@@ -6,6 +6,7 @@ import {GlobalSettingsPi} from './pis/features/global-settings.pi';
 import {PlayPausePi} from './pis/features/play-pause.pi';
 import {PlayPlaylistPi} from './pis/features/play-playlist.pi';
 import {VolumeChangePi} from './pis/features/volume-change.pi';
+import {PiI18n} from './pis/services/pi-i18n';
 
 export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Play / Pause Settings
@@ -36,12 +37,14 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Error messages
     private errorsElement: HTMLElement;
     private errorTemplateElement: HTMLElement;
+    private i18n: PiI18n;
 
     private action: PisAbstract;
     private globalSettingsPi: GlobalSettingsPi;
 
     constructor() {
         super();
+        this.i18n = new PiI18n();
     }
 
     // Load the localizations
@@ -143,11 +146,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     }
 
     public getLangString(key: keyof LocalizationInterface['PI'], defaultValue: string = 'NOT TRANSLATED') {
-        try {
-            return this.localization[key] ?? defaultValue;
-        } catch (e) {
-            return defaultValue;
-        }
+        return this.i18n.t(key, undefined, defaultValue);
     }
 
     private setupLocalization() {
@@ -160,40 +159,19 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
                         this.logMessage(`Failed to load the default localization file. Reason: ${s2}.`);
                     }
                     this.localization = (s2 as LocalizationInterface).PI;
+                    this.i18n.setMessages(this.localization);
                     this.translateHtml();
                 });
                 return;
             }
             this.localization = (s as LocalizationInterface).PI;
+            this.i18n.setMessages(this.localization);
             this.translateHtml();
         });
     }
 
     private translateHtml() {
-        this.setInnerHtmlByClass('host-label', this.getLangString("HOST"));
-        this.setInnerHtmlByClass('port-label', this.getLangString("PORT"));
-        this.setInnerHtmlByClass('display-label', this.getLangString("DISPLAY_FORMAT"));
-        this.setInnerHtmlByClass('save-label', this.getLangString("SAVE"));
-        this.setInnerHtmlByClass('volume-steps-label', this.getLangString("VOLUME_STEPS"));
-        this.setInnerHtmlByClass('automatic-save-label', this.getLangString("AUTOMATIC_SAVE"));
-        this.setInnerHtmlByClass('auth-button-label', this.getLangString("AUTH_BUTTON"));
-        this.setInnerHtmlByClass('auth-label', this.getLangString("AUTH_STATUS"));
-        this.setInnerHtmlByClass('auth-status-label', this.getLangString("AUTH_STATUS_NOT_CONNECTED"));
-        this.setInnerHtmlByClass('support-feedback-title-label', this.getLangString("SUPPORT_FEEDBACK_TITLE"));
-        this.setInnerHtmlByClass('support-feedback-text-label', this.getLangString("SUPPORT_FEEDBACK_TEXT"));
-        this.setInnerHtmlByClass('var-usage-label', this.getLangString("VAR_USAGE"));
-        this.setInnerHtmlByClass('action-label', this.getLangString("ACTION"));
-        this.setInnerHtmlByClass('toggle-label', this.getLangString("TOGGLE"));
-        this.setInnerHtmlByClass('pause-label', this.getLangString("PAUSE"));
-        this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
-        this.setInnerHtmlByClass('playlist-label', this.getLangString("PLAYLIST"));
-        this.setInnerHtmlByClass('playlist-url-label', this.getLangString("PLAYLIST_URL"));
-        this.setInnerHtmlByClass('playlist-url-status-label', this.getLangString("PLAYLIST_URL_STATUS"));
-        this.setInnerHtmlByClass('playlist-source-label', this.getLangString("PLAYLIST_SOURCE"));
-        this.setInnerHtmlByClass('playlist-source-help', this.getLangString("PLAYLIST_SOURCE_HELP"));
-        this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
-        this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
-        this.setInnerHtmlByClass('connection-status-label', this.getLangString("CONNECTION_STATUS"));
+        this.i18n.apply();
         this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_NOT_CHECKED"));
     }
 

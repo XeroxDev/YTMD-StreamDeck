@@ -1,5 +1,5 @@
 import {CompanionConnector} from "ytmdesktop-ts-companion";
-import {PluginData} from "../shared/plugin-data";
+import {PluginData} from "../../shared/plugin-data";
 
 let connector: CompanionConnector | undefined;
 
