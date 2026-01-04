@@ -13,25 +13,42 @@
         <p class="error-message">Oops. This is awkward. You shouldn't be able to see me. :c</p>
     </div>
 </div>
-<div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
-    <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
+<div class="sdpi-wrapper" id="globalSettings">
+    <div class="sdpi-item">
         <div class="sdpi-item-label auth-label">Auth Status</div>
-        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not
-            authenticated</strong></div>
-    </div>
-    <div class="sdpi-item" style="">
-        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button>
-        <br>
-    </div>
-    <hr>
-    <div class="sdpi-item">
-        <div class="sdpi-item-label host-label">Host</div>
-        <input class="sdpi-item-value" type="text" id="host" value="127.0.0.1">
+        <div class="sdpi-item-value">
+            <strong id="globalAuthStatus" class="auth-status-label" style="color: red;">Not authenticated</strong>
+        </div>
     </div>
     <div class="sdpi-item">
-        <div class="sdpi-item-label port-label">Port</div>
-        <input class="sdpi-item-value" type="number" id="port" value="9863">
+        <div class="sdpi-item-label connection-status-label">Connection Status</div>
+        <div class="sdpi-item-value">
+            <strong id="globalConnectionStatus" class="connection-status-value">Checking...</strong>
+        </div>
     </div>
+    <details id="globalSettingsDetails" class="message question">
+        <summary class="global-settings-title">Connection Settings</summary>
+        <div class="sdpi-item">
+            <button class="sdpi-item-value auth-button-label" id="globalAuthButton">Authorize</button>
+            <br>
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label host-label">Host</div>
+            <input class="sdpi-item-value" type="text" id="globalHost" value="127.0.0.1">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label port-label">Port</div>
+            <input class="sdpi-item-value" type="number" id="globalPort" value="9863">
+        </div>
+        <div class="sdpi-item">
+            <button class="sdpi-item-value global-refresh-label" id="globalRefresh">Refresh Status</button>
+        </div>
+        <div class="sdpi-item">
+            <button class="sdpi-item-value save-label" id="globalSave">Save</button>
+        </div>
+    </details>
+</div>
+<div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
     <div class="sdpi-item">
         <div class="sdpi-item-label action-label">Action</div>
         <select class="sdpi-item-value" id="action">
@@ -51,6 +68,24 @@
     </div>
     <div class="sdpi-item">
         <button class="sdpi-item-value save-label" id="save">Save</button>
+    </div>
+</div>
+<div class="sdpi-wrapper" id="playlistSettings" style="display: none">
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-label">Playlist</div>
+        <select class="sdpi-item-value" id="playlistSelect">
+            <option value="">Select playlist</option>
+        </select>
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-custom-label">Custom Playlist ID</div>
+        <input class="sdpi-item-value" type="text" id="playlistCustom">
+    </div>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value playlist-refresh-label" id="playlistRefresh">Refresh Playlists</button>
+    </div>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value save-label" id="playlistSave">Save</button>
     </div>
 </div>
 <div class="sdpi-wrapper" id="volumeSettings" style="display: none">

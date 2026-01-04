@@ -65,10 +65,22 @@
       "SUPPORT_FEEDBACK_TITLE": "Support & Retours",
       "SUPPORT_FEEDBACK_TEXT": "Vous avez trouvé un bug ? Vous avez une idée de fonctionnalité ?<br>Vous pouvez les envoyer sur <a href=\"https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose\" rel=\"noopener\" target=\"_blank\">GitHub</a> ou sur <a href=\"https://x.xeroxdev.de/s/discord\" rel=\"noopener\" target=\"_blank\">Discord</a> !",
       "VAR_USAGE": "<p><strong>Variables disponibles :</strong> {current}, {remaining}, {duration}</p><p><strong>Valeurs spéciales :</strong> :S = en secondes, :H = format naturel (par défaut)</p><p><strong>Utilisation :</strong> {remaining:S} pour afficher le temps restant en secondes</p>",
-      "TOGGLE": "Basculer",
-      "PAUSE": "Pause",
-      "PLAY": "Lecture",
-      "ACTION": "Action"
+    "TOGGLE": "Basculer",
+    "PAUSE": "Pause",
+    "PLAY": "Lecture",
+    "ACTION": "Action",
+      "PLAYLIST": "Playlist",
+      "PLAYLIST_CUSTOM": "ID de playlist personnalisée",
+      "PLAYLIST_REFRESH": "Actualiser les playlists",
+      "PLAYLIST_SELECT": "Sélectionner une playlist",
+      "PLAYLIST_AUTH_HINT": "Autorisez via les paramètres de connexion ci-dessus.",
+      "GLOBAL_SETTINGS_TITLE": "Paramètres de connexion",
+      "CONNECTION_STATUS": "Statut de connexion",
+      "CONNECTION_STATUS_CONNECTED": "Connecté",
+      "CONNECTION_STATUS_DISCONNECTED": "Déconnecté",
+      "CONNECTION_STATUS_AUTH_REQUIRED": "Non authentifié",
+      "CONNECTION_STATUS_CHECKING": "Vérification...",
+      "GLOBAL_REFRESH": "Actualiser l'état"
     }
   }
 }

@@ -220,6 +220,20 @@
       "SupportedInMultiActions": true,
       "Tooltip": "Repeat",
       "UUID": "fun.shiro.ytmdc.repeat"
+    },
+    {
+      "Icon": "icons/music-play",
+      "Name": "Play Playlist",
+      "States": [
+        {
+          "Image": "icons/music-play",
+          "TitleAlignment": "middle",
+          "FontSize": 16
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "Play a selected playlist",
+      "UUID": "fun.shiro.ytmdc.play-playlist"
     }
   ],
   "CodePath": "action.html",

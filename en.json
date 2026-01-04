@@ -68,7 +68,19 @@
       "TOGGLE": "Toggle",
       "PAUSE": "Pause",
       "PLAY":  "Play",
-      "ACTION": "Action"
+      "ACTION": "Action",
+      "PLAYLIST": "Playlist",
+      "PLAYLIST_CUSTOM": "Custom Playlist ID",
+      "PLAYLIST_REFRESH": "Refresh Playlists",
+      "PLAYLIST_SELECT": "Select playlist",
+      "PLAYLIST_AUTH_HINT": "Authorize using the connection settings above.",
+      "GLOBAL_SETTINGS_TITLE": "Connection Settings",
+      "CONNECTION_STATUS": "Connection Status",
+      "CONNECTION_STATUS_CONNECTED": "Connected",
+      "CONNECTION_STATUS_DISCONNECTED": "Disconnected",
+      "CONNECTION_STATUS_AUTH_REQUIRED": "Not authenticated",
+      "CONNECTION_STATUS_CHECKING": "Checking...",
+      "GLOBAL_REFRESH": "Refresh Status"
     }
   }
 }

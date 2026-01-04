@@ -2,20 +2,33 @@ import {DidReceiveSettingsEvent, SDOnPiEvent, StreamDeckPropertyInspectorHandler
 import {ActionTypes} from './interfaces/enums';
 import {LocalizationInterface} from './interfaces/localization.interface';
 import {PisAbstract} from './pis/pis.abstract';
+import {GlobalSettingsPi} from './pis/global-settings.pi';
 import {PlayPausePi} from './pis/play-pause.pi';
+import {PlayPlaylistPi} from './pis/play-playlist.pi';
 import {VolumeChangePi} from './pis/volume-change.pi';
 
 export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Play / Pause Settings
     public playPauseSettings: HTMLElement;
-    public hostElement: HTMLInputElement;
-    public portElement: HTMLInputElement;
     public actionElement: HTMLInputElement;
     public displayFormatElement: HTMLInputElement;
     public saveElement: HTMLButtonElement;
-    public authSectionElement: HTMLElement;
-    public authButtonElement: HTMLButtonElement;
-    public authStatusElement: HTMLElement;
+    // Global Settings
+    public globalSettings: HTMLElement;
+    public globalHostElement: HTMLInputElement;
+    public globalPortElement: HTMLInputElement;
+    public globalAuthButtonElement: HTMLButtonElement;
+    public globalAuthStatusElement: HTMLElement;
+    public globalConnectionStatusElement: HTMLElement;
+    public globalSaveElement: HTMLButtonElement;
+    public globalRefreshElement: HTMLButtonElement;
+    public globalSettingsDetailsElement: HTMLDetailsElement;
+    // Playlist Settings
+    public playlistSettings: HTMLElement;
+    public playlistSelectElement: HTMLSelectElement;
+    public playlistCustomElement: HTMLInputElement;
+    public playlistSaveElement: HTMLButtonElement;
+    public playlistRefreshButtonElement: HTMLButtonElement;
     // Volume Settings
     public volumeSettings: HTMLElement;
     public volumeInput: HTMLInputElement;
@@ -25,6 +38,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     private errorTemplateElement: HTMLElement;
 
     private action: PisAbstract;
+    private globalSettingsPi: GlobalSettingsPi;
 
     constructor() {
         super();
@@ -100,10 +114,14 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     private documentLoaded() {
         this.setupLocalization();
         this.setupElements();
+        this.globalSettingsPi = new GlobalSettingsPi(this);
         const _action: ActionTypes = this.actionInfo.action as ActionTypes;
         switch (_action) {
             case ActionTypes.PLAY_PAUSE:
                 this.action = new PlayPausePi(this, this.actionInfo.context, this.playPauseSettings);
+                break;
+            case ActionTypes.PLAY_PLAYLIST:
+                this.action = new PlayPlaylistPi(this, this.actionInfo.context, this.playlistSettings);
                 break;
             case ActionTypes.VOLUME_UP:
                 this.action = new VolumeChangePi(
@@ -168,10 +186,18 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('toggle-label', this.getLangString("TOGGLE"));
         this.setInnerHtmlByClass('pause-label', this.getLangString("PAUSE"));
         this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
+        this.setInnerHtmlByClass('playlist-label', this.getLangString("PLAYLIST"));
+        this.setInnerHtmlByClass('playlist-custom-label', this.getLangString("PLAYLIST_CUSTOM"));
+        this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
+        this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
+        this.setInnerHtmlByClass('connection-status-label', this.getLangString("CONNECTION_STATUS"));
+        this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_CHECKING"));
+        this.setInnerHtmlByClass('global-refresh-label', this.getLangString("GLOBAL_REFRESH"));
     }
 
     @SDOnPiEvent('didReceiveGlobalSettings')
     private receivedGlobalSettings() {
+        this.globalSettingsPi?.newGlobalSettingsReceived();
         this.action?.newGlobalSettingsReceived();
     }
 
@@ -182,14 +208,24 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
 
     private setupElements() {
         this.playPauseSettings = document.getElementById('playPauseSettings') as HTMLElement;
-        this.hostElement = document.getElementById('host') as HTMLInputElement;
-        this.portElement = document.getElementById('port') as HTMLInputElement;
         this.actionElement = document.getElementById('action') as HTMLInputElement;
         this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
         this.saveElement = document.getElementById('save') as HTMLButtonElement;
-        this.authSectionElement = document.getElementById('authStatusSection') as HTMLElement;
-        this.authButtonElement = document.getElementById('authButton') as HTMLButtonElement;
-        this.authStatusElement = document.getElementById('authStatus') as HTMLElement;
+        this.globalSettings = document.getElementById('globalSettings') as HTMLElement;
+        this.globalHostElement = document.getElementById('globalHost') as HTMLInputElement;
+        this.globalPortElement = document.getElementById('globalPort') as HTMLInputElement;
+        this.globalAuthButtonElement = document.getElementById('globalAuthButton') as HTMLButtonElement;
+        this.globalAuthStatusElement = document.getElementById('globalAuthStatus') as HTMLElement;
+        this.globalConnectionStatusElement = document.getElementById('globalConnectionStatus') as HTMLElement;
+        this.globalSaveElement = document.getElementById('globalSave') as HTMLButtonElement;
+        this.globalRefreshElement = document.getElementById('globalRefresh') as HTMLButtonElement;
+        this.globalSettingsDetailsElement = document.getElementById('globalSettingsDetails') as HTMLDetailsElement;
+
+        this.playlistSettings = document.getElementById('playlistSettings') as HTMLElement;
+        this.playlistSelectElement = document.getElementById('playlistSelect') as HTMLSelectElement;
+        this.playlistCustomElement = document.getElementById('playlistCustom') as HTMLInputElement;
+        this.playlistSaveElement = document.getElementById('playlistSave') as HTMLButtonElement;
+        this.playlistRefreshButtonElement = document.getElementById('playlistRefresh') as HTMLButtonElement;
 
         this.volumeSettings = document.getElementById('volumeSettings') as HTMLElement;
         this.volumeInput = document.getElementById('volumeInput') as HTMLInputElement;

@@ -21,5 +21,17 @@ export interface LocalizationInterface {
         PAUSE: string;
         PLAY: string;
         ACTION: string;
+        PLAYLIST: string;
+        PLAYLIST_CUSTOM: string;
+        PLAYLIST_REFRESH: string;
+        PLAYLIST_SELECT: string;
+        PLAYLIST_AUTH_HINT: string;
+        GLOBAL_SETTINGS_TITLE: string;
+        CONNECTION_STATUS: string;
+        CONNECTION_STATUS_CONNECTED: string;
+        CONNECTION_STATUS_DISCONNECTED: string;
+        CONNECTION_STATUS_AUTH_REQUIRED: string;
+        CONNECTION_STATUS_CHECKING: string;
+        GLOBAL_REFRESH: string;
     };
 }

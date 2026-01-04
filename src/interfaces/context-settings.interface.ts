@@ -6,3 +6,8 @@ export interface PlayPauseSettings {
     action: 'PLAY' | 'PAUSE' | 'TOGGLE';
     displayFormat: string;
 }
+
+export interface PlaylistSettings {
+    playlistId?: string;
+    customPlaylistId?: string;
+}
