@@ -76,8 +76,7 @@
       "PLAYLIST_URL_STATUS_INVALID": "URL invalide",
       "PLAYLIST_URL_STATUS_MISSING_LIST": "L’URL doit inclure un paramètre list",
       "PLAYLIST_SOURCE": "Source de la playlist",
-      "PLAYLIST_SOURCE_HELP": "Utilisez une option ci-dessous. L’URL a la priorité sur la sélection ou l’ID.",
-      "PLAYLIST_CUSTOM": "ID de playlist personnalisée",
+      "PLAYLIST_SOURCE_HELP": "Utilisez une option ci-dessous. L’URL a la priorité sur la sélection.",
       "PLAYLIST_REFRESH": "Actualiser les playlists",
       "PLAYLIST_SELECT": "Sélectionner une playlist",
       "PLAYLIST_AUTH_HINT": "Autorisez via les paramètres de connexion ci-dessus.",
@@ -88,8 +87,7 @@
       "CONNECTION_STATUS_AUTH_REQUIRED": "Non authentifié",
       "CONNECTION_STATUS_CHECKING": "Vérification...",
       "CONNECTION_STATUS_RATE_LIMIT": "Limite atteinte. Nouvel essai bientôt...",
-      "CONNECTION_STATUS_NOT_CHECKED": "Pas encore vérifié",
-      "GLOBAL_REFRESH": "Actualiser l'état"
+      "CONNECTION_STATUS_NOT_CHECKED": "Pas encore vérifié"
     }
   }
 }

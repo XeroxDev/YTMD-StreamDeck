@@ -21,14 +21,12 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     public globalAuthStatusElement: HTMLElement;
     public globalConnectionStatusElement: HTMLElement;
     public globalSaveElement: HTMLButtonElement;
-    public globalRefreshElement: HTMLButtonElement;
     public globalSettingsDetailsElement: HTMLDetailsElement;
     // Playlist Settings
     public playlistSettings: HTMLElement;
     public playlistSelectElement: HTMLSelectElement;
     public playlistUrlElement: HTMLInputElement;
     public playlistUrlStatusElement: HTMLElement;
-    public playlistCustomElement: HTMLInputElement;
     public playlistSaveElement: HTMLButtonElement;
     public playlistRefreshButtonElement: HTMLButtonElement;
     // Volume Settings
@@ -193,12 +191,10 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('playlist-url-status-label', this.getLangString("PLAYLIST_URL_STATUS"));
         this.setInnerHtmlByClass('playlist-source-label', this.getLangString("PLAYLIST_SOURCE"));
         this.setInnerHtmlByClass('playlist-source-help', this.getLangString("PLAYLIST_SOURCE_HELP"));
-        this.setInnerHtmlByClass('playlist-custom-label', this.getLangString("PLAYLIST_CUSTOM"));
         this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
         this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
         this.setInnerHtmlByClass('connection-status-label', this.getLangString("CONNECTION_STATUS"));
         this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_NOT_CHECKED"));
-        this.setInnerHtmlByClass('global-refresh-label', this.getLangString("GLOBAL_REFRESH"));
     }
 
     @SDOnPiEvent('didReceiveGlobalSettings')
@@ -224,14 +220,12 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.globalAuthStatusElement = document.getElementById('globalAuthStatus') as HTMLElement;
         this.globalConnectionStatusElement = document.getElementById('globalConnectionStatus') as HTMLElement;
         this.globalSaveElement = document.getElementById('globalSave') as HTMLButtonElement;
-        this.globalRefreshElement = document.getElementById('globalRefresh') as HTMLButtonElement;
         this.globalSettingsDetailsElement = document.getElementById('globalSettingsDetails') as HTMLDetailsElement;
 
         this.playlistSettings = document.getElementById('playlistSettings') as HTMLElement;
         this.playlistSelectElement = document.getElementById('playlistSelect') as HTMLSelectElement;
         this.playlistUrlElement = document.getElementById('playlistUrl') as HTMLInputElement;
         this.playlistUrlStatusElement = document.getElementById('playlistUrlStatus') as HTMLElement;
-        this.playlistCustomElement = document.getElementById('playlistCustom') as HTMLInputElement;
         this.playlistSaveElement = document.getElementById('playlistSave') as HTMLButtonElement;
         this.playlistRefreshButtonElement = document.getElementById('playlistRefresh') as HTMLButtonElement;
 

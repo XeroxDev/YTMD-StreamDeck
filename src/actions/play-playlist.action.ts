@@ -23,7 +23,7 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
     @SDOnActionEvent('keyUp')
     onKeypressUp({context, payload: {settings}}: KeyUpEvent<PlaylistSettings>) {
         const playlistUrl = settings?.playlistUrl?.trim();
-        const playlistId = settings?.customPlaylistId?.trim() || settings?.playlistId?.trim();
+        const playlistId = settings?.playlistId?.trim();
         if (!playlistUrl && !playlistId) {
             this.plugin.logMessage(`No playlist configured. context: ${JSON.stringify(context)}`);
             this.plugin.showAlert(context);

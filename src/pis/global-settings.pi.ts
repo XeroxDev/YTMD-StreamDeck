@@ -12,7 +12,6 @@ export class GlobalSettingsPi {
     constructor(private pi: YTMDPi) {
         this.pi.globalAuthButtonElement.onclick = () => this.startAuthorization();
         this.pi.globalSaveElement.onclick = () => this.saveSettings();
-        this.pi.globalRefreshElement.onclick = () => this.refreshConnectionStatus();
         this.pi.requestGlobalSettings();
     }
 
