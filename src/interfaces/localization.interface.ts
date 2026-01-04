@@ -12,6 +12,7 @@ export interface LocalizationInterface {
         AUTH_STATUS_NOT_CONNECTED: string;
         AUTH_STATUS_CONNECTED: string;
         AUTH_STATUS_ERROR: string;
+        AUTH_CODE_STATUS: string;
         AUTH_CODE_COMPARE: string;
         DISPLAY_FORMAT: string;
         SUPPORT_FEEDBACK_TITLE: string;

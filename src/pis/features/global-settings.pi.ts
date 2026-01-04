@@ -62,6 +62,15 @@ export class GlobalSettingsPi {
         this.pi.globalConnectionStatusElement.style.color = color;
     }
 
+    private getRetrySeconds(message?: string) {
+        if (!message) return 5;
+        const match = message.match(/retry in (\\d+) seconds?/i);
+        if (!match) return 5;
+        const seconds = parseInt(match[1], 10);
+        if (Number.isNaN(seconds)) return 5;
+        return seconds;
+    }
+
     private ensureSocketClient(host: string, port: string, token: string) {
         const normalizedHost = host === 'localhost' ? '127.0.0.1' : host;
         const settingsKey = `${normalizedHost}:${port}:${token ?? ''}`;
@@ -101,7 +110,8 @@ export class GlobalSettingsPi {
             connector.socketClient.addErrorListener((error: any) => {
                 this.pi.logMessage(`Connection status check failed: ${JSON.stringify(error)}`);
                 if (error satisfies ErrorOutput && error.statusCode === 429) {
-                    this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT"), 'orange');
+                    const seconds = this.getRetrySeconds(error.message);
+                    this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_RATE_LIMIT", {seconds}), 'orange');
                     return;
                 }
                 this.setConnectionStatus(this.pi.getLangString("CONNECTION_STATUS_DISCONNECTED"), 'red');
@@ -140,7 +150,10 @@ export class GlobalSettingsPi {
                 return;
             }
 
-            this.pi.globalAuthStatusElement.innerText = `AUTH CODE: ${authCode.code}\n\n${this.pi.getLangString("AUTH_CODE_COMPARE")}`;
+            this.pi.globalAuthStatusElement.innerText = this.pi.getLangString("AUTH_CODE_STATUS", {
+                code: authCode.code,
+                compare: this.pi.getLangString("AUTH_CODE_COMPARE")
+            });
             const authToken = await connector.restClient.getAuthToken(authCode.code);
 
             if (authToken.token) {

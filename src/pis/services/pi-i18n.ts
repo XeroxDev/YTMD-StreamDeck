@@ -8,7 +8,11 @@ export class PiI18n {
         this.messages = messages;
     }
 
-    public t(key: keyof LocalizationInterface['PI'], vars?: Record<string, unknown>, fallback = 'NOT TRANSLATED') {
+    public t(
+        key: keyof LocalizationInterface['PI'],
+        vars?: Record<string, unknown>,
+        fallback = 'NOT TRANSLATED'
+    ) {
         if (!this.messages) return fallback;
         const message = this.messages[key];
         if (!message) return fallback;

@@ -121,7 +121,8 @@ export class PlayPlaylistPi extends PisAbstract {
                 let msg = "";
                 if (e satisfies ErrorOutput) {
                     if (e.statusCode === 429) {
-                        msg = this.pi.getLangString("PLAYLIST_ERROR_RATE_LIMIT");
+                        const seconds = this.getRetrySeconds(e.message);
+                        msg = this.pi.getLangString("PLAYLIST_ERROR_RATE_LIMIT", {seconds});
                     } else {
                         msg = e.message;
                     }
@@ -174,5 +175,14 @@ export class PlayPlaylistPi extends PisAbstract {
             status.textContent = this.pi.getLangString("PLAYLIST_URL_STATUS_INVALID");
             status.style.color = 'red';
         }
+    }
+
+    private getRetrySeconds(message?: string) {
+        if (!message) return 5;
+        const match = message.match(/retry in (\\d+) seconds?/i);
+        if (!match) return 5;
+        const seconds = parseInt(match[1], 10);
+        if (Number.isNaN(seconds)) return 5;
+        return seconds;
     }
 }

@@ -145,8 +145,12 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         }
     }
 
-    public getLangString(key: keyof LocalizationInterface['PI'], defaultValue: string = 'NOT TRANSLATED') {
-        return this.i18n.t(key, undefined, defaultValue);
+    public getLangString(
+        key: keyof LocalizationInterface['PI'],
+        vars?: Record<string, unknown>,
+        defaultValue: string = 'NOT TRANSLATED'
+    ) {
+        return this.i18n.t(key, vars, defaultValue);
     }
 
     private setupLocalization() {
