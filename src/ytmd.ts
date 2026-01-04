@@ -3,6 +3,7 @@ import {LikeDislikeAction} from './actions/like-dislike.action';
 import {MuteAction} from './actions/mute.action';
 import {NextPrevAction} from './actions/next-prev-action';
 import {PlayPauseAction} from './actions/play-pause.action';
+import {PlayPlaylistAction} from './actions/play-playlist.action';
 import {RepeatAction} from './actions/repeat.action';
 import {ShuffleAction} from './actions/shuffle.action';
 import {SongInfoAction} from './actions/song-info.action';
@@ -42,6 +43,7 @@ export class YTMD extends StreamDeckPluginHandler {
         new SongInfoAction(this, ActionTypes.SONG_INFO);
         new ShuffleAction(this, ActionTypes.SHUFFLE);
         new RepeatAction(this, ActionTypes.REPEAT);
+        new PlayPlaylistAction(this, ActionTypes.PLAY_PLAYLIST);
     }
 
     private static _COMPANION: CompanionConnector;

@@ -13,38 +13,52 @@
         <p class="error-message">Oops. This is awkward. You shouldn't be able to see me. :c</p>
     </div>
 </div>
+<div class="sdpi-wrapper" id="globalSettings">
+    <div class="sdpi-item">
+        <div class="sdpi-item-label auth-label" data-i18n="AUTH_STATUS">Auth Status</div>
+        <div class="sdpi-item-value">
+            <strong id="globalAuthStatus" class="auth-status-label" style="color: red;" data-i18n="AUTH_STATUS_NOT_CONNECTED">Not authenticated</strong>
+        </div>
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label connection-status-label" data-i18n="CONNECTION_STATUS">Connection Status</div>
+        <div class="sdpi-item-value">
+            <strong id="globalConnectionStatus" class="connection-status-value" data-i18n="CONNECTION_STATUS_CHECKING">Checking...</strong>
+        </div>
+    </div>
+    <details id="globalSettingsDetails" class="message">
+        <summary class="global-settings-title" data-i18n="GLOBAL_SETTINGS_TITLE">Connection Settings</summary>
+        <div class="sdpi-item">
+            <button class="sdpi-item-value auth-button-label" id="globalAuthButton" data-i18n="AUTH_BUTTON">Authorize</button>
+            <br>
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label host-label" data-i18n="HOST">Host</div>
+            <input class="sdpi-item-value" type="text" id="globalHost" value="127.0.0.1">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label port-label" data-i18n="PORT">Port</div>
+            <input class="sdpi-item-value" type="number" id="globalPort" value="9863">
+        </div>
+        <div class="sdpi-item">
+            <button class="sdpi-item-value save-label" id="globalSave" data-i18n="SAVE">Save</button>
+        </div>
+    </details>
+</div>
 <div class="sdpi-wrapper" id="playPauseSettings" style="display: none">
-    <div class="sdpi-item" id="authStatusSection" style="visibility: hidden; height: 0">
-        <div class="sdpi-item-label auth-label">Auth Status</div>
-        <div class="sdpi-item-value"><strong id="authStatus" class="auth-status-label" style="color: red;">Not
-            authenticated</strong></div>
-    </div>
-    <div class="sdpi-item" style="">
-        <button class="sdpi-item-value auth-button-label" id="authButton">Authorize</button>
-        <br>
-    </div>
-    <hr>
     <div class="sdpi-item">
-        <div class="sdpi-item-label host-label">Host</div>
-        <input class="sdpi-item-value" type="text" id="host" value="127.0.0.1">
-    </div>
-    <div class="sdpi-item">
-        <div class="sdpi-item-label port-label">Port</div>
-        <input class="sdpi-item-value" type="number" id="port" value="9863">
-    </div>
-    <div class="sdpi-item">
-        <div class="sdpi-item-label action-label">Action</div>
+        <div class="sdpi-item-label action-label" data-i18n="ACTION">Action</div>
         <select class="sdpi-item-value" id="action">
-            <option class="toggle-label" value="TOGGLE" selected>Toggle</option>
-            <option class="pause-label" value="PAUSE">Pause</option>
-            <option class="play-label" value="PLAY">Play</option>
+            <option class="toggle-label" value="TOGGLE" selected data-i18n="TOGGLE">Toggle</option>
+            <option class="pause-label" value="PAUSE" data-i18n="PAUSE">Pause</option>
+            <option class="play-label" value="PLAY" data-i18n="PLAY">Play</option>
         </select>
     </div>
     <div class="sdpi-item">
-        <div class="sdpi-item-label display-label">Display Format</div>
+        <div class="sdpi-item-label display-label" data-i18n="DISPLAY_FORMAT">Display Format</div>
         <textarea class="sdpi-item-value" type="text" id="displayFormat">{current}</textarea>
     </div>
-    <div style="padding: 5px;" class="var-usage-label">
+    <div style="padding: 5px;" class="var-usage-label" data-i18n-html="VAR_USAGE">
         <p><strong>Available variables:</strong> {current}, {remaining}, {duration}</p>
         <p><strong>Special values:</strong> :S = seconds, :H = human readable time (default)</p>
         <p><strong>Usage:</strong> {remaining:S} to display remaining time in seconds</p>
@@ -69,23 +83,51 @@
         </div>
     </div>
     <div class="sdpi-item">
-        <button class="sdpi-item-value save-label" id="save">Save</button>
+        <button class="sdpi-item-value save-label" id="save" data-i18n="SAVE">Save</button>
+    </div>
+</div>
+<div class="sdpi-wrapper" id="playlistSettings" style="display: none">
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-source-label" data-i18n="PLAYLIST_SOURCE">Playlist Source</div>
+        <div class="sdpi-item-value playlist-source-help" data-i18n="PLAYLIST_SOURCE_HELP">
+            Use one option below. If Playlist URL is set, it takes priority over the dropdown.
+        </div>
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-label" data-i18n="PLAYLIST">Playlist</div>
+        <select class="sdpi-item-value" id="playlistSelect">
+            <option value="" data-i18n="PLAYLIST_SELECT">Select playlist</option>
+        </select>
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-url-label" data-i18n="PLAYLIST_URL">Playlist URL</div>
+        <input class="sdpi-item-value" type="text" id="playlistUrl">
+    </div>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label playlist-url-status-label" data-i18n="PLAYLIST_URL_STATUS">Playlist URL Status</div>
+        <div class="sdpi-item-value" id="playlistUrlStatus"></div>
+    </div>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value playlist-refresh-label" id="playlistRefresh" data-i18n="PLAYLIST_REFRESH">Refresh Playlists</button>
+    </div>
+    <div class="sdpi-item">
+        <button class="sdpi-item-value save-label" id="playlistSave" data-i18n="SAVE">Save</button>
     </div>
 </div>
 <div class="sdpi-wrapper" id="volumeSettings" style="display: none">
     <div class="sdpi-item">
-        <div class="sdpi-item-label volume-steps-label">Volume steps</div>
+        <div class="sdpi-item-label volume-steps-label" data-i18n="VOLUME_STEPS">Volume steps</div>
         <input class="sdpi-item-value" type="number" id="volumeInput">
     </div>
     <div class="sdpi-item">
         <details class="message question">
-            <summary class="automatic-save-label">This saves automatically</summary>
+            <summary class="automatic-save-label" data-i18n="AUTOMATIC_SAVE">This saves automatically</summary>
         </details>
     </div>
 </div>
 <hr>
-<h3 class="support-feedback-title-label">Support / Feedback</h3>
-<p class="support-feedback-text-label">
+<h3 class="support-feedback-title-label" data-i18n="SUPPORT_FEEDBACK_TITLE">Support / Feedback</h3>
+<p class="support-feedback-text-label" data-i18n-html="SUPPORT_FEEDBACK_TEXT">
     You found a bug? You have a feature request? <br>
     I would love to hear about it <a href="https://github.com/XeroxDev/YTMD-StreamDeck/issues/new/choose" rel="noopener"
                                      target="_blank">here</a>!

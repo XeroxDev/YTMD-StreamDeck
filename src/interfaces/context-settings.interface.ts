@@ -8,3 +8,8 @@ export interface PlayPauseSettings {
     displayTitleFormat: string;
     customLayout: string;
 }
+
+export interface PlaylistSettings {
+    playlistId?: string;
+    playlistUrl?: string;
+}

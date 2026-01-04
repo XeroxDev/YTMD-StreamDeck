@@ -60,6 +60,7 @@
       "AUTH_STATUS_NOT_CONNECTED": "Not authenticated!",
       "AUTH_STATUS_CONNECTED": "Authenticated!",
       "AUTH_STATUS_ERROR":  "Authentication failed!",
+      "AUTH_CODE_STATUS": "AUTH CODE: {code}\n\n{compare}",
       "AUTH_CODE_COMPARE": "Please compare the code with the one on the YTMDesktop app and confirm the authorization.",
       "DISPLAY_FORMAT": "Display Format",
       "SUPPORT_FEEDBACK_TITLE": "Support & Feedback",
@@ -68,7 +69,28 @@
       "TOGGLE": "Toggle",
       "PAUSE": "Pause",
       "PLAY":  "Play",
-      "ACTION": "Action"
+      "ACTION": "Action",
+      "PLAYLIST": "Playlist",
+      "PLAYLIST_URL": "Playlist URL",
+      "PLAYLIST_URL_STATUS": "Playlist URL Status",
+      "PLAYLIST_URL_STATUS_VALID": "Valid playlist URL",
+      "PLAYLIST_URL_STATUS_INVALID": "Invalid URL",
+      "PLAYLIST_URL_STATUS_MISSING_LIST": "URL must include a list parameter",
+      "PLAYLIST_SOURCE": "Playlist Source",
+      "PLAYLIST_SOURCE_HELP": "Use one option below. If Playlist URL is set, it takes priority over the dropdown.",
+      "PLAYLIST_REFRESH": "Refresh Playlists",
+      "PLAYLIST_ERROR_TITLE": "Playlist error",
+      "PLAYLIST_ERROR_RATE_LIMIT": "Rate limited while fetching playlists. Try again in {seconds, plural, one {# second} other {# seconds}}.",
+      "PLAYLIST_SELECT": "Select playlist",
+      "PLAYLIST_AUTH_HINT": "Authorize using the connection settings above.",
+      "GLOBAL_SETTINGS_TITLE": "Connection Settings",
+      "CONNECTION_STATUS": "Connection Status",
+      "CONNECTION_STATUS_CONNECTED": "Connected",
+      "CONNECTION_STATUS_DISCONNECTED": "Disconnected",
+      "CONNECTION_STATUS_AUTH_REQUIRED": "Not authenticated",
+      "CONNECTION_STATUS_CHECKING": "Checking...",
+      "CONNECTION_STATUS_RATE_LIMIT": "Rate limited. Retry in {seconds, plural, one {# second} other {# seconds}}.",
+      "CONNECTION_STATUS_NOT_CHECKED": "Not checked yet"
     }
   }
 }

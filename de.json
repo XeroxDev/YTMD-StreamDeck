@@ -60,6 +60,7 @@
       "AUTH_STATUS_NOT_CONNECTED": "Nicht authentifiziert",
       "AUTH_STATUS_CONNECTED": "Authentifiziert",
       "AUTH_STATUS_ERROR":  "Authentifizierung fehlgeschlagen",
+      "AUTH_CODE_STATUS": "AUTH CODE: {code}\n\n{compare}",
       "AUTH_CODE_COMPARE": "Bitte vergleichen Sie den Code mit dem in der YTMDesktop-App und bestätigen Sie die Autorisierung.",
       "DISPLAY_FORMAT": "Anzeigeformat",
       "SUPPORT_FEEDBACK_TITLE": "Support & Feedback",
@@ -68,7 +69,28 @@
       "TOGGLE": "Umschalten",
       "PAUSE": "Pause",
       "PLAY":  "Start",
-      "ACTION": "Aktion"
+      "ACTION": "Aktion",
+      "PLAYLIST": "Playlist",
+      "PLAYLIST_URL": "Playlist-URL",
+      "PLAYLIST_URL_STATUS": "Playlist-URL-Status",
+      "PLAYLIST_URL_STATUS_VALID": "Gültige Playlist-URL",
+      "PLAYLIST_URL_STATUS_INVALID": "Ungültige URL",
+      "PLAYLIST_URL_STATUS_MISSING_LIST": "URL muss einen list-Parameter enthalten",
+      "PLAYLIST_SOURCE": "Playlist-Quelle",
+      "PLAYLIST_SOURCE_HELP": "Nutze eine der Optionen unten. Eine Playlist-URL hat Vorrang vor der Auswahl.",
+      "PLAYLIST_REFRESH": "Playlists aktualisieren",
+      "PLAYLIST_ERROR_TITLE": "Playlist-Fehler",
+      "PLAYLIST_ERROR_RATE_LIMIT": "Ratenlimit beim Laden der Playlists. Bitte in {seconds, plural, one {# Sekunde} other {# Sekunden}} erneut versuchen.",
+      "PLAYLIST_SELECT": "Playlist auswählen",
+      "PLAYLIST_AUTH_HINT": "Bitte über die Verbindungseinstellungen oben autorisieren.",
+      "GLOBAL_SETTINGS_TITLE": "Verbindungseinstellungen",
+      "CONNECTION_STATUS": "Verbindungsstatus",
+      "CONNECTION_STATUS_CONNECTED": "Verbunden",
+      "CONNECTION_STATUS_DISCONNECTED": "Getrennt",
+      "CONNECTION_STATUS_AUTH_REQUIRED": "Nicht authentifiziert",
+      "CONNECTION_STATUS_CHECKING": "Überprüfen...",
+      "CONNECTION_STATUS_RATE_LIMIT": "Ratenlimit erreicht. Neuer Versuch in {seconds, plural, one {# Sekunde} other {# Sekunden}}.",
+      "CONNECTION_STATUS_NOT_CHECKED": "Noch nicht geprüft"
     }
   }
 }

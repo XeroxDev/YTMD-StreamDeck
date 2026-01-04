@@ -2,23 +2,37 @@ import {DidReceiveSettingsEvent, SDOnPiEvent, StreamDeckPropertyInspectorHandler
 import {ActionTypes} from './interfaces/enums';
 import {LocalizationInterface} from './interfaces/localization.interface';
 import {PisAbstract} from './pis/pis.abstract';
-import {PlayPausePi} from './pis/play-pause.pi';
-import {VolumeChangePi} from './pis/volume-change.pi';
+import {GlobalSettingsPi} from './pis/features/global-settings.pi';
+import {PlayPausePi} from './pis/features/play-pause.pi';
+import {PlayPlaylistPi} from './pis/features/play-playlist.pi';
+import {VolumeChangePi} from './pis/features/volume-change.pi';
+import {PiI18n} from './pis/services/pi-i18n';
 
 export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Play / Pause Settings
     public playPauseSettings: HTMLElement;
-    public hostElement: HTMLInputElement;
-    public portElement: HTMLInputElement;
     public actionElement: HTMLInputElement;
     public displayFormatElement: HTMLInputElement;
     public displayTitleFormatElement: HTMLInputElement;
     public sdplusSettingsElement: HTMLInputElement;
     public customLayout: HTMLInputElement;
     public saveElement: HTMLButtonElement;
-    public authSectionElement: HTMLElement;
-    public authButtonElement: HTMLButtonElement;
-    public authStatusElement: HTMLElement;
+    // Global Settings
+    public globalSettings: HTMLElement;
+    public globalHostElement: HTMLInputElement;
+    public globalPortElement: HTMLInputElement;
+    public globalAuthButtonElement: HTMLButtonElement;
+    public globalAuthStatusElement: HTMLElement;
+    public globalConnectionStatusElement: HTMLElement;
+    public globalSaveElement: HTMLButtonElement;
+    public globalSettingsDetailsElement: HTMLDetailsElement;
+    // Playlist Settings
+    public playlistSettings: HTMLElement;
+    public playlistSelectElement: HTMLSelectElement;
+    public playlistUrlElement: HTMLInputElement;
+    public playlistUrlStatusElement: HTMLElement;
+    public playlistSaveElement: HTMLButtonElement;
+    public playlistRefreshButtonElement: HTMLButtonElement;
     // Volume Settings
     public volumeSettings: HTMLElement;
     public volumeInput: HTMLInputElement;
@@ -26,11 +40,14 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Error messages
     private errorsElement: HTMLElement;
     private errorTemplateElement: HTMLElement;
+    private i18n: PiI18n;
 
     private action: PisAbstract;
+    private globalSettingsPi: GlobalSettingsPi;
 
     constructor() {
         super();
+        this.i18n = new PiI18n();
     }
 
     // Load the localizations
@@ -103,10 +120,14 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     private documentLoaded() {
         this.setupLocalization();
         this.setupElements();
+        this.globalSettingsPi = new GlobalSettingsPi(this);
         const _action: ActionTypes = this.actionInfo.action as ActionTypes;
         switch (_action) {
             case ActionTypes.PLAY_PAUSE:
                 this.action = new PlayPausePi(this, this.actionInfo.context, this.playPauseSettings);
+                break;
+            case ActionTypes.PLAY_PLAYLIST:
+                this.action = new PlayPlaylistPi(this, this.actionInfo.context, this.playlistSettings);
                 break;
             case ActionTypes.VOLUME_UP:
                 this.action = new VolumeChangePi(
@@ -127,12 +148,12 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         }
     }
 
-    public getLangString(key: keyof LocalizationInterface['PI'], defaultValue: string = 'NOT TRANSLATED') {
-        try {
-            return this.localization[key] ?? defaultValue;
-        } catch (e) {
-            return defaultValue;
-        }
+    public getLangString(
+        key: keyof LocalizationInterface['PI'],
+        vars?: Record<string, unknown>,
+        defaultValue: string = 'NOT TRANSLATED'
+    ) {
+        return this.i18n.t(key, vars, defaultValue);
     }
 
     private setupLocalization() {
@@ -145,36 +166,25 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
                         this.logMessage(`Failed to load the default localization file. Reason: ${s2}.`);
                     }
                     this.localization = (s2 as LocalizationInterface).PI;
+                    this.i18n.setMessages(this.localization);
                     this.translateHtml();
                 });
                 return;
             }
             this.localization = (s as LocalizationInterface).PI;
+            this.i18n.setMessages(this.localization);
             this.translateHtml();
         });
     }
 
     private translateHtml() {
-        this.setInnerHtmlByClass('host-label', this.getLangString("HOST"));
-        this.setInnerHtmlByClass('port-label', this.getLangString("PORT"));
-        this.setInnerHtmlByClass('display-label', this.getLangString("DISPLAY_FORMAT"));
-        this.setInnerHtmlByClass('save-label', this.getLangString("SAVE"));
-        this.setInnerHtmlByClass('volume-steps-label', this.getLangString("VOLUME_STEPS"));
-        this.setInnerHtmlByClass('automatic-save-label', this.getLangString("AUTOMATIC_SAVE"));
-        this.setInnerHtmlByClass('auth-button-label', this.getLangString("AUTH_BUTTON"));
-        this.setInnerHtmlByClass('auth-label', this.getLangString("AUTH_STATUS"));
-        this.setInnerHtmlByClass('auth-status-label', this.getLangString("AUTH_STATUS_NOT_CONNECTED"));
-        this.setInnerHtmlByClass('support-feedback-title-label', this.getLangString("SUPPORT_FEEDBACK_TITLE"));
-        this.setInnerHtmlByClass('support-feedback-text-label', this.getLangString("SUPPORT_FEEDBACK_TEXT"));
-        this.setInnerHtmlByClass('var-usage-label', this.getLangString("VAR_USAGE"));
-        this.setInnerHtmlByClass('action-label', this.getLangString("ACTION"));
-        this.setInnerHtmlByClass('toggle-label', this.getLangString("TOGGLE"));
-        this.setInnerHtmlByClass('pause-label', this.getLangString("PAUSE"));
-        this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
+        this.i18n.apply();
+        this.setInnerHtmlByClass('connection-status-value', this.getLangString("CONNECTION_STATUS_NOT_CHECKED"));
     }
 
     @SDOnPiEvent('didReceiveGlobalSettings')
     private receivedGlobalSettings() {
+        this.globalSettingsPi?.newGlobalSettingsReceived();
         this.action?.newGlobalSettingsReceived();
     }
 
@@ -185,17 +195,27 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
 
     private setupElements() {
         this.playPauseSettings = document.getElementById('playPauseSettings') as HTMLElement;
-        this.hostElement = document.getElementById('host') as HTMLInputElement;
-        this.portElement = document.getElementById('port') as HTMLInputElement;
         this.actionElement = document.getElementById('action') as HTMLInputElement;
         this.displayFormatElement = document.getElementById('displayFormat') as HTMLInputElement;
         this.displayTitleFormatElement = document.getElementById('displayTitleFormat') as HTMLInputElement;
         this.sdplusSettingsElement = document.getElementById('sdplus-settings') as HTMLInputElement;
         this.customLayout = document.getElementById('sdplus-customLayout') as HTMLInputElement;
         this.saveElement = document.getElementById('save') as HTMLButtonElement;
-        this.authSectionElement = document.getElementById('authStatusSection') as HTMLElement;
-        this.authButtonElement = document.getElementById('authButton') as HTMLButtonElement;
-        this.authStatusElement = document.getElementById('authStatus') as HTMLElement;
+        this.globalSettings = document.getElementById('globalSettings') as HTMLElement;
+        this.globalHostElement = document.getElementById('globalHost') as HTMLInputElement;
+        this.globalPortElement = document.getElementById('globalPort') as HTMLInputElement;
+        this.globalAuthButtonElement = document.getElementById('globalAuthButton') as HTMLButtonElement;
+        this.globalAuthStatusElement = document.getElementById('globalAuthStatus') as HTMLElement;
+        this.globalConnectionStatusElement = document.getElementById('globalConnectionStatus') as HTMLElement;
+        this.globalSaveElement = document.getElementById('globalSave') as HTMLButtonElement;
+        this.globalSettingsDetailsElement = document.getElementById('globalSettingsDetails') as HTMLDetailsElement;
+
+        this.playlistSettings = document.getElementById('playlistSettings') as HTMLElement;
+        this.playlistSelectElement = document.getElementById('playlistSelect') as HTMLSelectElement;
+        this.playlistUrlElement = document.getElementById('playlistUrl') as HTMLInputElement;
+        this.playlistUrlStatusElement = document.getElementById('playlistUrlStatus') as HTMLElement;
+        this.playlistSaveElement = document.getElementById('playlistSave') as HTMLButtonElement;
+        this.playlistRefreshButtonElement = document.getElementById('playlistRefresh') as HTMLButtonElement;
 
         this.volumeSettings = document.getElementById('volumeSettings') as HTMLElement;
         this.volumeInput = document.getElementById('volumeInput') as HTMLInputElement;
