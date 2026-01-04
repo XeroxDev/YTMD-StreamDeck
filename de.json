@@ -70,6 +70,7 @@
       "PLAY":  "Start",
       "ACTION": "Aktion",
       "PLAYLIST": "Playlist",
+      "PLAYLIST_URL": "Playlist-URL",
       "PLAYLIST_CUSTOM": "Benutzerdefinierte Playlist-ID",
       "PLAYLIST_REFRESH": "Playlists aktualisieren",
       "PLAYLIST_SELECT": "Playlist auswählen",

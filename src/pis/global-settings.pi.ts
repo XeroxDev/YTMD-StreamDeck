@@ -40,7 +40,7 @@ export class GlobalSettingsPi {
 
     private startRefreshTimer() {
         if (this.refreshIntervalId) return;
-        this.refreshIntervalId = window.setInterval(() => this.refreshConnectionStatus(), 5000);
+        this.refreshIntervalId = window.setInterval(() => this.refreshConnectionStatus(), 30000);
     }
 
     private async refreshConnectionStatus() {

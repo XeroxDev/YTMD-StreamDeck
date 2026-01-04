@@ -22,6 +22,7 @@ export interface LocalizationInterface {
         PLAY: string;
         ACTION: string;
         PLAYLIST: string;
+        PLAYLIST_URL: string;
         PLAYLIST_CUSTOM: string;
         PLAYLIST_REFRESH: string;
         PLAYLIST_SELECT: string;

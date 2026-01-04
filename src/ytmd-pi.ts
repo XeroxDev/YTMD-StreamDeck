@@ -26,6 +26,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
     // Playlist Settings
     public playlistSettings: HTMLElement;
     public playlistSelectElement: HTMLSelectElement;
+    public playlistUrlElement: HTMLInputElement;
     public playlistCustomElement: HTMLInputElement;
     public playlistSaveElement: HTMLButtonElement;
     public playlistRefreshButtonElement: HTMLButtonElement;
@@ -187,6 +188,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
         this.setInnerHtmlByClass('pause-label', this.getLangString("PAUSE"));
         this.setInnerHtmlByClass('play-label', this.getLangString("PLAY"));
         this.setInnerHtmlByClass('playlist-label', this.getLangString("PLAYLIST"));
+        this.setInnerHtmlByClass('playlist-url-label', this.getLangString("PLAYLIST_URL"));
         this.setInnerHtmlByClass('playlist-custom-label', this.getLangString("PLAYLIST_CUSTOM"));
         this.setInnerHtmlByClass('playlist-refresh-label', this.getLangString("PLAYLIST_REFRESH"));
         this.setInnerHtmlByClass('global-settings-title', this.getLangString("GLOBAL_SETTINGS_TITLE"));
@@ -223,6 +225,7 @@ export class YTMDPi extends StreamDeckPropertyInspectorHandler {
 
         this.playlistSettings = document.getElementById('playlistSettings') as HTMLElement;
         this.playlistSelectElement = document.getElementById('playlistSelect') as HTMLSelectElement;
+        this.playlistUrlElement = document.getElementById('playlistUrl') as HTMLInputElement;
         this.playlistCustomElement = document.getElementById('playlistCustom') as HTMLInputElement;
         this.playlistSaveElement = document.getElementById('playlistSave') as HTMLButtonElement;
         this.playlistRefreshButtonElement = document.getElementById('playlistRefresh') as HTMLButtonElement;

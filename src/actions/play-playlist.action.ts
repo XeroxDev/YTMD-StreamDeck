@@ -21,14 +21,15 @@ export class PlayPlaylistAction extends DefaultAction<PlayPlaylistAction> {
 
     @SDOnActionEvent('keyUp')
     onKeypressUp({context, payload: {settings}}: KeyUpEvent<PlaylistSettings>) {
+        const playlistUrl = settings?.playlistUrl?.trim();
         const playlistId = settings?.customPlaylistId?.trim() || settings?.playlistId?.trim();
-        if (!playlistId) {
+        if (!playlistUrl && !playlistId) {
             this.plugin.logMessage(`No playlist configured. context: ${JSON.stringify(context)}`);
             this.plugin.showAlert(context);
             return;
         }
 
-        this.rest.changeVideo({playlistId}).catch(reason => {
+        this.rest.changeVideo({playlistId, url: playlistUrl}).catch(reason => {
             console.error(reason);
             this.plugin.logMessage(`Error while starting playlist. context: ${JSON.stringify(context)}, error: ${JSON.stringify(reason)}`);
             this.plugin.showAlert(context);

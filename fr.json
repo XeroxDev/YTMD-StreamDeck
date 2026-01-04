@@ -70,6 +70,7 @@
     "PLAY": "Lecture",
     "ACTION": "Action",
       "PLAYLIST": "Playlist",
+      "PLAYLIST_URL": "URL de la playlist",
       "PLAYLIST_CUSTOM": "ID de playlist personnalisée",
       "PLAYLIST_REFRESH": "Actualiser les playlists",
       "PLAYLIST_SELECT": "Sélectionner une playlist",

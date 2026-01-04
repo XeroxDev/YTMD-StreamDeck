@@ -10,4 +10,5 @@ export interface PlayPauseSettings {
 export interface PlaylistSettings {
     playlistId?: string;
     customPlaylistId?: string;
+    playlistUrl?: string;
 }

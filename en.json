@@ -70,6 +70,7 @@
       "PLAY":  "Play",
       "ACTION": "Action",
       "PLAYLIST": "Playlist",
+      "PLAYLIST_URL": "Playlist URL",
       "PLAYLIST_CUSTOM": "Custom Playlist ID",
       "PLAYLIST_REFRESH": "Refresh Playlists",
       "PLAYLIST_SELECT": "Select playlist",

@@ -34,6 +34,7 @@ export class PlayPlaylistPi extends PisAbstract {
     public newSettingsReceived({payload: {settings}}: DidReceiveSettingsEvent<PlaylistSettings>): void {
         this.currentSettings = settings ?? {};
         this.pi.playlistCustomElement.value = settings.customPlaylistId ?? '';
+        this.pi.playlistUrlElement.value = settings.playlistUrl ?? '';
         this.applyPlaylistSelection();
     }
 
@@ -114,11 +115,13 @@ export class PlayPlaylistPi extends PisAbstract {
 
     private saveSettings() {
         const playlistId = this.pi.playlistSelectElement.value,
-            customPlaylistId = this.pi.playlistCustomElement.value;
+            customPlaylistId = this.pi.playlistCustomElement.value,
+            playlistUrl = this.pi.playlistUrlElement.value;
 
         this.settingsManager.setContextSettingsAttributes(this.context, {
             playlistId: playlistId || undefined,
-            customPlaylistId: customPlaylistId || undefined
+            customPlaylistId: customPlaylistId || undefined,
+            playlistUrl: playlistUrl || undefined
         });
     }
 }
