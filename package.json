@@ -19,7 +19,7 @@
   "homepage": "https://github.com/XeroxDev/YTMD-StreamDeck#readme",
   "dependencies": {
     "intl-messageformat": "^10.7.10",
-    "streamdeck-typescript": "^3.2.1",
+    "streamdeck-typescript": "^3.3.4",
     "ytmdesktop-ts-companion": "^1.1.0"
   },
   "keywords": [
