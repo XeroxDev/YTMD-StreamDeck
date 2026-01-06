@@ -52,7 +52,7 @@ body:
   attributes:
     label: Plugin Version
     description: "Which Version does your plugin has?"
-    placeholder: v2.3.0 # x-release-please-version
+    placeholder: v2.3.1 # x-release-please-version
   validations:
     required: true
 - type: input
