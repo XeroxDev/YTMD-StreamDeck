@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.3.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.2.0...v2.3.0) (2026-01-06)
+
+
+### Features
+
+* **action:** start the configured playlist when the Play Playlist action is triggered ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* streamdeck+ Song title and custom layout ([54b573d](https://github.com/XeroxDev/YTMD-StreamDeck/commit/54b573d950e0b1e45d2396032d263b45ae77429a))
+* **ui:** add separate authenticated and connected status indicators ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* **ui:** extend Play Playlist action settings with selectable playlists and URL input ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* **ui:** improve UI text consistency and translations ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* **ui:** make connection settings global instead of play/pause scoped ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* **ui:** make global connection settings collapsible ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+* **ui:** validate playlist URLs (supports playlist-only and playlist+video links) ([7f4341e](https://github.com/XeroxDev/YTMD-StreamDeck/commit/7f4341e2f8bb7b000698046d1f49c8fb06127d8b))
+
+
+### Bug Fixes
+
+* **play-pause:** changes to error handling ([54b573d](https://github.com/XeroxDev/YTMD-StreamDeck/commit/54b573d950e0b1e45d2396032d263b45ae77429a))
+* set image crossOrigin to `anonymous` to avoid CORS restrictions ([de5cf1a](https://github.com/XeroxDev/YTMD-StreamDeck/commit/de5cf1a4d53649105d7f59d6e020ab10fac3e587))
+* show sdplus settings only when sdplus is detected ([54b573d](https://github.com/XeroxDev/YTMD-StreamDeck/commit/54b573d950e0b1e45d2396032d263b45ae77429a))
+
 ## [2.2.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.1.1...v2.2.0) (2024-08-18)
 
 

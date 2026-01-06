@@ -1,6 +1,6 @@
 {
   "name": "fun.shiro.ytmd.sdplugin",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "scripts": {
     "watch": "node scripts/watch.js",
