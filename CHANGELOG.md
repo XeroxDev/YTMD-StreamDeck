@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.3.0...v2.3.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* update plugin name to full version ([8b0c332](https://github.com/XeroxDev/YTMD-StreamDeck/commit/8b0c3320ce59b741b3165a1c8ac3a54b66c2c97a))
+
 ## [2.3.0](https://github.com/XeroxDev/YTMD-StreamDeck/compare/v2.2.0...v2.3.0) (2026-01-06)
 
 
